@@ -1,13 +1,33 @@
 package com.example.swapanytime;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+
+import base.baseActivity;
+
+public class MainActivity extends baseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hideActionBar();
         setContentView(R.layout.activity_main);
+        SetStatusBarVisibilityGone();
+        showToast("Test",ToastDuration.LONG);
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void initView() {
+    }
+
+    @Override
+    public void initEvent() {
+
     }
 }

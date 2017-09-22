@@ -3,6 +3,8 @@ package base;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -35,12 +37,15 @@ public abstract class baseActivity extends Activity {
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         initView();
+        initEvent();
         initData();
     }
 
     public abstract void initData();
 
     public abstract void initView();
+
+    public abstract void initEvent();
 
 
     protected enum ToastDuration {
@@ -83,5 +88,36 @@ public abstract class baseActivity extends Activity {
         //requestWindowFeature(Window.FEATURE_NO_TITLE)
     }
 
+    //透明状态栏
+    protected boolean SetStatusBarVisibilityGone() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            decorView.setSystemUiVisibility(option);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            //getWindow().setStatusBarColor(Color.TRANSPARENT);
+            return true;
+        }
+        return false;
+    }
+
+
+    //沉浸模式
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        boolean Isneed = MyApplication.getImmersionModelStatus();
+        if (Isneed && hasFocus && Build.VERSION.SDK_INT >= 19) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    }
 
 }
