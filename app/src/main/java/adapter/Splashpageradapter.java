@@ -18,6 +18,12 @@ public class Splashpageradapter extends FragmentPagerAdapter {
         super(fm);
     }
 
+
+    public Splashpageradapter(FragmentManager fragmentManager,List list) {
+        super(fragmentManager);
+        fragments = list;
+    }
+
     private List<Fragment> fragments = new ArrayList<Fragment>();
 
     @Override
