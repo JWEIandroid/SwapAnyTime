@@ -23,6 +23,9 @@ public abstract class baseActivity extends Activity {
         if (null != getIntent()) {
             handleIntent(getIntent());
         }
+        hideActionBar();
+        SetStatusBarVisibilityGone();
+
     }
 
     //获取Intent

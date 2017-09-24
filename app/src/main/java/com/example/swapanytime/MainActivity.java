@@ -11,10 +11,8 @@ public class MainActivity extends baseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hideActionBar();
         setContentView(R.layout.activity_main);
-        SetStatusBarVisibilityGone();
-        showToast("Test",ToastDuration.LONG);
+//        showToast("Test",ToastDuration.LONG);
     }
 
     @Override
