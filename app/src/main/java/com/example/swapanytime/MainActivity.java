@@ -13,6 +13,8 @@ public class MainActivity extends baseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        showToast("Test",ToastDuration.LONG);
+        goActivity(SplashActivity.class);
+
     }
 
     @Override

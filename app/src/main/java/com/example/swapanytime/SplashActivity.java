@@ -3,9 +3,10 @@ package com.example.swapanytime;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,9 @@ import fragment.SpalshStart;
  * 闪屏页
  */
 
-public class SplashActivity extends FragmentActivity {
+public class SplashActivity extends AppCompatActivity {
+
+    private static final String TAG = SplashActivity.class.getSimpleName();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -36,23 +39,30 @@ public class SplashActivity extends FragmentActivity {
     private SpalshImgPage1 spalshImgPage1;
     private SpalshImgPage2 spalshImgPage2;
     private SpalshStart spalshStart;
+    private TabLayout tabLayout;
 
 
     public void initData() {
-        fragmentList = new ArrayList<Fragment>();
+        fragmentList = new ArrayList<>();
         fragmentList.add(spalshImgPage1);
         fragmentList.add(spalshImgPage2);
         fragmentList.add(spalshStart);
-        Splashpageradapter splashpageradapter = new Splashpageradapter(getSupportFragmentManager(),fragmentList);
+        Splashpageradapter splashpageradapter = new Splashpageradapter(getSupportFragmentManager(), fragmentList);
         splashViewPager.setAdapter(splashpageradapter);
+        tabLayout.setupWithViewPager(splashViewPager);
+        splashViewPager.setOffscreenPageLimit(3);
     }
 
 
     public void initView() {
         splashViewPager = (ViewPager) findViewById(R.id.splashviewpager);
+        tabLayout = (TabLayout) findViewById(R.id.tablayout);
         spalshImgPage1 = new SpalshImgPage1();
         spalshImgPage2 = new SpalshImgPage2();
         spalshStart = new SpalshStart();
+        tabLayout.addTab(tabLayout.newTab().setText("1"));
+        tabLayout.addTab(tabLayout.newTab().setText("2"));
+        tabLayout.addTab(tabLayout.newTab().setText("3"));
 
     }
 

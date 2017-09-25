@@ -19,7 +19,7 @@ public class Splashpageradapter extends FragmentPagerAdapter {
     }
 
 
-    public Splashpageradapter(FragmentManager fragmentManager,List list) {
+    public Splashpageradapter(FragmentManager fragmentManager, List list) {
         super(fragmentManager);
         fragments = list;
     }
@@ -36,10 +36,10 @@ public class Splashpageradapter extends FragmentPagerAdapter {
         return fragments.size();
     }
 
-
     //去掉super(),不销毁view
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
 
     }
+
 }
