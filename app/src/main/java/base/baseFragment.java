@@ -5,8 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import utils.LogUtils;
-
 /**
  * Created by dell on 2017/9/24.
  */
@@ -84,7 +82,6 @@ public class baseFragment extends Fragment {
                 isFragmentVisible = true;
             }
         }
-        LogUtils.d("TAG","isReuseView:" + isReuseView);
         super.onViewCreated(isReuseView ? rootView : view, savedInstanceState);
     }
 

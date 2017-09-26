@@ -38,10 +38,5 @@ public class Splashpageradapter extends FragmentPagerAdapter {
 
     }
 
-    private int titles[] = {1, 2, 3};
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return titles[position]+" ";
-    }
 }
