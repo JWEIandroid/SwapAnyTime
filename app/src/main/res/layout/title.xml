@@ -7,6 +7,7 @@
 
 
     <ImageButton
+        android:id="@+id/icon_head"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginBottom="10dp"
@@ -40,6 +41,7 @@
             android:textCursorDrawable="@drawable/cursorcolor" />
 
         <ImageButton
+            android:id="@+id/icon_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
@@ -49,6 +51,7 @@
             />
 
         <ImageButton
+            android:id="@+id/icon_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
@@ -60,6 +63,7 @@
     </FrameLayout>
 
     <ImageButton
+        android:id="@+id/icon_type"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginBottom="10dp"
