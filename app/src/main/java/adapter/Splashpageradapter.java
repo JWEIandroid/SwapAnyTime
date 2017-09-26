@@ -14,10 +14,6 @@ import java.util.List;
 
 public class Splashpageradapter extends FragmentPagerAdapter {
 
-    public Splashpageradapter(FragmentManager fm) {
-        super(fm);
-    }
-
 
     public Splashpageradapter(FragmentManager fragmentManager, List list) {
         super(fragmentManager);
@@ -42,4 +38,10 @@ public class Splashpageradapter extends FragmentPagerAdapter {
 
     }
 
+    private int titles[] = {1, 2, 3};
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return titles[position]+" ";
+    }
 }

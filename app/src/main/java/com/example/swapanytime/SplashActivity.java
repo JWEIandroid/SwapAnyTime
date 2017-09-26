@@ -5,6 +5,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.Splashpageradapter;
+import base.baseActivity;
 import fragment.SpalshImgPage1;
 import fragment.SpalshImgPage2;
 import fragment.SpalshStart;
@@ -21,7 +23,7 @@ import fragment.SpalshStart;
  * 闪屏页
  */
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends FragmentActivity{
 
     private static final String TAG = SplashActivity.class.getSimpleName();
 
@@ -40,6 +42,7 @@ public class SplashActivity extends AppCompatActivity {
     private SpalshImgPage2 spalshImgPage2;
     private SpalshStart spalshStart;
     private TabLayout tabLayout;
+
 
 
     public void initData() {
@@ -63,11 +66,11 @@ public class SplashActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("1"));
         tabLayout.addTab(tabLayout.newTab().setText("2"));
         tabLayout.addTab(tabLayout.newTab().setText("3"));
-
     }
 
 
     public void initEvent() {
-
+        splashViewPager.setCurrentItem(0);
     }
+
 }
