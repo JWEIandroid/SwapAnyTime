@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.Splashpageradapter;
+import base.baseFragmentActivity;
 import fragment.SpalshImgPage1;
 import fragment.SpalshImgPage2;
 import fragment.SpalshStart;
@@ -21,34 +22,14 @@ import utils.LogUtils;
  * 闪屏页
  */
 
-public class SplashActivity extends FragmentActivity{
+public class SplashActivity extends baseFragmentActivity {
 
     private static final String TAG = SplashActivity.class.getSimpleName();
 
 
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        initView();
-        initData();
-        initEvent();
-    }
-
-
-    private void showToast(String msg){
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    private ViewPager splashViewPager;
-    private List<Fragment> fragmentList;
-    private SpalshImgPage1 spalshImgPage1;
-    private SpalshImgPage2 spalshImgPage2;
-    private SpalshStart spalshStart;
-
-
-
-    public void initData() {
+    protected void initData() {
         fragmentList = new ArrayList<Fragment>();
         fragmentList.add(spalshImgPage1);
         fragmentList.add(spalshImgPage2);
@@ -59,18 +40,33 @@ public class SplashActivity extends FragmentActivity{
         LogUtils.d(TAG,"initData");
     }
 
-
-    public void initView() {
+    @Override
+    protected void initView() {
         splashViewPager = (ViewPager) findViewById(R.id.splashviewpager);
         spalshImgPage1 = new SpalshImgPage1();
         spalshImgPage2 = new SpalshImgPage2();
         spalshStart = new SpalshStart();
     }
 
-
-    public void initEvent() {
+    @Override
+    protected void initEvent() {
 
     }
+
+    @Override
+    protected Object getContentView() {
+        return R.layout.activity_splash;
+    }
+
+
+    private ViewPager splashViewPager;
+    private List<Fragment> fragmentList;
+    private SpalshImgPage1 spalshImgPage1;
+    private SpalshImgPage2 spalshImgPage2;
+    private SpalshStart spalshStart;
+
+
+
 
 
 }
