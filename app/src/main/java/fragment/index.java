@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import base.baseFragment;
 
 /**
- * Created by dell on 2017/9/24.
+ * Created by weijie on 2017/9/24.
  */
 
 public class index extends baseFragment {
@@ -28,5 +28,10 @@ public class index extends baseFragment {
     @Override
     protected void onFragmentVisibleChange(boolean IsVisible) {
         super.onFragmentVisibleChange(IsVisible);
+    }
+
+    @Override
+    public int getContentView() {
+        return 0;
     }
 }

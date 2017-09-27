@@ -3,13 +3,15 @@ package base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
- * Created by dell on 2017/9/24.
+ * Created by weijie on 2017/9/24.
  */
 
-public class baseFragment extends Fragment {
+public abstract class baseFragment extends Fragment {
 
 
     private boolean isFragmentVisible;
@@ -106,4 +108,12 @@ public class baseFragment extends Fragment {
         super.onDestroyView();
     }
 
+    public  abstract  int getContentView();
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(getContentView(), container, false);
+        return view;
+    }
 }

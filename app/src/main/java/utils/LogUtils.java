@@ -3,7 +3,7 @@ package utils;
 import android.util.Log;
 
 /**
- * Created by dell on 2017/9/22.
+ * Created by weijie on 2017/9/22.
  */
 
 public class LogUtils {

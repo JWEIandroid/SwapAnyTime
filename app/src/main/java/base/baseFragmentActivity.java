@@ -1,6 +1,5 @@
 package base;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -8,10 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.swapanytime.R;
@@ -31,13 +29,12 @@ public abstract class baseFragmentActivity extends FragmentActivity {
         if (null != getIntent()) {
             handleIntent(getIntent());
         }
-        if (getContentView()!=null){
-            if (getContentView() instanceof  Integer){
+        if (getContentView() != null) {
+            if (getContentView() instanceof Integer) {
                 setContentView((Integer) getContentView());
-            }else if(getContentView() instanceof View){
-                setContentView((View)getContentView());
-            }
-            else {
+            } else if (getContentView() instanceof View) {
+                setContentView((View) getContentView());
+            } else {
                 View view = new View(this);
                 view.setBackgroundColor(getResources().getColor(R.color.transparent));
                 setContentView(view);
@@ -47,9 +44,6 @@ public abstract class baseFragmentActivity extends FragmentActivity {
         SetStatusBarVisibilityGone();
 
     }
-
-
-
 
 
     //获取Intent
@@ -83,8 +77,6 @@ public abstract class baseFragmentActivity extends FragmentActivity {
     protected abstract Object getContentView();
 
 
-
-
     protected void showToast(String text, baseActivity.ToastDuration toastDuration) {
         switch (toastDuration) {
             case LONG:
@@ -96,6 +88,11 @@ public abstract class baseFragmentActivity extends FragmentActivity {
             default:
                 break;
         }
+    }
+
+
+    protected void hideActionBar() {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
     }
 
 
@@ -111,6 +108,19 @@ public abstract class baseFragmentActivity extends FragmentActivity {
             return true;
         }
         return false;
+    }
+
+    protected void setTranstion() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0及以上
+            View decorView = getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            decorView.setSystemUiVisibility(option);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//4.4到5.0
+            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
+            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+        }
     }
 
 
