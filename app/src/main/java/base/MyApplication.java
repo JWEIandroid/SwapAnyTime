@@ -16,6 +16,7 @@ public class MyApplication extends Application {
     //是否第一次进入应用，不等于1就开启引导页,后期保存本地
     private static boolean IsFirstTimeIn = false;
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -43,8 +44,15 @@ public class MyApplication extends Application {
         return IsImmersionModelOpened;
     }
 
+
     public static boolean getImmersionModelStatus() {
         return IsImmersionModelOpened;
+    }
+
+
+    //是否第一次进入应用
+    public static boolean QueryIsFirstTimeInApp() {
+        return IsFirstTimeIn;
     }
 
 

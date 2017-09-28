@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.swapanytime.R;
+
 import base.baseFragment;
 
 /**
@@ -14,24 +16,9 @@ import base.baseFragment;
 
 public class index extends baseFragment {
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
-    protected void onFragmentFirstVisible() {
-        super.onFragmentFirstVisible();
-    }
-
-    @Override
-    protected void onFragmentVisibleChange(boolean IsVisible) {
-        super.onFragmentVisibleChange(IsVisible);
-    }
 
     @Override
     public int getContentView() {
-        return 0;
+        return R.layout.fragment_normalspalsh;
     }
 }

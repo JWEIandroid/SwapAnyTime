@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.Splashpageradapter;
+import base.MyApplication;
 import base.baseFragmentActivity;
 import fragment.SpalshImgPage1;
 import fragment.SpalshImgPage2;
 import fragment.SpalshStart;
+import fragment.index;
 import utils.LogUtils;
 
 /**
@@ -21,27 +23,36 @@ import utils.LogUtils;
 public class SplashActivity extends baseFragmentActivity {
 
     private static final String TAG = SplashActivity.class.getSimpleName();
-
+    private static boolean IsFirstTimeIn = MyApplication.QueryIsFirstTimeInApp();
 
 
     @Override
     protected void initData() {
         fragmentList = new ArrayList<Fragment>();
-        fragmentList.add(spalshImgPage1);
-        fragmentList.add(spalshImgPage2);
-        fragmentList.add(spalshStart);
+        if (IsFirstTimeIn) {
+            fragmentList.add(spalshImgPage1);
+            fragmentList.add(spalshImgPage2);
+            fragmentList.add(spalshStart);
+//        splashViewPager.setOffscreenPageLimit(3);
+            LogUtils.d(TAG, "initData");
+        } else {
+            fragmentList.add(spalshnormal);
+        }
         Splashpageradapter splashpageradapter = new Splashpageradapter(getSupportFragmentManager(), fragmentList);
         splashViewPager.setAdapter(splashpageradapter);
-//        splashViewPager.setOffscreenPageLimit(3);
-        LogUtils.d(TAG,"initData");
     }
 
     @Override
     protected void initView() {
         splashViewPager = (ViewPager) findViewById(R.id.splashviewpager);
-        spalshImgPage1 = new SpalshImgPage1();
-        spalshImgPage2 = new SpalshImgPage2();
-        spalshStart = new SpalshStart();
+
+        if (IsFirstTimeIn) {
+            spalshImgPage1 = new SpalshImgPage1();
+            spalshImgPage2 = new SpalshImgPage2();
+            spalshStart = new SpalshStart();
+        } else {
+            spalshnormal = new index();
+        }
     }
 
     @Override
@@ -61,6 +72,8 @@ public class SplashActivity extends baseFragmentActivity {
     private SpalshImgPage1 spalshImgPage1;
     private SpalshImgPage2 spalshImgPage2;
     private SpalshStart spalshStart;
+
+    private index spalshnormal;
 
 
 }
