@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.swapanytime.R;
+
 /**
  * Created by weijie on 2017/9/22.
  */
@@ -23,6 +25,21 @@ public abstract class baseActivity extends AppCompatActivity {
         if (null != getIntent()) {
             handleIntent(getIntent());
         }
+        if (getContentView() != null) {
+            if (getContentView() instanceof Integer) {
+                setContentView((Integer) getContentView());
+            } else if (getContentView() instanceof View) {
+                setContentView((View) getContentView());
+            } else {
+                View view = new View(this);
+                view.setBackgroundColor(getResources().getColor(R.color.transparent));
+                setContentView(view);
+            }
+        }
+        initView();
+        initEvent();
+        initData();
+
         hideActionBar();
         SetStatusBarVisibilityGone();
 
@@ -36,17 +53,11 @@ public abstract class baseActivity extends AppCompatActivity {
         return (T) findViewById(id);
     }
 
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        super.setContentView(layoutResID);
-        initView();
-        initEvent();
-        initData();
-    }
-
     public abstract void initData();
 
     public abstract void initView();
+
+    public  abstract  Object getContentView();
 
     public abstract void initEvent();
 

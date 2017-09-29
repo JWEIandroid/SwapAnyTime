@@ -72,7 +72,6 @@ public class SplashActivity extends baseFragmentActivity {
     private SpalshImgPage1 spalshImgPage1;
     private SpalshImgPage2 spalshImgPage2;
     private SpalshStart spalshStart;
-
     private index spalshnormal;
 
 

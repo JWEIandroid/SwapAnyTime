@@ -10,12 +10,6 @@ import base.baseActivity;
 
 public class MainActivity extends baseActivity implements View.OnClickListener {
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-    }
 
     private ImageButton user, type, search, cancel;
 
@@ -31,6 +25,11 @@ public class MainActivity extends baseActivity implements View.OnClickListener {
         search = findView(R.id.icon_search);
         cancel = findView(R.id.icon_cancel);
 
+    }
+
+    @Override
+    public Object getContentView() {
+        return R.layout.activity_main;
     }
 
     @Override
