@@ -40,6 +40,10 @@ public abstract class baseActivity extends AppCompatActivity {
         initEvent();
         initData();
 
+        /**
+         * 隐藏标题栏
+         * 设置状态栏透明
+         */
         hideActionBar();
         SetStatusBarVisibilityGone();
 
@@ -57,7 +61,7 @@ public abstract class baseActivity extends AppCompatActivity {
 
     public abstract void initView();
 
-    public  abstract  Object getContentView();
+    public abstract Object getContentView();
 
     public abstract void initEvent();
 
@@ -123,6 +127,7 @@ public abstract class baseActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+
         boolean Isneed = MyApplication.getImmersionModelStatus();
         if (Isneed && hasFocus && Build.VERSION.SDK_INT >= 19) {
             View decorView = getWindow().getDecorView();

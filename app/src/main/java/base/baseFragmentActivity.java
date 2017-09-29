@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.swapanytime.R;
 
+import utils.LogUtils;
+
 /**
  * Created by weijie on 2017/9/26.
  */
@@ -31,7 +33,11 @@ public abstract class baseFragmentActivity extends FragmentActivity {
         }
         if (getContentView() != null) {
             if (getContentView() instanceof Integer) {
+                LogUtils.d(TAG,"baseFragment onCreate");
                 setContentView((Integer) getContentView());
+                initView();
+                initData();
+                initEvent();
             } else if (getContentView() instanceof View) {
                 setContentView((View) getContentView());
             } else {
@@ -51,22 +57,6 @@ public abstract class baseFragmentActivity extends FragmentActivity {
     }
 
 
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        super.setContentView(layoutResID);
-        initView();
-        initData();
-        initEvent();
-    }
-
-
-    @Override
-    public void setContentView(View view) {
-        super.setContentView(view);
-        initView();
-        initData();
-        initEvent();
-    }
 
     protected abstract void initData();
 

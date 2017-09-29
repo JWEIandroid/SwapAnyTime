@@ -9,4 +9,22 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="Index" />
+
+
+
+    <Button
+        android:id="@+id/btn_jump_splashindex"
+        android:textSize="10sp"
+        android:visibility="invisible"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_splash_shape"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:text="跳过"
+        />
+
 </RelativeLayout>

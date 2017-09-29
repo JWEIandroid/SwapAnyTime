@@ -12,7 +12,7 @@ import base.baseFragmentActivity;
 import fragment.SpalshImgPage1;
 import fragment.SpalshImgPage2;
 import fragment.SpalshStart;
-import fragment.index;
+import fragment.SpalshIndex;
 import utils.LogUtils;
 
 /**
@@ -24,6 +24,13 @@ public class SplashActivity extends baseFragmentActivity {
 
     private static final String TAG = SplashActivity.class.getSimpleName();
     private static boolean IsFirstTimeIn = MyApplication.QueryIsFirstTimeInApp();
+
+    private ViewPager splashViewPager;
+    private List<Fragment> fragmentList;
+    private SpalshImgPage1 spalshImgPage1;
+    private SpalshImgPage2 spalshImgPage2;
+    private SpalshStart spalshStart;
+    private SpalshIndex spalshnormal;
 
 
     @Override
@@ -45,13 +52,13 @@ public class SplashActivity extends baseFragmentActivity {
     @Override
     protected void initView() {
         splashViewPager = (ViewPager) findViewById(R.id.splashviewpager);
-
+//
         if (IsFirstTimeIn) {
             spalshImgPage1 = new SpalshImgPage1();
             spalshImgPage2 = new SpalshImgPage2();
             spalshStart = new SpalshStart();
         } else {
-            spalshnormal = new index();
+            spalshnormal = new SpalshIndex();
         }
     }
 
@@ -66,13 +73,6 @@ public class SplashActivity extends baseFragmentActivity {
         return R.layout.activity_splash;
     }
 
-
-    private ViewPager splashViewPager;
-    private List<Fragment> fragmentList;
-    private SpalshImgPage1 spalshImgPage1;
-    private SpalshImgPage2 spalshImgPage2;
-    private SpalshStart spalshStart;
-    private index spalshnormal;
 
 
 }

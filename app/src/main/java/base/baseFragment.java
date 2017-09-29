@@ -1,5 +1,7 @@
 package base;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +13,7 @@ import android.view.ViewGroup;
  * Created by weijie on 2017/9/24.
  */
 
-public abstract class baseFragment extends Fragment {
+public abstract class baseFragment extends Fragment implements View.OnClickListener {
 
 
     private boolean isFragmentVisible;
@@ -97,6 +99,37 @@ public abstract class baseFragment extends Fragment {
     }
 
 
+    protected abstract int getContentView();
+
+    protected abstract void initView(View view);
+
+    protected abstract void initData();
+
+    protected abstract void initEvent();
+
+
+    private static View mview = null;
+
+    public View getmView() {
+        return mview;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mview = inflater.inflate(getContentView(), container, false);
+        initView(getmView());
+        initData();
+        initEvent();
+        return mview;
+    }
+
+    public void goToActivity(Context context, Class<?> targetclass) {
+        Intent intent = new Intent(context, targetclass);
+        startActivity(intent);
+    }
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -108,12 +141,4 @@ public abstract class baseFragment extends Fragment {
         super.onDestroyView();
     }
 
-    public  abstract  int getContentView();
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(getContentView(), container, false);
-        return view;
-    }
 }

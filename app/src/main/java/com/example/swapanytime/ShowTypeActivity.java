@@ -21,7 +21,7 @@ public class ShowTypeActivity extends baseActivity {
 
     @Override
     public Object getContentView() {
-        return null;
+        return R.layout.activity_showtype;
     }
 
     @Override

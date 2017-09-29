@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="80dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/blue"
     android:orientation="horizontal">
 
@@ -31,14 +32,15 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@drawable/edittext_search_shape"
             android:hint="Iphone X"
             android:maxLines="1"
             android:paddingRight="10dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="30dp"
-            android:textCursorDrawable="@drawable/cursorcolor" />
+            android:textCursorDrawable="@drawable/cursorcolor"
+            />
 
         <ImageButton
             android:id="@+id/icon_search"
