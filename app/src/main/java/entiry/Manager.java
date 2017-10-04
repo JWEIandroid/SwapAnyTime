@@ -16,6 +16,10 @@ public class Manager extends BmobObject{
     private String password;
     private File headImg;
 
+   public Manager(){
+        this.setTableName("manager");
+    }
+
     public String getUsername() {
         return username;
     }

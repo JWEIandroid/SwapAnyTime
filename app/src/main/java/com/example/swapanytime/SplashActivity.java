@@ -1,5 +1,6 @@
 package com.example.swapanytime;
 
+
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
@@ -11,8 +12,8 @@ import base.MyApplication;
 import base.baseFragmentActivity;
 import fragment.SpalshImgPage1;
 import fragment.SpalshImgPage2;
-import fragment.SpalshStart;
 import fragment.SpalshIndex;
+import fragment.SpalshStart;
 import utils.LogUtils;
 
 /**

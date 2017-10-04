@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion '25.0.1'
     defaultConfig {
         applicationId "com.example.swapanytime"
         minSdkVersion 16
@@ -10,6 +10,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        useLibrary 'org.apache.http.legacy'
+
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -29,14 +32,34 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     //    compile 'cn.bmob.android:bmob-sdk:3.5.7'
-    compile 'com.squareup.okhttp:okhttp:2.4.0'//CDN文件服务使用okhttp相关包进行文件的上传和下载（必填）
-    compile 'com.squareup.okio:okio:1.4.0'
+    //    compile 'com.squareup.okhttp:okhttp:2.4.0'//CDN文件服务使用okhttp相关包进行文件的上传和下载（必填）
+    //    compile 'com.squareup.okio:okio:1.4.0'
     compile 'com.android.support:support-v4:23.2.1'
-    testCompile 'junit:junit:4.12'
-    compile files('src/libs/gson-2.6.2.jar')
-    compile files('src/libs/BmobSDK_3.5.7_20170905.jar')
-    compile files('src/libs/okio-1.12.0.jar')
-    compile files('src/libs/org.apache.http.legacy.jar')
-    compile files('src/libs/rxjava-1.1.6.jar')
-    compile files('src/libs/rxandroid-1.2.0.jar')
+    //    testCompile 'junit:junit:4.12'
+    //    compile files('src/libs/gson-2.6.2.jar')
+    //    compile files('src/libs/BmobSDK_3.5.7_20170905.jar')
+    //    compile files('src/libs/okio-1.12.0.jar')
+    //    compile files('src/libs/org.apache.http.legacy.jar')
+    //    compile files('src/libs/rxjava-1.1.6.jar')
+    //    compile files('src/libs/rxandroid-1.2.0.jar')
+    //以下SDK开发者请根据需要自行选择
+    //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
+    //3.5.5：请务必查看下面注释[1]
+    compile 'cn.bmob.android:bmob-sdk:3.5.5'
+    //bmob-push：Bmob的推送包
+    compile 'cn.bmob.android:bmob-push:0.8'
+    //bmob-im：Bmob的即时通讯包，注意每个版本的im依赖特定版本的bmob-sdk，具体的依赖关系可查看下面注释[2]
+    compile 'cn.bmob.android:bmob-im:2.0.5@aar'
+    compile 'cn.bmob.android:bmob-sdk:3.4.7-aar'
+    //bmob-sms ：Bmob单独为短信服务提供的包
+    //    compile 'cn.bmob.android:bmob-sms:1.0.1'
+    //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
+    compile 'cn.bmob.android:http-legacy:1.0'
+    //相册选择器
+//    compile 'cn.finalteam:galleryfinal:1.4.6'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    compile 'cn.finalteam:galleryfinal:1.4.8.7'
+    compile 'com.android.support:design:23.1.1'
 }

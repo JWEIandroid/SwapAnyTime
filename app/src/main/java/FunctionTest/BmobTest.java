@@ -1,16 +1,11 @@
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+package FunctionTest;
 
 import com.example.swapanytime.R;
-
-import java.io.File;
 
 import base.baseActivity;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
-import entiry.GoodsPics;
 import entiry.Manager;
 import utils.LogUtils;
 
@@ -27,17 +22,19 @@ public class BmobTest extends baseActivity {
 
         Manager manager = new Manager();
         manager.setHeadImg(null);
-        manager.setName("Test");
+        manager.setName("test");
         manager.setNumber("000000");
         manager.setPassword("123");
         manager.setUsername("Test");
+
+//        File file = new File()
 
 
         manager.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {
                 if (e==null){
-                    LogUtils.d("TAG","Bmob SUCCESS");
+                    LogUtils.d("TAG","Bmob SUCCESS"+s);
                 }else{
                     LogUtils.d("TAG",e.getMessage());
                 }
