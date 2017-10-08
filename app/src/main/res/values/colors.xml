@@ -8,4 +8,7 @@
     <color name="blue">#1296db</color>
     <color name="yellow">#f4ea2a</color>
     <color name="black">#000</color>
+    <color name="hui">#707070</color>
+    <color name="divider">#dbdbdb</color>
+
 </resources>

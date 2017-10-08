@@ -1,15 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<ImageView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:src="@mipmap/boy"
-    android:scaleType="fitXY"
-    />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@mipmap/boy" />
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="40dp"
+        android:gravity="center">
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/p1"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/splash_point_choosed" />
+
+        <ImageView
+            android:id="@+id/p2"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/splash_point" />
+
+        <ImageView
+            android:id="@+id/p3"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/splash_point" />
+
+    </LinearLayout>
+</FrameLayout>

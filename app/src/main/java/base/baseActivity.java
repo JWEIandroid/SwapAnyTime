@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -36,9 +35,11 @@ public abstract class baseActivity extends AppCompatActivity {
                 setContentView(view);
             }
         }
+
         initView();
-        initEvent();
         initData();
+        initEvent();
+
 
         /**
          * 隐藏标题栏

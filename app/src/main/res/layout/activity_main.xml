@@ -1,19 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:hjm="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.swapanytime.MainActivity">
 
-    <include
-        android:id="@+id/titlelayout"
-        layout="@layout/title"></include>
 
-    <!--<android.support.v7.app.AlertController.RecycleListView-->
-    <!--android:id="@+id/MainrecycleView"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content" />
--->
-</LinearLayout>
+    <com.hjm.bottomtabbar.BottomTabBar
+    android:id="@+id/bottomTabBar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:background="@color/white"
+    app:tab_font_size="4sp"
+    hjm:tab_divider_background="@color/divider"
+    hjm:tab_divider_height="1dp"
+    hjm:tab_img_height="20dp"
+    hjm:tab_img_width="20dp"
+    hjm:tab_isshow_divider="true"
+    hjm:tab_selected_color="#000000"
+    hjm:tab_unselected_color="@color/hui" />
+
+
+    <TextView
+    android:id="@+id/btn_addGoods"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_alignBottom="@id/bottomTabBar"
+    android:layout_alignEnd="@id/bottomTabBar"
+    android:layout_alignRight="@id/bottomTabBar"
+    android:layout_marginBottom="18dp"
+    android:layout_marginRight="150dp"
+    android:background="@drawable/circle_shape"
+    android:gravity="center"
+    android:text="+"
+    android:textSize="30sp" />
+
+
+
+    </RelativeLayout>
