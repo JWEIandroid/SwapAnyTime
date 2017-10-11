@@ -9,6 +9,8 @@
     <color name="yellow">#f4ea2a</color>
     <color name="black">#000</color>
     <color name="hui">#707070</color>
+    <color name="font_normal">#707070</color>
+    <color name="font_selected_black">#000</color>
     <color name="divider">#dbdbdb</color>
 
 </resources>

@@ -29,7 +29,6 @@ public class BmobTest extends baseActivity {
 
 //        File file = new File()
 
-
         manager.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {

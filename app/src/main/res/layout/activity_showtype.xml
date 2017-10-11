@@ -8,12 +8,13 @@
 
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/left_"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"></android.support.v7.widget.RecyclerView>
 
     <FrameLayout
-        android:background="@color/white"
+        android:background="@color/divider"
         android:layout_marginLeft="10dp"
         android:id="@+id/lin_fragment"
         android:layout_width="0dp"
