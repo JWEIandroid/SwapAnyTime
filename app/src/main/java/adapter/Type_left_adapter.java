@@ -1,18 +1,19 @@
 package adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.swapanytime.R;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import minterface.OnItemClickListener;
 
 /**
  * Created by weijie on 2017/10/12.
@@ -21,11 +22,11 @@ import java.util.List;
 public class Type_left_adapter extends RecyclerView.Adapter<Type_left_adapter.left_holder> {
 
     private Context context;
-    private String title[];
+    private List<String> list = new ArrayList<>();
 
-    public Type_left_adapter(Context context, String[] title) {
+    public Type_left_adapter(Context context, List<String> list) {
         this.context = context;
-        this.title = title;
+        this.list = list;
     }
 
     @Override
@@ -38,29 +39,53 @@ public class Type_left_adapter extends RecyclerView.Adapter<Type_left_adapter.le
         return holder;
     }
 
-    @Override
-    public void onBindViewHolder(Type_left_adapter.left_holder holder, int position) {
 
-        holder.title.setText("Test"+position);
-        holder.gridView.setBackgroundColor(Color.DKGRAY);
+
+    //注册监听器
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    @Override
+    public void onBindViewHolder(final Type_left_adapter.left_holder holder, int position) {
+
+        holder.title.setText(list.get(position)+"!");
+
+        //为title设置监听器
+        if (onItemClickListener!=null){
+          holder.itemView.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  int pos = holder.getLayoutPosition();
+                  onItemClickListener.onItemClick(holder.itemView,pos);
+                  holder.line.setVisibility(View.VISIBLE);
+              }
+          });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return title.length;
+        return list.size();
     }
+
 
     class left_holder extends RecyclerView.ViewHolder {
 
         private TextView title;
-        private GridView gridView;
+        private ImageView line;
 
         public left_holder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.rigth_item_title);
-            gridView = (GridView) itemView.findViewById(R.id.right_item_gridview);
+            title = (TextView) itemView.findViewById(R.id.left_type_item);
+            line = (ImageView) itemView.findViewById(R.id.left_line);
         }
     }
+
+
+
 
 }
 
