@@ -100,6 +100,7 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
         switch (index) {
             case 0:
                 showToast(""+index,ToastDuration.SHORT);
+                goActivity(ShowTypeActivity.class);
                 break;
             case 1:
                 break;

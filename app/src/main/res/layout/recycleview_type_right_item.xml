@@ -6,6 +6,7 @@
 
 
 <TextView
+    android:id="@+id/rigth_item_title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="摩托车/用品"
