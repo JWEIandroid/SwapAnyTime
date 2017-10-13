@@ -10,11 +10,13 @@
         >
 
         <ImageView
+            android:id="@+id/left_line"
             android:layout_width="3dp"
             android:layout_height="match_parent"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="6dp"
             android:background="@color/yellow"
+            android:visibility="gone"
             />
 
         <TextView
