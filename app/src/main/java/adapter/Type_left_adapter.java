@@ -23,10 +23,15 @@ public class Type_left_adapter extends RecyclerView.Adapter<Type_left_adapter.le
 
     private Context context;
     private List<String> list = new ArrayList<>();
+    private List<Boolean> isClick = new ArrayList<>();
 
     public Type_left_adapter(Context context, List<String> list) {
         this.context = context;
         this.list = list;
+
+        for(int i = 0;i<list.size();i++){
+            isClick.add(false);
+        }
     }
 
     @Override
@@ -49,9 +54,15 @@ public class Type_left_adapter extends RecyclerView.Adapter<Type_left_adapter.le
     }
 
     @Override
-    public void onBindViewHolder(final Type_left_adapter.left_holder holder, int position) {
+    public void onBindViewHolder(final Type_left_adapter.left_holder holder, final int position) {
 
         holder.title.setText(list.get(position)+"!");
+
+        if (isClick.get(position)){
+            holder.line.setVisibility(View.VISIBLE);
+        }else {
+            holder.line.setVisibility(View.GONE);
+        }
 
         //为title设置监听器
         if (onItemClickListener!=null){
@@ -60,7 +71,11 @@ public class Type_left_adapter extends RecyclerView.Adapter<Type_left_adapter.le
               public void onClick(View v) {
                   int pos = holder.getLayoutPosition();
                   onItemClickListener.onItemClick(holder.itemView,pos);
-                  holder.line.setVisibility(View.VISIBLE);
+
+                  for (int i =0;i<isClick.size();i++){
+                      isClick.set(i,false);
+                  }
+                  isClick.set(position,true);
               }
           });
         }
