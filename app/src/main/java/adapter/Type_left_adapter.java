@@ -2,11 +2,13 @@ package adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.swapanytime.R;
 
@@ -24,12 +26,21 @@ public class Type_left_adapter extends RecyclerView.Adapter<Type_left_adapter.le
     private Context context;
     private List<String> list = new ArrayList<>();
     private List<Boolean> isClick = new ArrayList<>();
+    private static left_holder mholder;
+
+    public left_holder getHolder() {
+        return mholder;
+    }
+
+    public List<Boolean> getclickList() {
+        return isClick;
+    }
 
     public Type_left_adapter(Context context, List<String> list) {
         this.context = context;
         this.list = list;
 
-        for(int i = 0;i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
             isClick.add(false);
         }
     }
@@ -45,7 +56,6 @@ public class Type_left_adapter extends RecyclerView.Adapter<Type_left_adapter.le
     }
 
 
-
     //注册监听器
     private OnItemClickListener onItemClickListener;
 
@@ -56,30 +66,48 @@ public class Type_left_adapter extends RecyclerView.Adapter<Type_left_adapter.le
     @Override
     public void onBindViewHolder(final Type_left_adapter.left_holder holder, final int position) {
 
-        holder.title.setText(list.get(position)+"!");
+        holder.title.setText(list.get(position) + "!");
 
-        if (isClick.get(position)){
-            holder.line.setVisibility(View.VISIBLE);
-        }else {
-            holder.line.setVisibility(View.GONE);
-        }
 
         //为title设置监听器
-        if (onItemClickListener!=null){
-          holder.itemView.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                  int pos = holder.getLayoutPosition();
-                  onItemClickListener.onItemClick(holder.itemView,pos);
+        if (onItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
 
-                  for (int i =0;i<isClick.size();i++){
-                      isClick.set(i,false);
-                  }
-                  isClick.set(position,true);
-              }
-          });
+                @Override
+                public void onClick(View v) {
+                    int pos = holder.getLayoutPosition();
+                    onItemClickListener.onItemClick(holder.itemView, position);
+
+                    for (int i = 0; i < isClick.size(); i++) {
+                        isClick.set(i, false);
+                    }
+                    for (boolean a : isClick) {
+                        Log.d("isclick", "onClickbefore: " + isClick.get(position).toString() + "\n");
+                    }
+                    Log.d("1", "onClickaaa: "+isClick.set(pos,true));
+//                    isClick.set(pos,true);
+                    for (boolean a : isClick) {
+                        Log.d("isclick", "onClick: " + isClick.get(position) + "\n");
+                    }
+
+
+                    if (isClick.get(position)) {
+                        holder.line.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.line.setVisibility(View.GONE);
+                    }
+
+                    Toast.makeText(context, "点击" + position, Toast.LENGTH_SHORT).show();
+
+                    mholder = holder;
+
+                }
+            });
         }
+
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -87,10 +115,14 @@ public class Type_left_adapter extends RecyclerView.Adapter<Type_left_adapter.le
     }
 
 
-    class left_holder extends RecyclerView.ViewHolder {
+    public class left_holder extends RecyclerView.ViewHolder {
 
         private TextView title;
         private ImageView line;
+
+        public ImageView getLine() {
+            return line;
+        }
 
         public left_holder(View itemView) {
             super(itemView);
@@ -98,8 +130,6 @@ public class Type_left_adapter extends RecyclerView.Adapter<Type_left_adapter.le
             line = (ImageView) itemView.findViewById(R.id.left_line);
         }
     }
-
-
 
 
 }
