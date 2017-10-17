@@ -2,24 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:weightSum="13"
-    >
+    android:orientation="vertical">
+
+    <include layout="@layout/titlebar" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/left_"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="4"
-        />
 
-      <android.support.v7.widget.RecyclerView
-          android:background="@color/blue"
-          android:id="@+id/right_"
-          android:layout_width="0dp"
-          android:layout_height="match_parent"
-          android:layout_weight="9"
-          />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="13">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/left_"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/right_"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:background="@color/blue" />
+    </LinearLayout>
 </LinearLayout>

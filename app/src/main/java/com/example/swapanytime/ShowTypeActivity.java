@@ -58,7 +58,9 @@ public class ShowTypeActivity extends baseActivity {
 
     private final LinearLayoutManager leftmanager = new LinearLayoutManager(this);
     private LinearLayoutManager rightmanager = new LinearLayoutManager(this);
-    private int move;
+    private boolean move;
+    private int mIndex;
+
     @Override
     public void initEvent() {
 
@@ -66,21 +68,23 @@ public class ShowTypeActivity extends baseActivity {
         Type_right_adapter right_adapter = new Type_right_adapter(ShowTypeActivity.this, list);
         final List<Boolean> list = new ArrayList<>();
 
-
         left.setLayoutManager(leftmanager);
         right.setLayoutManager(rightmanager);
 
         left_adapter.setOnItemClickListener(new Type_left_adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                mIndex = position;
                 //获取屏幕可见的第一个和最后一个Item
                 int firstItem = leftmanager.findFirstVisibleItemPosition();
                 int lastItem = leftmanager.findLastVisibleItemPosition();
-                right.scrollToPosition(position);
+                smoothMoveToPosition(right,position);
+//                right.scrollToPosition(position);
             }
         });
         left.setAdapter(left_adapter);
         right.setAdapter(right_adapter);
+        right.addOnScrollListener(new RecyclerViewListener(rightmanager));
     }
 
     private void smoothMoveToPosition(RecyclerView rv,int n) {
@@ -90,9 +94,9 @@ public class ShowTypeActivity extends baseActivity {
             rv.scrollToPosition(n);
         } else if (n <= lastItem) {
             int top = rv.getChildAt(n - firstItem).getTop();
-            rv.scrollBy(0, top);
+            rv.smoothScrollBy(0,top);
         } else {
-            rv.scrollToPosition(n);
+            rv.smoothScrollToPosition(n);
             move = true;
         }
     }
@@ -112,9 +116,9 @@ public class ShowTypeActivity extends baseActivity {
             if (move && newState == RecyclerView.SCROLL_STATE_IDLE ){
                 move = false;
                 int n = mIndex - linearLayoutManager.findFirstVisibleItemPosition();
-                if ( 0 <= n && n < mRecyclerView.getChildCount()){
-                    int top = mRecyclerView.getChildAt(n).getTop();
-                    mRecyclerView.smoothScrollBy(0, top);
+                if ( 0 <= n && n < recyclerView.getChildCount()){
+                    int top = recyclerView.getChildAt(n).getTop();
+                    recyclerView.smoothScrollBy(0,top);
                 }
 
             }
@@ -123,14 +127,15 @@ public class ShowTypeActivity extends baseActivity {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            if (move && mRadioGroup.getCheckedRadioButtonId() == R.id.scroll){
+            if (move){
                 move = false;
-                int n = mIndex - mLinearLayoutManager.findFirstVisibleItemPosition();
-                if ( 0 <= n && n < mRecyclerView.getChildCount()){
-                    int top = mRecyclerView.getChildAt(n).getTop();
-                    mRecyclerView.scrollBy(0, top);
+                int n = mIndex - linearLayoutManager.findFirstVisibleItemPosition();
+                if ( 0 <= n && n < recyclerView.getChildCount()){
+                    int top = recyclerView.getChildAt(n).getTop();
+                    recyclerView.smoothScrollBy(0, top);
                 }
             }
+
         }
     }
 
