@@ -4,32 +4,33 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
 
         <ImageView
             android:id="@+id/left_line"
-            android:layout_width="3dp"
+            android:layout_width="4dp"
             android:layout_height="match_parent"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="6dp"
-            android:background="@color/yellow"
+            android:background="@color/selected"
             android:visibility="gone"
             />
 
         <TextView
             android:id="@+id/left_type_item"
-            android:layout_width="80dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingBottom="8dp"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
-            android:paddingTop="8dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="15dp"
             android:text="整车/车品"
-            android:textColor="@color/font_normal" />
+            android:textSize="15dp"
+            android:textColor="@color/not_selected" />
 
 
 

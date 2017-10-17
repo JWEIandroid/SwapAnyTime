@@ -90,6 +90,10 @@ public abstract class baseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public String getTAG(){
+        return this.getClass().getSimpleName();
+    }
+
     protected void goActivity(Class<?> cs, Bundle bundle) {
         Intent intent = new Intent(this, cs);
         if (bundle != null) {
