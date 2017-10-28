@@ -17,6 +17,11 @@ public class Main_discovery extends baseFragment {
     }
 
     @Override
+    protected void initConfig(View view) {
+
+    }
+
+    @Override
     protected void initView(View view) {
 
     }
