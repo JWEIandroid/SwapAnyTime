@@ -50,6 +50,11 @@ public class SpalshIndex extends baseFragment {
     private Button btn_jump_index;
 
     @Override
+    protected void initConfig(View view) {
+
+    }
+
+    @Override
     protected void initData() {
 
     }

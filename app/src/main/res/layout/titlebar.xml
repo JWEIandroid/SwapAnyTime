@@ -25,7 +25,7 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:textColor="@color/hui"
-            android:textSize="10pt"
+            android:textSize="20sp"
             />
 
     <ImageView

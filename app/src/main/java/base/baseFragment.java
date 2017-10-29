@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by weijie on 2017/9/24.
@@ -107,6 +110,8 @@ public abstract class baseFragment extends Fragment implements View.OnClickListe
 
     protected abstract void initEvent();
 
+    protected abstract void initConfig(View view);
+
 
     private static View mview = null;
 
@@ -117,7 +122,9 @@ public abstract class baseFragment extends Fragment implements View.OnClickListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         mview = inflater.inflate(getContentView(), container, false);
+        initConfig(mview);
         initView(getmView());
         initData();
         initEvent();

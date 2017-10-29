@@ -13,12 +13,34 @@
         <item>生活百货</item>
     </string-array>
 
+    <string-array name="left">
+        <item>手机,手机配件,电脑,电脑配件,游戏机</item>
+        <item>女式外套,女式T恤,针织衫,裤装,衬衫</item>
+        <item>牛仔裤,外套，衬衫,T恤,帽子,短袖,帽子</item>
+        <item>电视机,洗衣机,冰箱,音箱,电饭煲,咖啡机,榨汁机,酸奶机</item>
+        <item>跑步机,哑铃,护具,篮球,足球,</item>
+        <item>床,沙发,床垫,镜子,茶具</item>
+        <item>Nike,Adidas,New Balance,Puma,Air Jordan</item>
+        <item>打印机,扫描仪,牙齿美白仪,Kindle</item>
+    </string-array>
+
+    <string-array name="test">
+        <item>手机,手机配件,电脑,电脑配件</item>
+        <item>女式外套,女式T恤,针织衫,裤装</item>
+        <item>牛仔裤,外套,衬衫,T恤</item>
+        <item>电视机,洗衣机,冰箱,音箱</item>
+        <item>跑步机,哑铃,护具,篮球</item>
+        <item>床,沙发,床垫,镜子,茶具</item>
+        <item>Nike,Adidas,New Balance</item>
+        <item>打印机,扫描仪,牙齿美白仪,Kindle</item>
+    </string-array>
+
     <string-array name="item_shoujishuma">
         <item>手机</item>
-        <item>电脑配件</item>
-        <item>电脑</item>
-        <item>电脑</item>
         <item>手机配件</item>
+        <item>电脑</item>
+        <item>电脑配件</item>
+        <item>游戏机</item>
     </string-array>
 
     <string-array name="item_nuzhuang">
@@ -68,11 +90,11 @@
     </string-array>
 
     <string-array name="item_qiuxie">
-        <item>手机</item>
-        <item>电脑配件</item>
-        <item>电脑</item>
-        <item>电脑</item>
-        <item>手机配件</item>
+        <item>nike</item>
+        <item>adidas</item>
+        <item>puma</item>
+        <item>new balence</item>
+        <item>air jordan</item>
     </string-array>
 
     <string-array name="item_shenghuobaihuo">

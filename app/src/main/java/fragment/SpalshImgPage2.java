@@ -17,6 +17,12 @@ public class SpalshImgPage2 extends baseFragment {
         return R.layout.fragment_splashpage2;
     }
 
+
+    @Override
+    protected void initConfig(View view) {
+
+    }
+
     @Override
     protected void initView(View view) {
 

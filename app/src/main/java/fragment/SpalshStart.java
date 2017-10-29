@@ -25,6 +25,11 @@ public class SpalshStart extends baseFragment {
     }
 
     @Override
+    protected void initConfig(View view) {
+
+    }
+
+    @Override
     protected void initView(View view) {
 
         btn_jump = (Button) getmView().findViewById(R.id.btn_jump);

@@ -17,6 +17,11 @@ public class Main_message extends baseFragment {
     }
 
     @Override
+    protected void initConfig(View view) {
+
+    }
+
+    @Override
     protected void initView(View view) {
 
     }
