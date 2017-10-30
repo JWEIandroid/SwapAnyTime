@@ -1,5 +1,7 @@
 package com.example.swapanytime;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,49 +34,66 @@ public class ShowTypeActivity extends baseActivity {
 
     private String TAG = getTAG();
     List<String> list = new ArrayList<>();
-    List<SortDetail> right_data = new ArrayList<>();
-    static List<String> left_data = new ArrayList<>();
+    List<SortDetail> right_data;
+    static List<String> left_data;
+    static List<String> left_data_after;
 
 
     @Override
     public void initData() {
 
+        right_data = new ArrayList<>();
+        left_data = new ArrayList<>();
+        left_data_after = new ArrayList<>();
+
+
         //初始化左边数据
 //        for (int i = 1; i < 31; i++) {
 //            list.add("种类 " + i);
 //        }
-        String[] array_type = this.getResources().getStringArray(R.array.right);
-        String[] type_detail_before = this.getResources().getStringArray(R.array.left);
-        String[] type_detail_test = this.getResources().getStringArray(R.array.test);
-//        String[][] array_type_detail = getTwoDimensionalArray(type_detail_before);
-        String[][] array_type_test = getTwoDimensionalArray(type_detail_test);
 
-        Log.d(TAG, "initData: "+array_type_test.length);
+        String[] array_type = this.getResources().getStringArray(R.array.left);
+        String[] type_detail_before = this.getResources().getStringArray(R.array.right);
+        String[][] array_type_detail = getTwoDimensionalArray(type_detail_before);
 
-        for (int i = 1; i < array_type.length; i++) {
+
+//
+        for (int i = 0; i < array_type.length; i++) {
             left_data.add(array_type[i]);
-            Log.d(TAG, "initData0: "+array_type[i]);
         }
-        //初始化右边数据
-//        for (int i = 0; i < left_data.size(); i++) {
-//            SortDetail head = new SortDetail();
-//            head.setIstitle(true);
-//            head.setTitlename(left_data.get(i));
-//            head.setTag(i);
-//            right_data.add(head);
-//            Log.d(getTAG(), "initData: "+head.getTitlename());
 
-//            for (int j = 0; j < array_type_detail.length; j++) {
-//                SortDetail sortDetail = new SortDetail();
-//                sortDetail.setIstitle(false);
-//                sortDetail.setName(array_type_detail[i][j]);
-//                sortDetail.setTag(i);
-//                sortDetail.setImageSrc(R.mipmap.ic_launcher);
-//                right_data.add(sortDetail);
-//                Log.d(getTAG(), "initData2: "+sortDetail.getName());
-//            }
 
-//        }
+//        初始化右边数据
+        for (int i = 0; i < left_data.size(); i++) {
+
+            SortDetail head = new SortDetail();
+            head.setIstitle(true);
+            head.setTitlename(left_data.get(i));
+            head.setTag(i);
+            right_data.add(head);
+            Log.d(getTAG(), "initData: " + head.getTitlename());
+
+            left_data_after.add(left_data.get(i));
+
+            for (int j = 0; j < array_type_detail.length - 1; j++) {
+                if (array_type_detail[i][j] != null) {
+                    SortDetail sortDetail = new SortDetail();
+                    sortDetail.setIstitle(false);
+                    sortDetail.setName(array_type_detail[i][j]);
+                    sortDetail.setTag(i);
+                    right_data.add(sortDetail);
+                    Log.d(getTAG(), "initData2: " + sortDetail.getName());
+
+                    left_data_after.add("");
+                }
+            }
+
+        }
+
+
+        Log.d(getTAG(), "right: "+right_data.size());
+        Log.d(TAG, "left: "+left_data_after.size());
+
 
     }
 
@@ -111,7 +130,7 @@ public class ShowTypeActivity extends baseActivity {
         for (int i = 0; i < array.length; i++) {
             String[] tempArray = array[i].split(",");
             if (twoDimensionalArray == null) {
-                twoDimensionalArray = new String[array.length][tempArray.length];
+                twoDimensionalArray = new String[array.length][8];
             }
             for (int j = 0; j < tempArray.length; j++) {
                 twoDimensionalArray[i][j] = tempArray[j];
@@ -121,21 +140,28 @@ public class ShowTypeActivity extends baseActivity {
     }
 
 
-
     @Override
     public void initEvent() {
 
-        final Type_left_adapter left_adapter = new Type_left_adapter(ShowTypeActivity.this, left_data);
-        Type_right_adapter right_adapter = new Type_right_adapter(ShowTypeActivity.this,list);
+        final Type_left_adapter left_adapter = new Type_left_adapter(ShowTypeActivity.this, left_data_after);
+        Type_right_adapter right_adapter = new Type_right_adapter(ShowTypeActivity.this, right_data);
         final List<Boolean> list = new ArrayList<>();
 
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return right_data.get(position).istitle() ? 3 : 1;
+            }
+        });
+
         left.setLayoutManager(leftmanager);
-        right.setLayoutManager(rightmanager);
+        right.setLayoutManager(gridLayoutManager);
 
         left_adapter.setOnItemClickListener(new Type_left_adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 mIndex = position;
+                Log.d(getTAG(), "onItemClick: "+position);
                 smoothMoveToPosition(right, position);
 //                right.scrollToPosition(position);
             }
@@ -192,5 +218,18 @@ public class ShowTypeActivity extends baseActivity {
         }
     }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
+    }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+
+
+    }
 }

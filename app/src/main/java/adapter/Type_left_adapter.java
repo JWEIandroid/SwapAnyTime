@@ -60,8 +60,12 @@ public class Type_left_adapter extends RecyclerView.Adapter<Type_left_adapter.Vi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final String TAG = "TAG";
-        holder.title.setText(list.get(position));
+
+        if (!list.get(position).equals("")){
+            holder.title.setText(list.get(position));
+            holder.title.setVisibility(View.VISIBLE);
+        }
+
 //        holder.line.setVisibility(View.GONE);
 
         if (isClick.get(position)) {

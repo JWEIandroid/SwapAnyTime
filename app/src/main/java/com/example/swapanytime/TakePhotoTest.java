@@ -9,7 +9,7 @@ import java.util.List;
 
 import adapter.AlbumAdapter;
 import base.baseActivity;
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
@@ -24,8 +24,7 @@ public class TakePhotoTest extends baseActivity {
     private final int REQUEST_CODE_GALLERY = 1001;
     private final int REQUEST_CODE_CROP = 1002;
     private final int REQUEST_CODE_EDIT = 1003;
-
-    @BindView(R.id.albumviewpager)
+    @Bind(R.id.albumviewpager)
     ViewPager albumviewpager;
 
     private List<String> imageUrls;

@@ -1,6 +1,7 @@
 package com.example.swapanytime;
 
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -8,7 +9,7 @@ import com.baoyz.actionsheet.ActionSheet;
 import com.hjm.bottomtabbar.BottomTabBar;
 
 import base.baseActivity;
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import fragment.Main_discovery;
@@ -22,10 +23,9 @@ import static com.example.swapanytime.R.mipmap.ic_mine;
 public class MainActivity extends baseActivity implements BottomTabBar.OnTabChangeListener, ActionSheet.ActionSheetListener {
 
 
-    @BindView(R.id.bottomTabBar)
+    @Bind(R.id.bottomTabBar)
     BottomTabBar bottomTabBar;
-    @BindView(R.id.btn_addGoods)
-
+    @Bind(R.id.btn_addGoods)
     TextView btnAddGoods;
     private String[] titles;
     private int[] icons, icons_choosed;
@@ -65,6 +65,7 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
 
     private void showActionsheet() {
+
         ActionSheet.createBuilder(MainActivity.this, getSupportFragmentManager())
                 .setCancelButtonTitle("取消")
                 .setOtherButtonTitles("1", "2", "3")
@@ -99,8 +100,8 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
     public void onOtherButtonClick(ActionSheet actionSheet, int index) {
         switch (index) {
             case 0:
-                showToast(""+index,ToastDuration.SHORT);
-                goActivity(ShowTypeActivity.class);
+//                showToast(""+index,ToastDuration.SHORT);
+//                goActivity(ShowTypeActivity.class);
                 break;
             case 1:
                 break;
@@ -109,5 +110,10 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 }

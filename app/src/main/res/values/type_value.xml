@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="right">
+    <string-array name="left">
         <item>热门推荐</item>
         <item>手机数码</item>
         <item>女装</item>
@@ -13,10 +13,11 @@
         <item>生活百货</item>
     </string-array>
 
-    <string-array name="left">
+    <string-array name="right">
+        <item>热门推荐1,热门推荐2,热门推荐3</item>
         <item>手机,手机配件,电脑,电脑配件,游戏机</item>
         <item>女式外套,女式T恤,针织衫,裤装,衬衫</item>
-        <item>牛仔裤,外套，衬衫,T恤,帽子,短袖,帽子</item>
+        <item>牛仔裤,外套,衬衫,T恤,帽子,短袖,帽子</item>
         <item>电视机,洗衣机,冰箱,音箱,电饭煲,咖啡机,榨汁机,酸奶机</item>
         <item>跑步机,哑铃,护具,篮球,足球,</item>
         <item>床,沙发,床垫,镜子,茶具</item>

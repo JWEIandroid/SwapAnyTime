@@ -30,6 +30,7 @@
             android:paddingTop="15dp"
             android:text="整车/车品"
             android:textSize="15dp"
+            android:visibility="gone"
             android:textColor="@color/not_selected" />
 
 
