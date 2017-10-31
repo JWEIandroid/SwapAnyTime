@@ -10,9 +10,9 @@
     <color name="black">#000</color>
     <color name="hui">#707070</color>
     <color name="font_normal">#707070</color>
-    <color name="selected">#515151</color>
+    <color name="selected">#000</color>
     <color name="font_selected_black">#000</color>
     <color name="divider">#dbdbdb</color>
-    <color name="not_selected">#e6e6e6</color>
+    <color name="not_selected">#515151</color>
 
 </resources>

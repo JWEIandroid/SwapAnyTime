@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ public class ShowTypeActivity extends baseActivity {
     RecyclerView left;
     @Bind(R.id.right_)
     RecyclerView right;
+    @Bind(R.id.ic_back)
+    ImageView icBack;
 
     private String TAG = getTAG();
     List<String> list = new ArrayList<>();
@@ -91,20 +94,15 @@ public class ShowTypeActivity extends baseActivity {
         }
 
 
-        Log.d(getTAG(), "right: "+right_data.size());
-        Log.d(TAG, "left: "+left_data_after.size());
+        Log.d(getTAG(), "right: " + right_data.size());
+        Log.d(TAG, "left: " + left_data_after.size());
 
 
     }
 
     @Override
     public void initView() {
-
         ButterKnife.bind(this);
-
-        left = findView(R.id.left_);
-        right = findView(R.id.right_);
-
     }
 
     @Override
@@ -145,7 +143,6 @@ public class ShowTypeActivity extends baseActivity {
 
         final Type_left_adapter left_adapter = new Type_left_adapter(ShowTypeActivity.this, left_data_after);
         Type_right_adapter right_adapter = new Type_right_adapter(ShowTypeActivity.this, right_data);
-        final List<Boolean> list = new ArrayList<>();
 
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -161,7 +158,7 @@ public class ShowTypeActivity extends baseActivity {
             @Override
             public void onItemClick(View view, int position) {
                 mIndex = position;
-                Log.d(getTAG(), "onItemClick: "+position);
+//                Log.d(getTAG(), "onItemClick: " + position);
                 smoothMoveToPosition(right, position);
 //                right.scrollToPosition(position);
             }
@@ -169,11 +166,20 @@ public class ShowTypeActivity extends baseActivity {
         left.setAdapter(left_adapter);
         right.setAdapter(right_adapter);
         right.addOnScrollListener(new RecyclerViewListener());
+
+        icBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goActivity(MainActivity.class);
+            }
+        });
+
+
     }
 
     private void smoothMoveToPosition(RecyclerView rv, int n) {
-        int firstItem = rightmanager.findFirstVisibleItemPosition();
-        int lastItem = rightmanager.findLastVisibleItemPosition();
+        int firstItem = gridLayoutManager.findFirstVisibleItemPosition();
+        int lastItem = gridLayoutManager.findLastVisibleItemPosition();
         if (n <= firstItem) {
 //            rv.scrollToPosition(n);
             rv.smoothScrollToPosition(n);
@@ -194,7 +200,7 @@ public class ShowTypeActivity extends baseActivity {
             super.onScrollStateChanged(recyclerView, newState);
             if (move && newState == RecyclerView.SCROLL_STATE_IDLE) {
                 move = false;
-                int n = mIndex - rightmanager.findFirstVisibleItemPosition();
+                int n = mIndex - gridLayoutManager.findFirstVisibleItemPosition();
                 if (0 <= n && n < recyclerView.getChildCount()) {
                     int top = recyclerView.getChildAt(n).getTop();
                     recyclerView.smoothScrollBy(0, top);
@@ -208,7 +214,7 @@ public class ShowTypeActivity extends baseActivity {
             super.onScrolled(recyclerView, dx, dy);
             if (move) {
                 move = false;
-                int n = mIndex - rightmanager.findFirstVisibleItemPosition();
+                int n = mIndex - gridLayoutManager.findFirstVisibleItemPosition();
                 if (0 <= n && n < recyclerView.getChildCount()) {
                     int top = recyclerView.getChildAt(n).getTop();
                     recyclerView.smoothScrollBy(0, top);

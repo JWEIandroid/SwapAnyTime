@@ -75,7 +75,7 @@ public class Type_left_adapter extends RecyclerView.Adapter<Type_left_adapter.Vi
             holder.itemView.getBackground().setAlpha(50);
         } else {
             holder.line.setVisibility(View.GONE);
-            holder.title.setTextColor(context.getResources().getColor(R.color.yellow));
+            holder.title.setTextColor(context.getResources().getColor(R.color.not_selected));
             holder.itemView.setBackgroundColor(Color.WHITE);
         }
 
