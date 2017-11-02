@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 
@@ -101,6 +103,37 @@ public abstract class baseFragment extends Fragment implements View.OnClickListe
         return isFragmentVisible;
     }
 
+    protected enum ToastDuration {
+        LONG, SHORT
+    }
+
+    protected void showToast(String text, ToastDuration toastDuration) {
+        Context context = getContext();
+        switch (toastDuration) {
+            case LONG:
+                Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+                break;
+            case SHORT:
+                Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+    }
+
+    protected void showSnackBar(String msg, ToastDuration toastDuration){
+        Context context = getContext();
+        switch (toastDuration) {
+            case LONG:
+                Snackbar.make(rootView,msg,Snackbar.LENGTH_LONG).show();
+                break;
+            case SHORT:
+                Snackbar.make(rootView,msg,Snackbar.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+    }
 
     protected abstract int getContentView();
 
@@ -111,6 +144,8 @@ public abstract class baseFragment extends Fragment implements View.OnClickListe
     protected abstract void initEvent();
 
     protected abstract void initConfig(View view);
+
+
 
 
     private static View mview = null;

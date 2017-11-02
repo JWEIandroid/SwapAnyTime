@@ -34,7 +34,7 @@ public class SpalshStart extends baseFragment {
 
         btn_jump = (Button) getmView().findViewById(R.id.btn_jump);
 
-        countDownTimer = new CountDownTimer(5000, 1000) {
+        countDownTimer = new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 btn_jump.setText("跳过(" + millisUntilFinished / 1000 + "s)");

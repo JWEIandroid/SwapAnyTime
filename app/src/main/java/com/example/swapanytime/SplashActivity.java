@@ -75,5 +75,9 @@ public class SplashActivity extends baseFragmentActivity {
     }
 
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogUtils.d(TAG,TAG+"  destroy time:"+System.currentTimeMillis());
+    }
 }

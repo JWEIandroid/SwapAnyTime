@@ -1,24 +1,33 @@
 package fragment;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.holder.Holder;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.example.swapanytime.R;
 import com.example.swapanytime.ShowTypeActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import utils.CBViewCreator;
 
 /**
  * Created by weijie on 2017/10/8.
  */
 
-public class Main_index extends baseFragment {
+public class Main_index extends baseFragment implements OnItemClickListener{
 
 
     @Bind(R.id.icon_head)
@@ -29,6 +38,11 @@ public class Main_index extends baseFragment {
     ImageButton iconCancel;
     @Bind(R.id.icon_type)
     ImageButton iconType;
+    @Bind(R.id.index_banner)
+    ConvenientBanner indexBanner;
+    private List<Integer> imglist;
+    private int[] Imgsrc = {R.mipmap.banner1, R.mipmap.banner2, R.mipmap.banner1, R.mipmap.banner2};
+
 
     @Override
     protected int getContentView() {
@@ -37,7 +51,7 @@ public class Main_index extends baseFragment {
 
     @Override
     protected void initConfig(View view) {
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
     }
 
     @Override
@@ -48,11 +62,30 @@ public class Main_index extends baseFragment {
     @Override
     protected void initData() {
 
+        imglist = new ArrayList<>();
+        imglist.add(R.mipmap.banner1);
+        imglist.add(R.mipmap.banner2);
+        imglist.add(R.mipmap.banner1);
+        imglist.add(R.mipmap.banner2);
+
     }
 
     @Override
     protected void initEvent() {
-         iconType.setOnClickListener(this);
+        iconType.setOnClickListener(this);
+
+
+        ConvenientBanner banner = indexBanner.setPages(new CBViewHolderCreator<CBViewCreator>() {
+            @Override
+            public CBViewCreator createHolder() {
+                return new CBViewCreator();
+            }
+        }, imglist)
+                .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused})
+                //设置指示器的方向
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
+                .setOnItemClickListener(this)
+                .startTurning(5*1000L);
     }
 
     @Override
@@ -61,8 +94,30 @@ public class Main_index extends baseFragment {
             case R.id.icon_type:
                 goToActivity(getContext(), ShowTypeActivity.class);
                 break;
+            default:
+                break;
         }
     }
+
+
+
+    @Override
+    public void onItemClick(int position) {
+           switch (position){
+               case 1:
+                   showSnackBar("1", ToastDuration.SHORT);
+                   break;
+           }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
 
     @Override
     public void onDestroyView() {

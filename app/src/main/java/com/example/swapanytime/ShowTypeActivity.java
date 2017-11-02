@@ -227,14 +227,14 @@ public class ShowTypeActivity extends baseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: ");
+        Log.d(TAG, TAG+" onCreate time is: "+System.currentTimeMillis());
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy: ");
+        Log.d(TAG, TAG+"onDestroy time is "+System.currentTimeMillis());
 
 
     }

@@ -5,7 +5,7 @@ android {
     buildToolsVersion '25.0.1'
     defaultConfig {
         applicationId "com.example.swapanytime"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -66,6 +66,9 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
 //    apt 'com.jakewharton:butterknife-compiler:8.0.1'
 
+
+//Banner
+    compile 'com.bigkoo:convenientbanner:2.0.5'
 
     compile 'com.baoyz.actionsheet:library:1.1.5'
     compile 'com.hjm:BottomTabBar:1.1.1'
