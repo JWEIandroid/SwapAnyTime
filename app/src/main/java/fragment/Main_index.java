@@ -22,6 +22,7 @@ import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import utils.CBViewCreator;
+import utils.LogUtils;
 
 /**
  * Created by weijie on 2017/10/8.
@@ -40,6 +41,7 @@ public class Main_index extends baseFragment implements OnItemClickListener{
     ImageButton iconType;
     @Bind(R.id.index_banner)
     ConvenientBanner indexBanner;
+
     private List<Integer> imglist;
     private int[] Imgsrc = {R.mipmap.banner1, R.mipmap.banner2, R.mipmap.banner1, R.mipmap.banner2};
 
@@ -112,10 +114,12 @@ public class Main_index extends baseFragment implements OnItemClickListener{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
+        LogUtils.e(getTag(),"onCreateView");
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
+        LogUtils.d(getTag(),"onCreateView");
         return rootView;
+
     }
 
 

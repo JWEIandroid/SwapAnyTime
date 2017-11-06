@@ -33,8 +33,16 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
     @Override
     public void initData() {
         titles = new String[]{"首页", "发现", "发布", "消息", "我的"};
-        icons = new int[]{R.mipmap.ic_index, R.mipmap.ic_discovery, R.mipmap.blank, R.mipmap.ic_msg, ic_mine};
-        icons_choosed = new int[]{R.mipmap.ic_index_choosed, R.mipmap.ic_discovery_choose, R.mipmap.ic_msg_choosed, R.mipmap.ic_mine_choosed};
+
+        icons = new int[]{R.mipmap.ic_index,
+                R.mipmap.ic_discovery,
+                R.mipmap.blank,
+                R.mipmap.ic_msg, ic_mine};
+
+        icons_choosed = new int[]{R.mipmap.ic_index_choosed,
+                R.mipmap.ic_discovery_choose,
+                R.mipmap.ic_msg_choosed,
+                R.mipmap.ic_mine_choosed};
 
     }
 

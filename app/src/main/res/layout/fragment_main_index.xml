@@ -16,6 +16,32 @@
     android:id="@+id/index_banner"
     />
 
+    <ui.CircleImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/weijie"
+        android:background="@color/hui"
+        android:scaleType="fitCenter"
+        />
+
+    <ui.CircleImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/weijie"
+        android:background="@color/hui"
+        android:scaleType="fitXY"
+        />
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/weijie"
+        android:background="@drawable/circle_shape"
+        android:scaleType="fitCenter"
+        />
+
+
+
 
 
 
