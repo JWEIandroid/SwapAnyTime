@@ -15,6 +15,7 @@ import java.util.List;
 
 import adapter.Type_left_adapter;
 import adapter.Type_right_adapter;
+import base.MyApplication;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -227,6 +228,7 @@ public class ShowTypeActivity extends baseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyApplication.getInstance().addActivity(ShowTypeActivity.this);
         Log.d(TAG, TAG+" onCreate time is: "+System.currentTimeMillis());
     }
 

@@ -2,12 +2,14 @@ package com.example.swapanytime;
 
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.baoyz.actionsheet.ActionSheet;
 import com.hjm.bottomtabbar.BottomTabBar;
 
+import base.MyApplication;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -123,5 +125,34 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyApplication.getInstance().addActivity(MainActivity.this);
+    }
+
+
+
+    private long exittime;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode==KeyEvent.KEYCODE_BACK&&event.getRepeatCount()==0){
+
+          ConfirmLeave();
+          return  true;
+        }
+
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void ConfirmLeave() {
+
+        if (System.currentTimeMillis()-exittime>2000){
+            showToast("再按一次退出",ToastDuration.SHORT);
+            exittime = System.currentTimeMillis();
+        }else{
+            MyApplication.getInstance().exit();
+        }
+
     }
 }

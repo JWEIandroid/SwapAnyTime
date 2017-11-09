@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.AlbumAdapter;
+import base.MyApplication;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,6 +63,7 @@ public class TakePhotoTest extends baseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyApplication.getInstance().addActivity(TakePhotoTest.this);
         ButterKnife.bind(this);
     }
 

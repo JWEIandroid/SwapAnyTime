@@ -1,7 +1,11 @@
 package base;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
@@ -17,6 +21,21 @@ import utils.UILImageLoader;
 public class MyApplication extends Application {
 
     private static Context context = null;
+
+    private static  MyApplication myApplication;
+
+    private List<Activity> activities = new ArrayList<Activity>();
+
+
+    public static MyApplication getInstance(){
+
+        if (myApplication==null){
+            myApplication = new MyApplication();
+        }
+
+        return myApplication;
+    }
+
 
     //沉浸模式默认关闭
     // TODO: 2017/10/8  sharepreference保存 沉默模式状态，是否第一次进入应用
@@ -92,6 +111,42 @@ public class MyApplication extends Application {
         GalleryFinal.init(coreConfig);
 
     }
+
+
+
+
+    public void addActivity(Activity activity){
+        activities.add(activity);
+    }
+
+    public void finishActivity(Activity activity){
+        if (activity!=null){
+            activities.remove(activity);
+            activity.finish();
+            activity = null;
+        }
+    }
+
+    public void exit(){
+        for (Activity activity:activities)
+          if (activity!=null){
+              activity.finish();
+          }
+          System.exit(0);
+    }
+
+    public void finishActivities(){
+        for (Activity activity:activities){
+            if (activity!=null){
+                activity.finish();
+            }
+        }
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
+
+
+
 
 
 }

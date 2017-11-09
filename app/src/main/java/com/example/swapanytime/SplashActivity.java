@@ -1,6 +1,8 @@
 package com.example.swapanytime;
 
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
@@ -74,10 +76,17 @@ public class SplashActivity extends baseFragmentActivity {
         return R.layout.activity_splash;
     }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MyApplication.getInstance().addActivity(SplashActivity.this);
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         LogUtils.d(TAG,TAG+"  destroy time:"+System.currentTimeMillis());
     }
+
+
 }
