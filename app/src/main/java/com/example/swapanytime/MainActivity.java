@@ -9,11 +9,15 @@ import android.widget.TextView;
 import com.baoyz.actionsheet.ActionSheet;
 import com.hjm.bottomtabbar.BottomTabBar;
 
+import java.util.List;
+
 import base.MyApplication;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.model.PhotoInfo;
 import fragment.Main_discovery;
 import fragment.Main_index;
 import fragment.Main_message;
@@ -78,7 +82,7 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
         ActionSheet.createBuilder(MainActivity.this, getSupportFragmentManager())
                 .setCancelButtonTitle("取消")
-                .setOtherButtonTitles("1", "2", "3")
+                .setOtherButtonTitles("拍照", "打开相册", "-  -")
                 .setCancelableOnTouchOutside(true)
                 .setListener(this)
                 .show();
@@ -110,6 +114,17 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
     public void onOtherButtonClick(ActionSheet actionSheet, int index) {
         switch (index) {
             case 0:
+                GalleryFinal.openCamera(1000, new GalleryFinal.OnHanlderResultCallback() {
+                    @Override
+                    public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+
+                    }
+
+                    @Override
+                    public void onHanlderFailure(int requestCode, String errorMsg) {
+
+                    }
+                });
 //                showToast(""+index,ToastDuration.SHORT);
 //                goActivity(ShowTypeActivity.class);
                 break;
@@ -121,6 +136,13 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
                 break;
         }
     }
+
+
+
+    private void initGallfinalConfig(){
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +166,8 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
         return super.onKeyDown(keyCode, event);
     }
+
+
 
     private void ConfirmLeave() {
 
