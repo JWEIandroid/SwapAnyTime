@@ -9,19 +9,16 @@ import android.widget.TextView;
 import com.baoyz.actionsheet.ActionSheet;
 import com.hjm.bottomtabbar.BottomTabBar;
 
-import java.util.List;
-
 import base.MyApplication;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.model.PhotoInfo;
 import fragment.Main_discovery;
 import fragment.Main_index;
 import fragment.Main_message;
 import fragment.Main_mine;
+import utils.MGalleryFinalUtils;
 
 import static com.example.swapanytime.R.mipmap.ic_mine;
 
@@ -82,7 +79,7 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
         ActionSheet.createBuilder(MainActivity.this, getSupportFragmentManager())
                 .setCancelButtonTitle("取消")
-                .setOtherButtonTitles("拍照", "打开相册", "-  -")
+                .setOtherButtonTitles("拍照", "打开相册")
                 .setCancelableOnTouchOutside(true)
                 .setListener(this)
                 .show();
@@ -114,23 +111,12 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
     public void onOtherButtonClick(ActionSheet actionSheet, int index) {
         switch (index) {
             case 0:
-                GalleryFinal.openCamera(1000, new GalleryFinal.OnHanlderResultCallback() {
-                    @Override
-                    public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-
-                    }
-
-                    @Override
-                    public void onHanlderFailure(int requestCode, String errorMsg) {
-
-                    }
-                });
-//                showToast(""+index,ToastDuration.SHORT);
-//                goActivity(ShowTypeActivity.class);
+                MGalleryFinalUtils instance = MGalleryFinalUtils.getInstance();
+                instance.initGalleryFinal(MainActivity.this);
+                instance.openCamera();
                 break;
             case 1:
-                break;
-            case 2:
+                MGalleryFinalUtils.openAlbum();
                 break;
             default:
                 break;
@@ -138,10 +124,6 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
     }
 
 
-
-    private void initGallfinalConfig(){
-
-    }
 
 
     @Override
@@ -151,30 +133,27 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
     }
 
 
-
     private long exittime;
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (keyCode==KeyEvent.KEYCODE_BACK&&event.getRepeatCount()==0){
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 
-          ConfirmLeave();
-          return  true;
+            ConfirmLeave();
+            return true;
         }
-
 
         return super.onKeyDown(keyCode, event);
     }
 
 
-
     private void ConfirmLeave() {
 
-        if (System.currentTimeMillis()-exittime>2000){
-            showToast("再按一次退出",ToastDuration.SHORT);
+        if (System.currentTimeMillis() - exittime > 2000) {
+            showToast("再按一次退出", ToastDuration.SHORT);
             exittime = System.currentTimeMillis();
-        }else{
+        } else {
             MyApplication.getInstance().exit();
         }
 

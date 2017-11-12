@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:CircleHead="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/hui"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <include
     layout="@layout/title"/>
@@ -19,25 +20,11 @@
     <ui.CircleImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@mipmap/weijie"
         android:background="@color/hui"
         android:scaleType="fitCenter"
-        />
-
-    <ui.CircleImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
         android:src="@mipmap/weijie"
-        android:background="@color/hui"
-        android:scaleType="fitXY"
-        />
-
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@mipmap/weijie"
-        android:background="@drawable/circle_shape"
-        android:scaleType="fitCenter"
+        CircleHead:circleHeadWidth ="3dp"
+        CircleHead:ringHeadColor = "@Color/hui"
         />
 
 

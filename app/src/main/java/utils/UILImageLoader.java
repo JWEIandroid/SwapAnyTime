@@ -8,6 +8,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.target.ImageViewTarget;
+import com.example.swapanytime.R;
 
 import cn.finalteam.galleryfinal.ImageLoader;
 import cn.finalteam.galleryfinal.widget.GFImageView;
@@ -34,12 +35,13 @@ public class UILImageLoader implements ImageLoader {
 
                     @Override
                     public void setRequest(Request request) {
-                        super.setRequest(request);
+                        imageView.setTag(R.id.adapter_item_tag_key, request);
                     }
 
                     @Override
                     public Request getRequest() {
-                        return super.getRequest();
+                        return (Request) imageView.getTag(R.id.adapter_item_tag_key);
+//                        return super.getRequest();
                     }
                 });
     }
