@@ -12,7 +12,7 @@ import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ImageLoader;
 import cn.finalteam.galleryfinal.ThemeConfig;
-import utils.UILImageLoader;
+import utils.GildeImageLoader;
 
 /**
  * Created by weijie on 2017/9/22.
@@ -103,7 +103,7 @@ public class MyApplication extends Application {
                 .build();
 
        //配置imageloader
-        ImageLoader imageloader = new UILImageLoader();
+        ImageLoader imageloader = new GildeImageLoader();
         //设置核心配置信息
         CoreConfig coreConfig = new CoreConfig.Builder(context, imageloader, theme)
                 .setFunctionConfig(functionConfig)

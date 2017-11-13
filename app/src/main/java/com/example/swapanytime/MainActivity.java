@@ -9,11 +9,14 @@ import android.widget.TextView;
 import com.baoyz.actionsheet.ActionSheet;
 import com.hjm.bottomtabbar.BottomTabBar;
 
+import java.util.List;
+
 import base.MyApplication;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.finalteam.galleryfinal.model.PhotoInfo;
 import fragment.Main_discovery;
 import fragment.Main_index;
 import fragment.Main_message;
@@ -32,6 +35,7 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
     TextView btnAddGoods;
     private String[] titles;
     private int[] icons, icons_choosed;
+    private  MGalleryFinalUtils instance;
 
     @Override
     public void initData() {
@@ -109,14 +113,19 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
     @Override
     public void onOtherButtonClick(ActionSheet actionSheet, int index) {
+
+        if (instance==null){
+            instance = MGalleryFinalUtils.getInstance(MainActivity.this);
+        }
+
         switch (index) {
             case 0:
-                MGalleryFinalUtils instance = MGalleryFinalUtils.getInstance();
-                instance.initGalleryFinal(MainActivity.this);
+                instance.initGalleryFinal();
                 instance.openCamera();
                 break;
             case 1:
-                MGalleryFinalUtils.openAlbum();
+                instance.initGalleryFinal();
+                instance.openAlbum();
                 break;
             default:
                 break;
@@ -156,6 +165,15 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
         } else {
             MyApplication.getInstance().exit();
         }
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+
+        instance.clearCache();
+        super.onDestroy();
 
     }
 }

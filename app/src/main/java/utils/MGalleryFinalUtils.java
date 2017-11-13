@@ -1,16 +1,20 @@
 package utils;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import base.MyApplication;
 import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.ImageLoader;
 import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 
@@ -21,13 +25,17 @@ import cn.finalteam.galleryfinal.model.PhotoInfo;
 public class MGalleryFinalUtils {
 
 
+    private static  String TAG = "weijie";
+
     private static MGalleryFinalUtils galleryFinalUtils;
     private static ThemeConfig theme;
 //    private static ImageLoader imageloader;
-    private static  UILImageLoader imageloader;
+    private static GildeImageLoader imageloader;
     private static CoreConfig coreConfig;
     private static FunctionConfig functionConfig;
+    private static FunctionConfig.Builder builder;
     private static Context context;
+    private static List<PhotoInfo> mphotoList;
 
 
     private static final int REQUEST_CODE_OPENCAMERA = 1000;
@@ -38,93 +46,109 @@ public class MGalleryFinalUtils {
 
     private MGalleryFinalUtils() {}
 
-    public static MGalleryFinalUtils getInstance() {
+    public static MGalleryFinalUtils getInstance(Context context) {
+
+        MGalleryFinalUtils.context = context;
+        mphotoList = new ArrayList<>();
+
         if (galleryFinalUtils == null) {
             galleryFinalUtils = new MGalleryFinalUtils();
         }
         return galleryFinalUtils;
     }
 
-    //初始化
 
-    private void initImageLoader(){
-
-        ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
-
-    }
 
 
     /***************************************
      * 初始化galleryfinal
      */
-    public static void initGalleryFinal(Context mcontext) {
+    public static void initGalleryFinal() {
 
         //配置主题
         theme = new ThemeConfig.Builder()
                 .build();
         //配置功能
-        functionConfig = new FunctionConfig.Builder()
-                .setEnableCamera(true)
+        builder = new FunctionConfig.Builder();
+        functionConfig = builder.setEnableCamera(true)
                 .setEnableEdit(true)
                 .setEnableCrop(true)
                 .setEnableRotate(true)
                 .setCropSquare(true)
+                .setEnableCamera(true)
                 .setEnablePreview(true)
+                .setSelected(mphotoList)
+                .setMutiSelectMaxSize(2)
                 .build();
 
+
         //配置imageloader
-        imageloader = new UILImageLoader();
+        imageloader = new GildeImageLoader();
         //设置核心配置信息
-        coreConfig = new CoreConfig.Builder(mcontext, imageloader, theme)
+        coreConfig = new CoreConfig.Builder(context, imageloader, theme)
                 .setFunctionConfig(functionConfig)
                 .build();
         GalleryFinal.init(coreConfig);
 
+
+        initImageloader(context);
+
     }
 
+
+    private static  void initImageloader(Context context){
+
+        ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
+        config.threadPriority(Thread.NORM_PRIORITY - 2);
+        config.denyCacheImageMultipleSizesInMemory();
+        config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
+        config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
+        config.tasksProcessingOrder(QueueProcessingType.LIFO);
+        config.writeDebugLogs(); // Remove for release app
+
+        // Initialize ImageLoader with configuration.
+        com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config.build());
+
+    }
 
     /*************************************
      * 打开相机
      */
     public static void openCamera() {
-        GalleryFinal.openCamera(REQUEST_CODE_OPENCAMERA, functionConfig, mHandlerResultCallback);
+        GalleryFinal.openCamera(REQUEST_CODE_OPENCAMERA, functionConfig, mOnHanlderResultCallback);
     }
 
     /*************************************
      * 打开相册
      */
     public  static  void openAlbum(){
-        GalleryFinal.openGalleryMuti(REQUEST_CODE_GALLERY,functionConfig,mHandlerResultCallback);
+        GalleryFinal.openGalleryMuti(REQUEST_CODE_GALLERY,functionConfig,mOnHanlderResultCallback);
     }
 
 
 
-    private static GalleryFinal.OnHanlderResultCallback mHandlerResultCallback = new GalleryFinal.OnHanlderResultCallback() {
+    private static GalleryFinal.OnHanlderResultCallback mOnHanlderResultCallback = new GalleryFinal.OnHanlderResultCallback() {
         @Override
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+            if (resultList != null) {
 
-            switch (reqeustCode) {
-                case REQUEST_CODE_OPENCAMERA:
-
-
-                    break;
             }
 
         }
 
         @Override
         public void onHanlderFailure(int requestCode, String errorMsg) {
-            Toast.makeText(MyApplication.getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
         }
-
     };
 
 
-    private void initImageLoader(Context context){
 
-        
 
-    }
+       public static  void clearCache(){
+           GalleryFinal.cleanCacheFile();
+           Toast.makeText(context,"清理成功",Toast.LENGTH_SHORT).show();
+       }
 
 
 }

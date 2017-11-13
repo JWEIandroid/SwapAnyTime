@@ -17,34 +17,36 @@ import cn.finalteam.galleryfinal.widget.GFImageView;
  * Created by weijie on 2017/10/7.
  */
 
-public class UILImageLoader implements ImageLoader {
+public class GildeImageLoader implements ImageLoader {
 
     @Override
     public void displayImage(Activity activity, String path, final GFImageView imageView, Drawable defaultDrawable, int width, int height) {
         Glide.with(activity)
                 .load("file://" + path)
+                .placeholder(defaultDrawable)
+                .error(defaultDrawable)
                 .override(width, height)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.NONE) //不缓存到SD卡
                 .skipMemoryCache(true)
+                //.centerCrop()
                 .into(new ImageViewTarget<GlideDrawable>(imageView) {
                     @Override
                     protected void setResource(GlideDrawable resource) {
                         imageView.setImageDrawable(resource);
-
                     }
 
                     @Override
                     public void setRequest(Request request) {
-                        imageView.setTag(R.id.adapter_item_tag_key, request);
+                        imageView.setTag(R.id.adapter_item_tag_key,request);
                     }
 
                     @Override
                     public Request getRequest() {
                         return (Request) imageView.getTag(R.id.adapter_item_tag_key);
-//                        return super.getRequest();
                     }
                 });
     }
+
 
     @Override
     public void clearMemoryCache() {
