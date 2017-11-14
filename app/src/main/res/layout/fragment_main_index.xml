@@ -17,15 +17,6 @@
     android:id="@+id/index_banner"
     />
 
-    <ui.CircleImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@color/hui"
-        android:scaleType="fitCenter"
-        android:src="@mipmap/weijie"
-        CircleHead:circleHeadWidth ="3dp"
-        CircleHead:ringHeadColor = "@Color/hui"
-        />
 
 
 

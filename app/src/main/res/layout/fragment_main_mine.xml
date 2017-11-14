@@ -1,7 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:CircleHead="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                >
+
+                <ImageView
+                    android:id="@+id/ic_forward"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_right32"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_centerVertical="true"
+                     />
+
+
+
+
+                <ui.CircleImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@color/white"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/banner1"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_toLeftOf="@id/ic_forward"
+                    />
+
+
+
+
+                <TextView
+                    android:id="@+id/mine_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="phpjava"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/mine_desc"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:textColor="@color/hui"
+                    android:textSize="10sp"
+                    android:text="这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字"
+                    android:ellipsize="end"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_below="@id/mine_name"
+                    />
+            </RelativeLayout>
+            
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="top"
+                android:title="phpjava"
+                android:titleMarginTop="15dp"
+                CircleHead:layout_collapseMode="pin"
+                />
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
 
 
 

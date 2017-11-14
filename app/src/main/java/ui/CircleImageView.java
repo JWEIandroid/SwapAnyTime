@@ -16,13 +16,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+import android.support.v7.widget.AppCompatImageView;
 
 import com.example.swapanytime.R;
 
-import static android.graphics.PorterDuff.Mode.SRC_IN;
 
-public class CircleImageView extends ImageView {
+public class CircleImageView extends AppCompatImageView {
     private Paint mPaintCircle;      //画圆形图像的笔
     private Paint mPaintBorder;          //画圆形边界的笔
     private Paint mPaintBackgroud;      //画背景颜色的笔
@@ -35,7 +34,7 @@ public class CircleImageView extends ImageView {
     private int mCirlcleBorderColor;             //边界边框颜色
     private int mCircleBackgroudColor;      //圆形头像背景色
 
-    public CircleImageView(Context context, AttributeSet attrs) {
+    public CircleImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CircleHead);//将获取的属性转化为我们最先设好的属性
         int n = typedArray.getIndexCount();
@@ -56,6 +55,7 @@ public class CircleImageView extends ImageView {
         init();
     }
 
+
     private void init() {
         //初始化图片变换处理器
         mMatrix = new Matrix();
@@ -64,8 +64,8 @@ public class CircleImageView extends ImageView {
         mPaintCircle.setAntiAlias(true);//抗锯齿,没有消除锯齿的话，图片变换会很难看的，因为有些像素点会失真
         mPaintCircle.setStrokeWidth(12);                     //设置圆边界宽度
         //附加效果设置阴影
-//        this.setLayerType(LAYER_TYPE_SOFTWARE, mPaintCircle);
-//        mPaintCircle.setShadowLayer(13.0f, 5.0f, 5.0f, Color.GRAY);
+        this.setLayerType(LAYER_TYPE_SOFTWARE, mPaintCircle);
+        mPaintCircle.setShadowLayer(13.0f, 5.0f, 5.0f, Color.GRAY);
 
 
         //给图形加边框
