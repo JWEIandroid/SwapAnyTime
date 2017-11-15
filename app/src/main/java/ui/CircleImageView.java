@@ -25,7 +25,7 @@ import android.widget.ImageView;
 import com.example.swapanytime.R;
 
 
- class CircleImageview extends ImageView {
+public class CircleImageView extends ImageView {
     private int mBorderThickness = 0;
     private Context mContext;
     private int defaultColor = 0xFFFFFFFF;
@@ -35,16 +35,16 @@ import com.example.swapanytime.R;
     // 控件默认长、宽
     private int defaultWidth = 0;
     private int defaultHeight = 0;
-    public CircleImageview(Context context) {
+    public CircleImageView(Context context) {
         super(context);
         mContext = context;
     }
-    public CircleImageview(Context context, AttributeSet attrs) {
+    public CircleImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         setCustomAttributes(attrs);
     }
-    public CircleImageview(Context context, AttributeSet attrs, int defStyle) {
+    public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
         setCustomAttributes(attrs);

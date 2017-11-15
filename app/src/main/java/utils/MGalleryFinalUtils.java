@@ -127,11 +127,16 @@ public class MGalleryFinalUtils {
 
 
 
+    public static List<PhotoInfo> getMphotoList() {
+        return mphotoList;
+    }
+
+
     private static GalleryFinal.OnHanlderResultCallback mOnHanlderResultCallback = new GalleryFinal.OnHanlderResultCallback() {
         @Override
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
             if (resultList != null) {
-
+                 mphotoList.addAll(resultList);
             }
 
         }
