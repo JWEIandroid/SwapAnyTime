@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baoyz.actionsheet.ActionSheet;
-import com.example.swapanytime.MainActivity;
 import com.example.swapanytime.R;
 
 import base.baseFragment;
@@ -24,9 +23,10 @@ import utils.MGalleryFinalUtils;
  * Created by weijei on 2017/10/8.
  */
 
-public class Main_mine extends baseFragment implements ActionSheet.ActionSheetListener{
+public class Main_mine extends baseFragment implements ActionSheet.ActionSheetListener {
 
 
+    private static MGalleryFinalUtils instance = null;
     @Bind(R.id.ic_forward)
     ImageView icForward;
     @Bind(R.id.mine_head)
@@ -44,9 +44,6 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     @Bind(R.id.app_bar)
     AppBarLayout appBar;
 
-
-    private static MGalleryFinalUtils instance = null;
-
     @Override
     protected int getContentView() {
         return R.layout.fragment_main_mine;
@@ -54,11 +51,17 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
     @Override
     protected void initConfig(View view) {
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
     }
 
     @Override
     protected void initView(View view) {
+
+//        mineTitlebar = (RelativeLayout) view.findViewById(R.id.mine_titlebar);
+//        titleName = (TextView) view.findViewById(R.id.title_name);
+//        collapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsingToolbarLayout);
+//        appBar = (AppBarLayout) view.findViewById(R.id.app_bar);
+//        mineHead = (CircleImageView) view.findViewById(R.id.mine_head);
 
     }
 
@@ -115,7 +118,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
 
             case R.id.mine_head:
                 showActionsheet();
@@ -124,7 +127,6 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         }
 
     }
-
 
 
     private void showActionsheet() {
@@ -145,7 +147,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     @Override
     public void onOtherButtonClick(ActionSheet actionSheet, int index) {
 
-        if (instance==null){
+        if (instance == null) {
             instance = MGalleryFinalUtils.getInstance(getActivity());
         }
 
@@ -162,7 +164,6 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                 break;
         }
     }
-
 
 
     @Override

@@ -172,7 +172,7 @@
                 android:textColor="@color/white"
                 android:textCursorDrawable="@drawable/cursorcolor"
                 android:textSize="15sp"
-                android:text="请输入手机号"
+                android:hint="请输入手机号"
                 />
 
         </FrameLayout>

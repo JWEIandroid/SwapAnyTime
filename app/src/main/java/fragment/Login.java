@@ -105,15 +105,16 @@ public class Login extends baseFragment {
 
                 boolean step_confirm = false;
 
-                if (!contentUtils.isMobileNO(accountEt.getText().toString())){
+                if (!contentUtils.isMobileNO(accountEt.getText().toString())) {
                     showSnackBar("手机号码不对欸 ?", ToastDuration.SHORT);
                     Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_unenabled_shape);
                     btnLogin.setBackground(drawable);
                     return;
                 }
                 step_confirm = true;
-                if (contentUtils.isContentLegal(""+psdEt.getText().toString())){
-                    if (step_confirm){
+                if (contentUtils.isContentLegal("" + psdEt.getText().toString()) &
+                        contentUtils.isNumLegal(psdEt.getText().toString(), 6)) {
+                    if (step_confirm) {
                         Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
                         btnLogin.setBackground(drawable);
                     }
@@ -137,17 +138,18 @@ public class Login extends baseFragment {
             @Override
             public void afterTextChanged(Editable s) {
 
-                 boolean step_confirm = false;
+                boolean step_confirm = false;
 
-                if (!contentUtils.isNumLegal(psdEt.getText().toString(),6)){
+                if (!contentUtils.isNumLegal(psdEt.getText().toString(), 6)) {
                     showSnackBar("密码长度不对欸 ?", ToastDuration.SHORT);
                     Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_unenabled_shape);
                     btnLogin.setBackground(drawable);
                     return;
                 }
                 step_confirm = true;
-                if (contentUtils.isContentLegal(""+accountEt.getText().toString())){
-                    if (step_confirm){
+                if (contentUtils.isContentLegal("" + accountEt.getText().toString()) &
+                        contentUtils.isMobileNO(accountEt.getText().toString())) {
+                    if (step_confirm) {
                         Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
                         btnLogin.setBackground(drawable);
                     }
@@ -171,9 +173,25 @@ public class Login extends baseFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                res_login &= contentUtils.isMobileNO(s.toString());
-                if (!res_login) {
-                    showSnackBar("手机输入错误", ToastDuration.SHORT);
+                boolean step_confirm = false;
+
+                if (!contentUtils.isMobileNO(phoneEt.getText().toString())) {
+                    showSnackBar("手机号码不对欸 ?", ToastDuration.SHORT);
+                    Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_unenabled_shape);
+                    btnReg.setBackground(drawable);
+                    return;
+                }
+                step_confirm = true;
+                if (contentUtils.isContentLegal("" + psdRegEt.getText().toString()) &
+                        contentUtils.isNumLegal(psdRegEt.getText().toString(), 6)&
+                        contentUtils.isContentLegal(codeEt.getText().toString())&
+                        contentUtils.isNumLegal(codeEt.getText().toString(),4)
+                        ) {
+                    if (step_confirm) {
+                        Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
+                        btnReg.setBackground(drawable);
+                    }
+                    return;
                 }
             }
         });
@@ -193,9 +211,25 @@ public class Login extends baseFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                res_reg &= contentUtils.isNumLegal(s.toString(), 4);
-                if (!res_login) {
-                    showSnackBar("验证码长度不对欸 ?", ToastDuration.SHORT);
+                boolean step_confirm = false;
+
+                if (!contentUtils.isNumLegal(codeEt.getText().toString(), 4)) {
+                    showSnackBar("验证码不对欸 ?", ToastDuration.SHORT);
+                    Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_unenabled_shape);
+                    btnReg.setBackground(drawable);
+                    return;
+                }
+                step_confirm = true;
+                if (contentUtils.isContentLegal("" + phoneEt.getText().toString()) &
+                        contentUtils.isMobileNO(phoneEt.getText().toString())&
+                        contentUtils.isContentLegal(psdRegEt.getText().toString())&
+                        contentUtils.isNumLegal(psdRegEt.getText().toString(),6)
+                        ) {
+                    if (step_confirm) {
+                        Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
+                        btnReg.setBackground(drawable);
+                    }
+                    return;
                 }
             }
         });
@@ -214,12 +248,27 @@ public class Login extends baseFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                res_reg &= contentUtils.isNumLegal(s.toString(), 6);
-                if (!res_login) {
+                boolean step_confirm = false;
+
+                if (!contentUtils.isNumLegal(psdRegEt.getText().toString(), 6)) {
                     showSnackBar("密码长度不对欸 ?", ToastDuration.SHORT);
+                    Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_unenabled_shape);
+                    btnReg.setBackground(drawable);
+                    return;
+                }
+                step_confirm = true;
+                if (contentUtils.isContentLegal("" + phoneEt.getText().toString()) &
+                        contentUtils.isMobileNO(phoneEt.getText().toString()) &
+                        contentUtils.isContentLegal("" + codeEt.getText().toString()) &
+                        contentUtils.isNumLegal("" + codeEt.getText().toString(), 4)
+                        ) {
+                    if (step_confirm) {
+                        Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
+                        btnReg.setBackground(drawable);
+                    }
+                    return;
                 }
             }
-
         });
 
 
