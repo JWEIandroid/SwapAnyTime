@@ -54,17 +54,11 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
     @Override
     protected void initConfig(View view) {
-
+        ButterKnife.bind(this,view);
     }
 
     @Override
     protected void initView(View view) {
-
-        mineTitlebar = (RelativeLayout) view.findViewById(R.id.mine_titlebar);
-        titleName = (TextView) view.findViewById(R.id.title_name);
-        collapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsingToolbarLayout);
-        appBar = (AppBarLayout) view.findViewById(R.id.app_bar);
-        mineHead = (CircleImageView) view.findViewById(R.id.mine_head);
 
     }
 

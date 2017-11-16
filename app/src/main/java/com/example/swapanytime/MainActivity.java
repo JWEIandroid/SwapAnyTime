@@ -17,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import fragment.Login;
 import fragment.Main_discovery;
 import fragment.Main_index;
 import fragment.Main_message;
@@ -69,7 +70,7 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
         bottomTabBar.init(getSupportFragmentManager())
                 .setTabPadding(15, 6, 10)
-                .addTabItem(titles[0], icons_choosed[0], icons[0], Main_index.class)
+                    .addTabItem(titles[0], icons_choosed[0], icons[0], Main_index.class)
                 .addTabItem(titles[1], icons_choosed[1], icons[1], Main_discovery.class)
                 .addTabItem(titles[2], icons[2], Main_discovery.class)
                 .addTabItem(titles[3], icons_choosed[2], icons[3], Main_message.class)

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -147,7 +148,6 @@ public abstract class baseFragment extends Fragment implements View.OnClickListe
 
 
 
-
     private static View mview = null;
 
     public View getmView() {
@@ -169,6 +169,15 @@ public abstract class baseFragment extends Fragment implements View.OnClickListe
     public void goToActivity(Context context, Class<?> targetclass) {
         Intent intent = new Intent(context, targetclass);
         startActivity(intent);
+    }
+
+
+    protected  void  replaceFragment(int parent,Fragment fragment){
+
+        FragmentTransaction transaction = this.getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(parent,fragment);
+        transaction.commit();
+
     }
 
 

@@ -2,6 +2,7 @@ package fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.example.swapanytime.LoginActivity;
 import com.example.swapanytime.R;
 import com.example.swapanytime.ShowTypeActivity;
 
@@ -75,6 +77,7 @@ public class Main_index extends baseFragment implements OnItemClickListener{
     @Override
     protected void initEvent() {
         iconType.setOnClickListener(this);
+        iconHead.setOnClickListener(this);
 
 
         ConvenientBanner banner = indexBanner.setPages(new CBViewHolderCreator<CBViewCreator>() {
@@ -96,6 +99,8 @@ public class Main_index extends baseFragment implements OnItemClickListener{
             case R.id.icon_type:
                 goToActivity(getContext(), ShowTypeActivity.class);
                 break;
+            case R.id.icon_head:
+                goToActivity(getContext(), LoginActivity.class);
             default:
                 break;
         }
