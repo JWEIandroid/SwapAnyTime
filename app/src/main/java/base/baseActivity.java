@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.example.swapanytime.R;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by weijie on 2017/9/22.
  */
@@ -35,7 +37,7 @@ public abstract class baseActivity extends AppCompatActivity {
                 setContentView(view);
             }
         }
-
+        ButterKnife.bind(this);
         initView();
         initData();
         initEvent();

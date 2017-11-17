@@ -17,6 +17,7 @@ import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import minterface.GalleryfinalActionListener;
 
 /**
  * Created by Administrator on 2017/11/10.
@@ -25,26 +26,32 @@ import cn.finalteam.galleryfinal.model.PhotoInfo;
 public class MGalleryFinalUtils {
 
 
-    private static  String TAG = "weijie";
+    private static String TAG = "weijie";
 
     private static MGalleryFinalUtils galleryFinalUtils;
     private static ThemeConfig theme;
-//    private static ImageLoader imageloader;
+    //    private static ImageLoader imageloader;
     private static GildeImageLoader imageloader;
     private static CoreConfig coreConfig;
-    private static FunctionConfig functionConfig;
+    private static FunctionConfig functionConfig_single;
+    private static FunctionConfig functionConfig_notsingle;
     private static FunctionConfig.Builder builder;
     private static Context context;
     private static List<PhotoInfo> mphotoList;
 
 
+    private static  GalleryfinalActionListener listener;
+
+
     private static final int REQUEST_CODE_OPENCAMERA = 1000;
     private static final int REQUEST_CODE_GALLERY = 1001;
-    private static final int REQUEST_CODE_CROP = 1002;
-    private static final int REQUEST_CODE_EDIT = 1003;
+    private static final int REQUEST_CODE_GALLERYSINGLE = 1002;
+    private static final int REQUEST_CODE_CROP = 1003;
+    private static final int REQUEST_CODE_EDIT = 1004;
 
 
-    private MGalleryFinalUtils() {}
+    private MGalleryFinalUtils() {
+    }
 
     public static MGalleryFinalUtils getInstance(Context context) {
 
@@ -58,19 +65,18 @@ public class MGalleryFinalUtils {
     }
 
 
-
-
     /***************************************
      * 初始化galleryfinal
      */
-    public static void initGalleryFinal() {
+    public static void initGalleryFinal(boolean ISsingle) {
 
         //配置主题
         theme = new ThemeConfig.Builder()
                 .build();
         //配置功能
         builder = new FunctionConfig.Builder();
-        functionConfig = builder.setEnableCamera(true)
+
+        functionConfig_single = builder.setEnableCamera(true)
                 .setEnableEdit(true)
                 .setEnableCrop(true)
                 .setEnableRotate(true)
@@ -78,25 +84,42 @@ public class MGalleryFinalUtils {
                 .setEnableCamera(true)
                 .setEnablePreview(true)
                 .setSelected(mphotoList)
-                .setMutiSelectMaxSize(2)
+                .setMutiSelectMaxSize(1)
+                .build();
+
+
+        functionConfig_notsingle = builder.setEnableCamera(true)
+                .setEnableEdit(true)
+                .setEnableCrop(true)
+                .setEnableRotate(true)
+                .setCropSquare(true)
+                .setEnableCamera(true)
+                .setEnablePreview(true)
+                .setSelected(mphotoList)
+                .setMutiSelectMaxSize(8)
                 .build();
 
 
         //配置imageloader
         imageloader = new GildeImageLoader();
         //设置核心配置信息
-        coreConfig = new CoreConfig.Builder(context, imageloader, theme)
-                .setFunctionConfig(functionConfig)
-                .build();
+        if (ISsingle){
+            coreConfig = new CoreConfig.Builder(context, imageloader, theme)
+                    .setFunctionConfig(functionConfig_single)
+                    .build();
+        }else {
+            coreConfig = new CoreConfig.Builder(context, imageloader, theme)
+                    .setFunctionConfig(functionConfig_notsingle)
+                    .build();
+        }
         GalleryFinal.init(coreConfig);
-
-
         initImageloader(context);
 
     }
 
 
-    private static  void initImageloader(Context context){
+
+    private static void initImageloader(Context context) {
 
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
         config.threadPriority(Thread.NORM_PRIORITY - 2);
@@ -114,46 +137,70 @@ public class MGalleryFinalUtils {
     /*************************************
      * 打开相机
      */
-    public static void openCamera() {
-        GalleryFinal.openCamera(REQUEST_CODE_OPENCAMERA, functionConfig, mOnHanlderResultCallback);
+    public void openCamera(GalleryfinalActionListener listener) {
+        this.listener = listener;
+        GalleryFinal.openCamera(REQUEST_CODE_OPENCAMERA, functionConfig_single, mOnHanlderResultCallback);
     }
 
     /*************************************
-     * 打开相册
+     * 打开相册  单选
      */
-    public  static  void openAlbum(){
-        GalleryFinal.openGalleryMuti(REQUEST_CODE_GALLERY,functionConfig,mOnHanlderResultCallback);
+    public void openAlbumSingle(GalleryfinalActionListener listener) {
+        this.listener = listener;
+        GalleryFinal.openGalleryMuti(REQUEST_CODE_GALLERYSINGLE, functionConfig_single, mOnHanlderResultCallback);
+    }
+    /*************************************
+     * 打开相册 多选
+     */
+    public  void openAlbumMore(GalleryfinalActionListener listener) {
+        this.listener = listener;
+        GalleryFinal.openGalleryMuti(REQUEST_CODE_GALLERY, functionConfig_notsingle, mOnHanlderResultCallback);
     }
 
 
 
-    public static List<PhotoInfo> getMphotoList() {
-        return mphotoList;
-    }
+//    public static List<PhotoInfo> getMphotoList() {
+//        return mphotoList;
+//    }
 
 
     private static GalleryFinal.OnHanlderResultCallback mOnHanlderResultCallback = new GalleryFinal.OnHanlderResultCallback() {
         @Override
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-            if (resultList != null) {
-                 mphotoList.addAll(resultList);
-            }
 
+            mphotoList = new ArrayList<>();
+            switch (reqeustCode){
+
+                case REQUEST_CODE_OPENCAMERA:
+                case REQUEST_CODE_GALLERYSINGLE:
+                    if (resultList!=null){
+                        mphotoList.add(resultList.get(0));
+                    }
+                    listener.success(mphotoList);
+                    break;
+                case  REQUEST_CODE_GALLERY:
+                    if (resultList != null) {
+                        mphotoList.addAll(resultList);
+                    }
+                    listener.success(mphotoList);
+                    break;
+            }
         }
 
         @Override
         public void onHanlderFailure(int requestCode, String errorMsg) {
+            listener.failed(errorMsg);
             Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show();
+
+
         }
     };
 
 
-
-
-       public static  void clearCache(){
-           GalleryFinal.cleanCacheFile();
-           Toast.makeText(context,"清理成功",Toast.LENGTH_SHORT).show();
-       }
+    public static void clearCache() {
+        GalleryFinal.cleanCacheFile();
+        Toast.makeText(context, "清理成功", Toast.LENGTH_SHORT).show();
+    }
 
 
 }

@@ -22,6 +22,7 @@ import fragment.Main_discovery;
 import fragment.Main_index;
 import fragment.Main_message;
 import fragment.Main_mine;
+import minterface.GalleryfinalActionListener;
 import utils.MGalleryFinalUtils;
 
 import static com.example.swapanytime.R.mipmap.ic_mine;
@@ -121,12 +122,32 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
         switch (index) {
             case 0:
-                instance.initGalleryFinal();
-                instance.openCamera();
+                instance.initGalleryFinal(true);
+                instance.openCamera(new GalleryfinalActionListener() {
+                    @Override
+                    public void success(List<PhotoInfo> list) {
+
+                    }
+
+                    @Override
+                    public void failed(String msg) {
+
+                    }
+                });
                 break;
             case 1:
-                instance.initGalleryFinal();
-                instance.openAlbum();
+                instance.initGalleryFinal(true);
+                instance.openAlbumSingle(new GalleryfinalActionListener() {
+                    @Override
+                    public void success(List<PhotoInfo> list) {
+
+                    }
+
+                    @Override
+                    public void failed(String msg) {
+
+                    }
+                });
                 break;
             default:
                 break;

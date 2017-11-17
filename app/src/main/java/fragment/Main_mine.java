@@ -12,10 +12,16 @@ import android.widget.TextView;
 
 import com.baoyz.actionsheet.ActionSheet;
 import com.example.swapanytime.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.List;
 
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.finalteam.galleryfinal.model.PhotoInfo;
+import minterface.GalleryfinalActionListener;
 import ui.CircleImageView;
 import utils.MGalleryFinalUtils;
 
@@ -57,12 +63,6 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     @Override
     protected void initView(View view) {
 
-//        mineTitlebar = (RelativeLayout) view.findViewById(R.id.mine_titlebar);
-//        titleName = (TextView) view.findViewById(R.id.title_name);
-//        collapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsingToolbarLayout);
-//        appBar = (AppBarLayout) view.findViewById(R.id.app_bar);
-//        mineHead = (CircleImageView) view.findViewById(R.id.mine_head);
-
     }
 
     @Override
@@ -73,7 +73,6 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
     private BAR_STATUS bar_status;
 
-
     // 标题栏状态 : 展开,折叠,中间
     private enum BAR_STATUS {
         EXPANDED, COLLAPSED, INTERNEDIATE
@@ -81,7 +80,6 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
     @Override
     protected void initEvent() {
-
 
         //监听标题栏
         appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -111,8 +109,6 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         });
 
         mineHead.setOnClickListener(this);
-
-
     }
 
     @Override
@@ -153,16 +149,54 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
         switch (index) {
             case 0:
-                instance.initGalleryFinal();
-                instance.openCamera();
+                instance.initGalleryFinal(true);
+                instance.openCamera(new GalleryfinalActionListener() {
+                    @Override
+                    public void success(List<PhotoInfo> list) {
+                        PhotoInfo photoInfo = list.get(0);
+                        DisplayImageOptions options = initGalleryfinalActionConfig();
+                        ImageLoader.getInstance().displayImage("file:/" + photoInfo.getPhotoPath(), mineHead, options);
+                    }
+
+                    @Override
+                    public void failed(String msg) {
+
+                    }
+                });
                 break;
+
+
             case 1:
-                instance.initGalleryFinal();
-                instance.openAlbum();
+                instance.initGalleryFinal(true);
+                instance.openAlbumSingle(new GalleryfinalActionListener() {
+                    @Override
+                    public void success(List<PhotoInfo> list) {
+                        PhotoInfo photoInfo = list.get(0);
+                        DisplayImageOptions options = initGalleryfinalActionConfig();
+                        ImageLoader.getInstance().displayImage("file:/" + photoInfo.getPhotoPath(), mineHead, options);
+                    }
+
+                    @Override
+                    public void failed(String msg) {
+
+                    }
+                });
                 break;
+
+
             default:
                 break;
         }
+    }
+
+    //初始化GalleryFinal动作前的配置
+    private DisplayImageOptions initGalleryfinalActionConfig() {
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnFail(R.drawable.ic_gf_default_photo)
+                .showImageForEmptyUri(R.drawable.ic_gf_default_photo)
+                .showImageOnLoading(R.drawable.ic_gf_default_photo).build();
+
+        return options;
     }
 
 

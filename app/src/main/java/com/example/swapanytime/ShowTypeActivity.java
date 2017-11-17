@@ -103,7 +103,7 @@ public class ShowTypeActivity extends baseActivity {
 
     @Override
     public void initView() {
-        ButterKnife.bind(this);
+        titlebarTitle.setText("分类");
     }
 
     @Override

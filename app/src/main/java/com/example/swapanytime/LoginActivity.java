@@ -1,8 +1,12 @@
 package com.example.swapanytime;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.bumptech.glide.Glide;
 
 import base.baseActivity;
 import butterknife.Bind;
@@ -28,7 +32,7 @@ public class LoginActivity extends baseActivity {
     public void initView() {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.main,new Login());
+        transaction.add(R.id.main, new Login());
         transaction.commit();
 
     }
@@ -42,6 +46,7 @@ public class LoginActivity extends baseActivity {
     public void initEvent() {
 
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

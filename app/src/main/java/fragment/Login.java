@@ -3,6 +3,7 @@ package fragment;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,15 +15,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.swapanytime.R;
 
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bmob.push.lib.util.LogUtil;
 import utils.ContentUtils;
-import utils.LogUtils;
 
 /**
  * Created by Administrator on 2017/11/16.
@@ -55,6 +55,8 @@ public class Login extends baseFragment {
     TextView btnReg;
     @Bind(R.id.text_2login)
     TextView text2login;
+    @Bind(R.id.login_iv)
+    ImageView loginIv;
 
 
     private boolean res_login = true;
@@ -65,6 +67,7 @@ public class Login extends baseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(getTag(), "加载LoginFragment");
+        ButterKnife.bind(this, super.onCreateView(inflater, container, savedInstanceState));
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -75,6 +78,9 @@ public class Login extends baseFragment {
 
     @Override
     protected void initView(View view) {
+
+        initBackGround();
+
     }
 
     @Override
@@ -183,9 +189,9 @@ public class Login extends baseFragment {
                 }
                 step_confirm = true;
                 if (contentUtils.isContentLegal("" + psdRegEt.getText().toString()) &
-                        contentUtils.isNumLegal(psdRegEt.getText().toString(), 6)&
-                        contentUtils.isContentLegal(codeEt.getText().toString())&
-                        contentUtils.isNumLegal(codeEt.getText().toString(),4)
+                        contentUtils.isNumLegal(psdRegEt.getText().toString(), 6) &
+                        contentUtils.isContentLegal(codeEt.getText().toString()) &
+                        contentUtils.isNumLegal(codeEt.getText().toString(), 4)
                         ) {
                     if (step_confirm) {
                         Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
@@ -221,9 +227,9 @@ public class Login extends baseFragment {
                 }
                 step_confirm = true;
                 if (contentUtils.isContentLegal("" + phoneEt.getText().toString()) &
-                        contentUtils.isMobileNO(phoneEt.getText().toString())&
-                        contentUtils.isContentLegal(psdRegEt.getText().toString())&
-                        contentUtils.isNumLegal(psdRegEt.getText().toString(),6)
+                        contentUtils.isMobileNO(phoneEt.getText().toString()) &
+                        contentUtils.isContentLegal(psdRegEt.getText().toString()) &
+                        contentUtils.isNumLegal(psdRegEt.getText().toString(), 6)
                         ) {
                     if (step_confirm) {
                         Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
@@ -283,6 +289,14 @@ public class Login extends baseFragment {
     public void onClick(View v) {
 
     }
+
+    private void initBackGround(){
+
+        Login login = this;
+        Glide.with(login).load(R.mipmap.bg_login).centerCrop().into(loginIv);
+
+    }
+
 
     @Override
     public void onDestroyView() {

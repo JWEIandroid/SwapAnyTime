@@ -9,4 +9,14 @@
         <item name="actionSheetStyle">@style/ActionSheetStyleiOS7</item>
     </style>
 
+
+    <style name="mEdittext" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorControlNormal">@color/transparent</item>
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorPrimaryDark">@color/transparent</item>
+        <item name="colorAccent">@color/transparent</item>
+        <item name="actionSheetStyle">@style/ActionSheetStyleiOS7</item>
+    </style>
+
 </resources>

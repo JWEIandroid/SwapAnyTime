@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/hui">
+    android:background="@color/transparent"
+    >
 
     <!--Login area-->
 
@@ -39,6 +40,7 @@
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/account_et"
                 android:hint="请输入账号"
+                android:textColorHint="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -49,10 +51,20 @@
                 android:textColor="@color/white"
                 android:textCursorDrawable="@drawable/cursorcolor"
                 android:textSize="15sp"
+                android:inputType="number"
+                app:theme="@style/mEdittext"
                 />
 
         </FrameLayout>
 
+        <!--下划线-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hui"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -76,6 +88,7 @@
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/psd_et"
                 android:hint="请输入密码"
+                android:textColorHint="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -87,9 +100,20 @@
                 android:textCursorDrawable="@drawable/cursorcolor"
                 android:textSize="15sp"
                 android:inputType="numberPassword"
+                app:theme="@style/mEdittext"
                 />
 
         </FrameLayout>
+
+        <!--下划线-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hui"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            />
+
 
 
         <TextView
@@ -173,10 +197,22 @@
                 android:textCursorDrawable="@drawable/cursorcolor"
                 android:textSize="15sp"
                 android:hint="请输入手机号"
+                android:textColorHint="@color/white"
+                android:inputType="number"
+                app:theme="@style/mEdittext"
                 />
 
         </FrameLayout>
 
+
+        <!--下划线-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hui"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -210,9 +246,21 @@
                 android:textCursorDrawable="@drawable/cursorcolor"
                 android:textSize="15sp"
                 android:hint="请输入验证码"
+                android:textColorHint="@color/white"
+                android:inputType="number"
+                app:theme="@style/mEdittext"
                 />
 
         </FrameLayout>
+
+        <!--下划线-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hui"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -245,13 +293,22 @@
                 android:textColor="@color/white"
                 android:textCursorDrawable="@drawable/cursorcolor"
                 android:textSize="15sp"
-                android:inputType="numberPassword"
+                android:inputType="textPassword"
                 android:hint="请输入至少6位密码"
+                android:textColorHint="@color/white"
+                app:theme="@style/mEdittext"
                 />
 
         </FrameLayout>
 
-
+        <!--下划线-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hui"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            />
 
         <TextView
             android:id="@+id/btn_reg"

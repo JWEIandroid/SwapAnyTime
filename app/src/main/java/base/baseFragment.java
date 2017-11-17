@@ -159,6 +159,7 @@ public abstract class baseFragment extends Fragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         mview = inflater.inflate(getContentView(), container, false);
+        ButterKnife.bind(this,getmView());
         initConfig(mview);
         initView(getmView());
         initData();

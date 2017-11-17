@@ -1,15 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
+    <include layout="@layout/titlebar"/>
 
-    <TextView
+    <!--留言板-->
+    <FrameLayout
+        android:id="@+id/liuyanban"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Message"
-        />
+        android:layout_height="wrap_content">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/item_head"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:src="@mipmap/coolman"
+            app:civ_border_color="@color/hui"
+            app:civ_border_width="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="留言板"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:layout_marginLeft="120dp"
+            />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/icon_right64_gray"
+            android:layout_gravity="right"
+            android:layout_marginTop="40dp"
+            />
+
+    </FrameLayout>
+
+    <!--评论-->
+
+    <FrameLayout
+        android:id="@+id/comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:src="@mipmap/coolman"
+            app:civ_border_color="@color/hui"
+            app:civ_border_width="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="评论"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:layout_marginLeft="120dp"
+            />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/icon_right64_gray"
+            android:layout_gravity="right"
+            android:layout_marginTop="40dp"
+            />
+
+    </FrameLayout>
+
+
+
 
 </LinearLayout>
