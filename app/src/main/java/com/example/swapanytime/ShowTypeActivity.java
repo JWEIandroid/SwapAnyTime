@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,9 @@ import base.MyApplication;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import constant.type_imgHelper;
 import entiry.SortDetail;
+import utils.LogUtils;
 
 /**
  * Created by weijie on 2017/9/29.
@@ -51,17 +55,12 @@ public class ShowTypeActivity extends baseActivity {
         left_data_after = new ArrayList<>();
 
 
-        //初始化左边数据
-//        for (int i = 1; i < 31; i++) {
-//            list.add("种类 " + i);
-//        }
-
         String[] array_type = this.getResources().getStringArray(R.array.left);
         String[] type_detail_before = this.getResources().getStringArray(R.array.right);
         String[][] array_type_detail = getTwoDimensionalArray(type_detail_before);
 
 
-//
+//初始化左边数据
         for (int i = 0; i < array_type.length; i++) {
             left_data.add(array_type[i]);
         }
@@ -91,10 +90,13 @@ public class ShowTypeActivity extends baseActivity {
                     left_data_after.add("");
                 }
             }
-
         }
 
-
+        List<Integer> list = type_imgHelper.getInstance().getImglist();
+        for (int k = 0;k<list.size();k++){
+            right_data.get(k).setImageSrc(list.get(k));
+        }
+        LogUtils.d(getTAG(),"imglist size"+ type_imgHelper.getInstance().getImglist().size());
         Log.d(getTAG(), "right: " + right_data.size());
         Log.d(TAG, "left: " + left_data_after.size());
 
@@ -129,7 +131,7 @@ public class ShowTypeActivity extends baseActivity {
         for (int i = 0; i < array.length; i++) {
             String[] tempArray = array[i].split(",");
             if (twoDimensionalArray == null) {
-                twoDimensionalArray = new String[array.length][8];
+                twoDimensionalArray = new String[array.length][11];
             }
             for (int j = 0; j < tempArray.length; j++) {
                 twoDimensionalArray[i][j] = tempArray[j];
@@ -229,15 +231,11 @@ public class ShowTypeActivity extends baseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.getInstance().addActivity(ShowTypeActivity.this);
-        Log.d(TAG, TAG+" onCreate time is: "+System.currentTimeMillis());
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, TAG+"onDestroy time is "+System.currentTimeMillis());
-
-
     }
 }

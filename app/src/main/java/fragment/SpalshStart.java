@@ -1,14 +1,21 @@
 package fragment;
 
+import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.swapanytime.MainActivity;
 import com.example.swapanytime.R;
 
 import base.baseFragment;
-import utils.LogUtils;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by weijie on 2017/9/24.
@@ -17,6 +24,12 @@ import utils.LogUtils;
 public class SpalshStart extends baseFragment {
 
     private final String TAG = SpalshStart.class.getSimpleName();
+    @Bind(R.id.splashstart_bg)
+    ImageView splashstartBg;
+    @Bind(R.id.btn_splashstart)
+    Button btnSplashstart;
+    @Bind(R.id.btn_jump)
+    Button btn_jump;
 
 
     @Override
@@ -32,7 +45,7 @@ public class SpalshStart extends baseFragment {
     @Override
     protected void initView(View view) {
 
-        btn_jump = (Button) getmView().findViewById(R.id.btn_jump);
+        Glide.with(this.getActivity()).load(R.mipmap.smiles).centerCrop().into(splashstartBg);
 
         countDownTimer = new CountDownTimer(3000, 1000) {
             @Override
@@ -42,7 +55,7 @@ public class SpalshStart extends baseFragment {
 
             @Override
             public void onFinish() {
-                btn_jump.setText("跳过(" + 0 + "s)");
+//                btn_jump.setText("跳过(" + 0 + "s)");
                 goToActivity(getContext(), MainActivity.class);
 
             }
@@ -60,7 +73,6 @@ public class SpalshStart extends baseFragment {
     }
 
 
-    private Button btn_jump;
 
     private CountDownTimer countDownTimer;
 
@@ -87,7 +99,10 @@ public class SpalshStart extends baseFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_jump:
-                LogUtils.d(TAG, "Click");
+            case R.id.btn_splashstart:
+                if (countDownTimer != null) {
+                    countDownTimer.cancel();
+                }
                 goToActivity(getContext(), MainActivity.class);
                 break;
             default:
@@ -103,4 +118,19 @@ public class SpalshStart extends baseFragment {
             countDownTimer.cancel();
         }
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
 }

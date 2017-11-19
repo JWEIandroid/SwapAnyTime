@@ -9,12 +9,13 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/splashstart_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:src="@mipmap/smiles" />
+            />
 
         <Button
             android:id="@+id/btn_splashstart"
@@ -26,7 +27,7 @@
             android:layout_marginLeft="100dp"
             android:layout_marginRight="100dp"
             android:background="@color/blue"
-            android:text="点击开始" />
+            android:text="开始体验" />
 
         <Button
             android:id="@+id/btn_jump"

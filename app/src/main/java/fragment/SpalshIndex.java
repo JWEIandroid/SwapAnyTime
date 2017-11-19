@@ -91,6 +91,9 @@ public class SpalshIndex extends baseFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_jump_splashindex:
+                if (countDownTimer != null) {
+                    countDownTimer.cancel();
+                }
                 goToActivity(getContext(), MainActivity.class);
                 break;
             default:

@@ -293,7 +293,7 @@ public class Login extends baseFragment {
     private void initBackGround(){
 
         Login login = this;
-        Glide.with(login).load(R.mipmap.bg_login).centerCrop().into(loginIv);
+        Glide.with(login).load(R.mipmap.login_black).centerCrop().into(loginIv);
 
     }
 

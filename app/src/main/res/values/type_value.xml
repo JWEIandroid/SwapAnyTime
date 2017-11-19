@@ -2,110 +2,32 @@
 <resources>
 
     <string-array name="left">
-        <item>热门推荐</item>
-        <item>手机数码</item>
+        <item>推荐分类</item>
+        <item>手机</item>
         <item>女装</item>
         <item>男装</item>
         <item>家用电器</item>
         <item>运动户外</item>
         <item>家具饰品</item>
         <item>球鞋</item>
-        <item>生活百货</item>
+        <item>潮流数码</item>
+        <item>美妆个护</item>
+        <item>宠物生活</item>
+
     </string-array>
 
     <string-array name="right">
-        <item>热门推荐1,热门推荐2,热门推荐3</item>
-        <item>手机,手机配件,电脑,电脑配件,游戏机</item>
+        <item>女衬衫,女针织衫,女牛仔裤,男T恤,男衬衫,男牛仔裤</item>
+        <item>苹果,华为,三星,小米,oppo,vivo,魅族</item>
         <item>女式外套,女式T恤,针织衫,裤装,衬衫</item>
-        <item>牛仔裤,外套,衬衫,T恤,帽子,短袖,帽子</item>
+        <item>牛仔裤,外套,衬衫,T恤,帽子</item>
         <item>电视机,洗衣机,冰箱,音箱,电饭煲,咖啡机,榨汁机,酸奶机</item>
         <item>跑步机,哑铃,护具,篮球,足球,</item>
         <item>床,沙发,床垫,镜子,茶具</item>
-        <item>Nike,Adidas,New Balance,Puma,Air Jordan</item>
+        <item>Nike,Adidas,New Balance,Puma,李宁</item>
         <item>打印机,扫描仪,牙齿美白仪,Kindle</item>
+        <item>面膜,香水,粉底,洗发</item>
+        <item>猫粮,狗粮,笼子,猫狗窝</item>
     </string-array>
-
-    <string-array name="test">
-        <item>手机,手机配件,电脑,电脑配件</item>
-        <item>女式外套,女式T恤,针织衫,裤装</item>
-        <item>牛仔裤,外套,衬衫,T恤</item>
-        <item>电视机,洗衣机,冰箱,音箱</item>
-        <item>跑步机,哑铃,护具,篮球</item>
-        <item>床,沙发,床垫,镜子,茶具</item>
-        <item>Nike,Adidas,New Balance</item>
-        <item>打印机,扫描仪,牙齿美白仪,Kindle</item>
-    </string-array>
-
-    <string-array name="item_shoujishuma">
-        <item>手机</item>
-        <item>手机配件</item>
-        <item>电脑</item>
-        <item>电脑配件</item>
-        <item>游戏机</item>
-    </string-array>
-
-    <string-array name="item_nuzhuang">
-        <item>女式外套</item>
-        <item>女式T恤</item>
-        <item>针织衫</item>
-        <item>裤装</item>
-        <item>衬衫</item>
-    </string-array>
-
-    <string-array name="item_nanzhuang">
-        <item>牛仔裤</item>
-        <item>外套</item>
-        <item>衬衫</item>
-        <item>T恤</item>
-        <item>短袖</item>
-        <item>帽子</item>
-    </string-array>
-
-    <string-array name="item_jiayongdianqi">
-        <item>电视机</item>
-        <item>洗衣机</item>
-        <item>冰箱</item>
-        <item>音箱</item>
-        <item>电饭煲</item>
-        <item>咖啡机</item>
-        <item>酸奶机</item>
-        <item>饮水机</item>
-    </string-array>
-
-    <string-array name="item_yundonghuwai">
-        <item>跑步机</item>
-        <item>哑铃</item>
-        <item>篮球</item>
-        <item>足球</item>
-        <item>帐篷</item>
-    </string-array>
-
-    <string-array name="item_jiajusiping">
-        <item>床</item>
-        <item>沙发</item>
-        <item>床垫</item>
-        <item>镜子</item>
-        <item>茶具</item>
-        <item>雕刻品</item>
-        <item>收纳盒</item>
-    </string-array>
-
-    <string-array name="item_qiuxie">
-        <item>nike</item>
-        <item>adidas</item>
-        <item>puma</item>
-        <item>new balence</item>
-        <item>air jordan</item>
-    </string-array>
-
-    <string-array name="item_shenghuobaihuo">
-        <item>打印机</item>
-        <item>扫描仪</item>
-        <item>投影仪</item>
-        <item>牙齿美白仪</item>
-        <item>Kindle</item>
-    </string-array>
-
-
 
 </resources>

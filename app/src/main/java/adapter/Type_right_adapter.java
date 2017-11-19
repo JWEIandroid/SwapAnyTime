@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.swapanytime.R;
 
 import java.util.ArrayList;
@@ -65,6 +66,8 @@ public class Type_right_adapter extends RecyclerView.Adapter<Type_right_adapter.
         } else {
 
             holder.name.setText(list.get(position).getName());
+            Glide.with(context).load(list.get(position).getImageSrc()).crossFade().into(holder.imageView);
+//            holder.imageView.setImageResource(list.get(position).getImageSrc());
         }
 
     }
