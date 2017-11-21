@@ -30,6 +30,7 @@
         >
 
         <EditText
+            android:id="@+id/search_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_search_shape"
@@ -63,6 +64,7 @@
             android:layout_gravity="right"
             android:layout_marginRight="5dp"
             android:layout_marginTop="9dp"
+            android:visibility="gone"
             />
     </FrameLayout>
 

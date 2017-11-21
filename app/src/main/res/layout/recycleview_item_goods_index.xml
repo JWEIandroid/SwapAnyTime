@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginTop="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
     <RelativeLayout
@@ -44,8 +45,8 @@
     </RelativeLayout>
 
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/item_goods_viewpager"
+    <cn.finalteam.galleryfinal.widget.HorizontalListView
+        android:id="@+id/item_goods_listview"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginBottom="15dp"

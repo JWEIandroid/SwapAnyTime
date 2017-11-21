@@ -5,19 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/hui"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
 <include
     layout="@layout/title"/>
 
+
+
 <com.bigkoo.convenientbanner.ConvenientBanner
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="0dp"
+    android:layout_weight="3"
     app:canLoop="true"
     android:id="@+id/index_banner"
     />
 
 
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_good"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:background="@color/black"
+        android:layout_weight="5"
+        />
 
 
 
