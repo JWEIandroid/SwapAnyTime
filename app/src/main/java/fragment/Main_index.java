@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.OnScrollListener;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -40,22 +41,26 @@ import utils.LogUtils;
 public class Main_index extends baseFragment implements OnItemClickListener {
 
 
+    @Bind(R.id.index_banner)
+    ConvenientBanner indexBanner;
+    @Bind(R.id.list_good)
+    RecyclerView rv_goods;
+    @Bind(R.id.app_bar_index)
+    AppBarLayout appBarIndex;
     @Bind(R.id.icon_head)
     ImageButton iconHead;
+    @Bind(R.id.search_et)
+    EditText searchEt;
     @Bind(R.id.icon_search)
     ImageButton iconSearch;
     @Bind(R.id.icon_cancel)
     ImageButton iconCancel;
     @Bind(R.id.icon_type)
     ImageButton iconType;
-    @Bind(R.id.index_banner)
-    ConvenientBanner indexBanner;
-    @Bind(R.id.search_et)
-    EditText searchEt;
-    @Bind(R.id.list_good)
-    RecyclerView rv_goods;
-    @Bind(R.id.app_bar_index)
-    AppBarLayout appBarIndex;
+    @Bind(R.id.lin_title)
+    LinearLayout linTitle;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     private List<Integer> bannder_imglist;
     private ContentUtils contentUtils;
@@ -127,7 +132,8 @@ public class Main_index extends baseFragment implements OnItemClickListener {
     private enum BAR_STATUS {
         EXPANDED, COLLAPSED, INTERNEDIATE
     }
-    private Main_index.BAR_STATUS bar_status;
+
+    private BAR_STATUS bar_status;
 
 
     @Override
@@ -152,40 +158,34 @@ public class Main_index extends baseFragment implements OnItemClickListener {
         searchEt.setFocusable(false);
 
 
-        rv_goods.addOnScrollListener(new mScrollListener());
+        //监听标题栏
+        appBarIndex.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
-
-
-//        //监听标题栏
-//        appBarIndex.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-//            @Override
-//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-//
-//                if (verticalOffset == 0) {
-//                    if (bar_status != Main_index.BAR_STATUS.EXPANDED) {
-//                        bar_status = Main_index.BAR_STATUS.EXPANDED;
-//                        indexBanner.setVisibility(View.VISIBLE);
-//                    }
-//                } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
-//                    if (bar_status != Main_index.BAR_STATUS.COLLAPSED) {
-//                        bar_status = Main_index.BAR_STATUS.COLLAPSED;
-//                        indexBanner.setVisibility(View.GONE);
-//                    } else {
-//                        if (bar_status != Main_index.BAR_STATUS.INTERNEDIATE) {
-//                            bar_status = Main_index.BAR_STATUS.INTERNEDIATE;
-//                            indexBanner.setVisibility(View.GONE);
-//                        }
-//                    }
-//                }
-//            }
-//        });
+                if (verticalOffset == 0) {
+                    if (bar_status != BAR_STATUS.EXPANDED) {
+                        bar_status = BAR_STATUS.EXPANDED;
+                        indexBanner.setVisibility(View.VISIBLE);
+                        linTitle.setVisibility(View.VISIBLE);
+                    }
+                } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+                    if (bar_status != BAR_STATUS.COLLAPSED) {
+                        bar_status = BAR_STATUS.COLLAPSED;
+                        indexBanner.setVisibility(View.GONE);
+                        linTitle.setVisibility(View.GONE);
+                    } else {
+                        if (bar_status != BAR_STATUS.INTERNEDIATE) {
+                            indexBanner.setVisibility(View.GONE);
+                            linTitle.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+        });
 
 
     }
-
-
-
-
 
 
     @Override
@@ -234,29 +234,6 @@ public class Main_index extends baseFragment implements OnItemClickListener {
             }
         }
     };
-
-
-    class mScrollListener extends OnScrollListener {
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-
-            LogUtils.d(getTag(), "child num is" + recyclerView.getChildCount());
-            if (recyclerView.getChildAt(3) != null) {
-                LogUtils.d(getTag(), "child num is" + recyclerView.getChildAt(3).isFocusable());
-            }
-
-            if (dy > 800) {
-                indexBanner.setVisibility(View.GONE);
-            }
-            if (recyclerView.getChildAt(3) != null) {
-                LogUtils.d(getTag(), "child num2222 is" + recyclerView.getChildAt(3).isFocusable());
-            }
-
-
-        }
-    }
 
 
     @Override
