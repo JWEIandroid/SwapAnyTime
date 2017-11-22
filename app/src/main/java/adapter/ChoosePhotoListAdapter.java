@@ -4,10 +4,17 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+
+import com.example.swapanytime.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
+import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.toolsfinal.DeviceUtils;
 
 /**
@@ -16,7 +23,7 @@ import cn.finalteam.toolsfinal.DeviceUtils;
 
 public class ChoosePhotoListAdapter extends BaseAdapter {
 
-    private List mlist;
+    private List<PhotoInfo> mlist;
     private LayoutInflater layoutInflater;
     private int mScreenWidth;
 
@@ -43,10 +50,25 @@ public class ChoosePhotoListAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnFail(R.drawable.ic_gf_default_photo)
+                .showImageForEmptyUri(R.drawable.ic_gf_default_photo)
+                .showImageOnLoading(R.drawable.ic_gf_default_photo).build();
 
+        ImageView ivPhoto = (ImageView) layoutInflater.inflate(R.layout.adapter_photo_list_item, null);
+        setHeight(ivPhoto);
 
-        return null;
+        PhotoInfo photoInfo = mlist.get(position);
+        ImageLoader.getInstance().displayImage("file:/" + photoInfo.getPhotoPath(), ivPhoto, options);
+        return ivPhoto;
+    }
+
+    private void setHeight(final View convertView) {
+        int height = mScreenWidth / 3 - 8;
+        convertView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
+
     }
 }

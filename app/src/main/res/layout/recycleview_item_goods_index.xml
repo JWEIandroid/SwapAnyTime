@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_marginTop="5dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,6 +14,7 @@
             android:id="@+id/head"
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="5dp"
             android:background="@color/white"
@@ -24,11 +24,12 @@
             android:id="@+id/name"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/head"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="这是一个昵称点点滴滴"
-            android:layout_toRightOf="@id/head"
-            />
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="13dp"
+            android:text="这是一个昵称点点滴滴" />
 
 
         <TextView
@@ -45,26 +46,30 @@
     </RelativeLayout>
 
 
-    <cn.finalteam.galleryfinal.widget.HorizontalListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/item_goods_listview"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:background="@color/blue" />
+        android:layout_height="160dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp" />
 
 
     <TextView
         android:id="@+id/item_goods_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_margin="20dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:text="这是一段非常长的商品描述这是一段非常长的商品描述这是一段非常长的商品描述这是一段非常长的商品描述"
         android:textColor="@color/black"
         android:textSize="20sp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/hui" />
 
 </LinearLayout>

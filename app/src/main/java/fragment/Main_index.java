@@ -1,7 +1,10 @@
 package fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,9 +23,12 @@ import com.example.swapanytime.ShowTypeActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapter.item_goods_adapter;
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import entiry.Goods;
+import entiry.User;
 import utils.CBViewCreator;
 import utils.ContentUtils;
 import utils.LogUtils;
@@ -47,12 +53,19 @@ public class Main_index extends baseFragment implements OnItemClickListener {
     @Bind(R.id.search_et)
     EditText searchEt;
     @Bind(R.id.list_good)
-    RecyclerView listGood;
+    RecyclerView rv_goods;
+    @Bind(R.id.app_bar_index)
+    AppBarLayout appBarIndex;
 
-    private List<Integer> imglist;
-    private int[] Imgsrc = {R.mipmap.banner1, R.mipmap.banner2, R.mipmap.banner1, R.mipmap.banner2};
+    private List<Integer> bannder_imglist;
     private ContentUtils contentUtils;
+    private List<Goods> good_list;
+    private List<String> imglist;
+    private final String imgurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3208352253,560928408&fm=173&s=6F302AC24A7220942AA16C090300C092&w=218&h=146&img.JPEG";
+    private final String headurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=480915072,3609081711&fm=173&s=A4D031C41416BA741EE1658903007081&w=218&h=146&img.JPEG";
 
+
+    private LinearLayoutManager Linlayoutmanager = new LinearLayoutManager(this.getContext());
 
     @Override
     protected int getContentView() {
@@ -61,26 +74,61 @@ public class Main_index extends baseFragment implements OnItemClickListener {
 
     @Override
     protected void initConfig(View view) {
-        ButterKnife.bind(this, view);
     }
 
     @Override
     protected void initView(View view) {
+
 
     }
 
     @Override
     protected void initData() {
 
-        imglist = new ArrayList<>();
-        imglist.add(R.mipmap.banner1);
-        imglist.add(R.mipmap.banner2);
-        imglist.add(R.mipmap.banner1);
-        imglist.add(R.mipmap.banner2);
+        bannder_imglist = new ArrayList<>();
+        bannder_imglist.add(R.mipmap.banner1);
+        bannder_imglist.add(R.mipmap.banner2);
+        bannder_imglist.add(R.mipmap.banner1);
+        bannder_imglist.add(R.mipmap.banner2);
 
         contentUtils = ContentUtils.getInstance();
 
+        good_list = new ArrayList<>();
+        imglist = new ArrayList<>();
+
+
+        // 初始化商品图片
+        for (int j = 0; j < 10; j++) {
+            imglist.add(imgurl);
+        }
+
+
+        //初始化每条商品信息
+        for (int i = 0; i < 10; i++) {
+            User user = new User.Builder().name("用户" + i).imgUrl(headurl).build();
+            Goods goods = new Goods.Builder().name("商品 " + i)
+                    .descrtption("商品描述")
+                    .imgUrls(imglist)
+                    .price_after(2000 + i)
+                    .pulisher(user)
+                    .build();
+
+            good_list.add(goods);
+        }
+        LogUtils.d(getTag(), imglist.size() + "|||" + good_list.size());
+        item_goods_adapter imgAdapter = new item_goods_adapter(this.getContext(), good_list);
+        rv_goods.setLayoutManager(Linlayoutmanager);
+        rv_goods.setAdapter(imgAdapter);
+        LogUtils.d(getTag(), "work end");
     }
+
+
+    // Banner+栏状态 : 展开,折叠,中间
+    private enum BAR_STATUS {
+        EXPANDED, COLLAPSED, INTERNEDIATE
+    }
+    private Main_index.BAR_STATUS bar_status;
+
 
     @Override
     protected void initEvent() {
@@ -93,7 +141,7 @@ public class Main_index extends baseFragment implements OnItemClickListener {
             public CBViewCreator createHolder() {
                 return new CBViewCreator();
             }
-        }, imglist)
+        }, bannder_imglist)
                 .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused})
                 //设置指示器的方向
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
@@ -101,8 +149,44 @@ public class Main_index extends baseFragment implements OnItemClickListener {
                 .startTurning(5 * 1000L);
 
         searchEt.addTextChangedListener(textWatcher);
+        searchEt.setFocusable(false);
+
+
+        rv_goods.addOnScrollListener(new mScrollListener());
+
+
+
+//        //监听标题栏
+//        appBarIndex.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//
+//                if (verticalOffset == 0) {
+//                    if (bar_status != Main_index.BAR_STATUS.EXPANDED) {
+//                        bar_status = Main_index.BAR_STATUS.EXPANDED;
+//                        indexBanner.setVisibility(View.VISIBLE);
+//                    }
+//                } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+//                    if (bar_status != Main_index.BAR_STATUS.COLLAPSED) {
+//                        bar_status = Main_index.BAR_STATUS.COLLAPSED;
+//                        indexBanner.setVisibility(View.GONE);
+//                    } else {
+//                        if (bar_status != Main_index.BAR_STATUS.INTERNEDIATE) {
+//                            bar_status = Main_index.BAR_STATUS.INTERNEDIATE;
+//                            indexBanner.setVisibility(View.GONE);
+//                        }
+//                    }
+//                }
+//            }
+//        });
+
 
     }
+
+
+
+
+
 
     @Override
     public void onClick(View v) {
@@ -150,6 +234,30 @@ public class Main_index extends baseFragment implements OnItemClickListener {
             }
         }
     };
+
+
+    class mScrollListener extends OnScrollListener {
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            LogUtils.d(getTag(), "child num is" + recyclerView.getChildCount());
+            if (recyclerView.getChildAt(3) != null) {
+                LogUtils.d(getTag(), "child num is" + recyclerView.getChildAt(3).isFocusable());
+            }
+
+            if (dy > 800) {
+                indexBanner.setVisibility(View.GONE);
+            }
+            if (recyclerView.getChildAt(3) != null) {
+                LogUtils.d(getTag(), "child num2222 is" + recyclerView.getChildAt(3).isFocusable());
+            }
+
+
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
