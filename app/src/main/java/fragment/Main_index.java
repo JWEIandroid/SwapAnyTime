@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -41,12 +39,6 @@ import utils.LogUtils;
 public class Main_index extends baseFragment implements OnItemClickListener {
 
 
-    @Bind(R.id.index_banner)
-    ConvenientBanner indexBanner;
-    @Bind(R.id.list_good)
-    RecyclerView rv_goods;
-    @Bind(R.id.app_bar_index)
-    AppBarLayout appBarIndex;
     @Bind(R.id.icon_head)
     ImageButton iconHead;
     @Bind(R.id.search_et)
@@ -57,10 +49,8 @@ public class Main_index extends baseFragment implements OnItemClickListener {
     ImageButton iconCancel;
     @Bind(R.id.icon_type)
     ImageButton iconType;
-    @Bind(R.id.lin_title)
-    LinearLayout linTitle;
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    @Bind(R.id.list_good)
+    RecyclerView rv_goods;
 
     private List<Integer> bannder_imglist;
     private ContentUtils contentUtils;
@@ -90,11 +80,11 @@ public class Main_index extends baseFragment implements OnItemClickListener {
     @Override
     protected void initData() {
 
-        bannder_imglist = new ArrayList<>();
-        bannder_imglist.add(R.mipmap.banner1);
-        bannder_imglist.add(R.mipmap.banner2);
-        bannder_imglist.add(R.mipmap.banner1);
-        bannder_imglist.add(R.mipmap.banner2);
+//        bannder_imglist = new ArrayList<>();
+//        bannder_imglist.add(R.mipmap.banner1);
+//        bannder_imglist.add(R.mipmap.banner2);
+//        bannder_imglist.add(R.mipmap.banner1);
+//        bannder_imglist.add(R.mipmap.banner2);
 
         contentUtils = ContentUtils.getInstance();
 
@@ -106,6 +96,8 @@ public class Main_index extends baseFragment implements OnItemClickListener {
         for (int j = 0; j < 10; j++) {
             imglist.add(imgurl);
         }
+
+        good_list.add(0,null);
 
 
         //初始化每条商品信息
@@ -120,11 +112,13 @@ public class Main_index extends baseFragment implements OnItemClickListener {
 
             good_list.add(goods);
         }
-        LogUtils.d(getTag(), imglist.size() + "|||" + good_list.size());
+
+        good_list.add(null);
+
         item_goods_adapter imgAdapter = new item_goods_adapter(this.getContext(), good_list);
+        LogUtils.d(getTag(),good_list.size()+"");
         rv_goods.setLayoutManager(Linlayoutmanager);
         rv_goods.setAdapter(imgAdapter);
-        LogUtils.d(getTag(), "work end");
     }
 
 
@@ -142,47 +136,22 @@ public class Main_index extends baseFragment implements OnItemClickListener {
         iconHead.setOnClickListener(this);
 
 
-        ConvenientBanner banner = indexBanner.setPages(new CBViewHolderCreator<CBViewCreator>() {
-            @Override
-            public CBViewCreator createHolder() {
-                return new CBViewCreator();
-            }
-        }, bannder_imglist)
-                .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused})
-                //设置指示器的方向
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
-                .setOnItemClickListener(this)
-                .startTurning(5 * 1000L);
+//        ConvenientBanner banner = indexBanner.setPages(new CBViewHolderCreator<CBViewCreator>() {
+//            @Override
+//            public CBViewCreator createHolder() {
+//                return new CBViewCreator();
+//            }
+//        }, bannder_imglist)
+//                .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused})
+//                //设置指示器的方向
+//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
+//                .setOnItemClickListener(this)
+//                .startTurning(5 * 1000L);
 
         searchEt.addTextChangedListener(textWatcher);
         searchEt.setFocusable(false);
 
 
-        //监听标题栏
-        appBarIndex.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-
-                if (verticalOffset == 0) {
-                    if (bar_status != BAR_STATUS.EXPANDED) {
-                        bar_status = BAR_STATUS.EXPANDED;
-                        indexBanner.setVisibility(View.VISIBLE);
-                        linTitle.setVisibility(View.VISIBLE);
-                    }
-                } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
-                    if (bar_status != BAR_STATUS.COLLAPSED) {
-                        bar_status = BAR_STATUS.COLLAPSED;
-                        indexBanner.setVisibility(View.GONE);
-                        linTitle.setVisibility(View.GONE);
-                    } else {
-                        if (bar_status != BAR_STATUS.INTERNEDIATE) {
-                            indexBanner.setVisibility(View.GONE);
-                            linTitle.setVisibility(View.GONE);
-                        }
-                    }
-                }
-            }
-        });
 
 
     }
