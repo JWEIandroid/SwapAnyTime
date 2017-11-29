@@ -1,6 +1,8 @@
 package fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.widget.ImageButton;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.example.swapanytime.GoodsDetailActivity;
 import com.example.swapanytime.LoginActivity;
 import com.example.swapanytime.R;
 import com.example.swapanytime.ShowTypeActivity;
@@ -36,7 +39,7 @@ import utils.LogUtils;
  * Created by weijie on 2017/10/8.
  */
 
-public class Main_index extends baseFragment implements OnItemClickListener {
+public class Main_index extends baseFragment {
 
 
     @Bind(R.id.icon_head)
@@ -52,10 +55,9 @@ public class Main_index extends baseFragment implements OnItemClickListener {
     @Bind(R.id.list_good)
     RecyclerView rv_goods;
 
-    private List<Integer> bannder_imglist;
     private ContentUtils contentUtils;
     private List<Goods> good_list;
-    private List<String> imglist;
+    private ArrayList<String> imglist;
     private final String imgurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3208352253,560928408&fm=173&s=6F302AC24A7220942AA16C090300C092&w=218&h=146&img.JPEG";
     private final String headurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=480915072,3609081711&fm=173&s=A4D031C41416BA741EE1658903007081&w=218&h=146&img.JPEG";
 
@@ -80,24 +82,18 @@ public class Main_index extends baseFragment implements OnItemClickListener {
     @Override
     protected void initData() {
 
-//        bannder_imglist = new ArrayList<>();
-//        bannder_imglist.add(R.mipmap.banner1);
-//        bannder_imglist.add(R.mipmap.banner2);
-//        bannder_imglist.add(R.mipmap.banner1);
-//        bannder_imglist.add(R.mipmap.banner2);
 
         contentUtils = ContentUtils.getInstance();
 
         good_list = new ArrayList<>();
-        imglist = new ArrayList<>();
-
+        imglist = new ArrayList<String>();
 
         // 初始化商品图片
         for (int j = 0; j < 10; j++) {
             imglist.add(imgurl);
         }
 
-        good_list.add(0,null);
+        good_list.add(0, null);
 
 
         //初始化每条商品信息
@@ -116,7 +112,16 @@ public class Main_index extends baseFragment implements OnItemClickListener {
         good_list.add(null);
 
         item_goods_adapter imgAdapter = new item_goods_adapter(this.getContext(), good_list);
-        LogUtils.d(getTag(),good_list.size()+"");
+        imgAdapter.setOnItemClickListener(new minterface.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
+                intent.putStringArrayListExtra("img_list",good_list.get(position).getImgUrls());
+                startActivity(intent);
+            }
+        });
+
+        LogUtils.d(getTag(), "首页商品信息条数--------" + good_list.size());
         rv_goods.setLayoutManager(Linlayoutmanager);
         rv_goods.setAdapter(imgAdapter);
     }
@@ -135,23 +140,7 @@ public class Main_index extends baseFragment implements OnItemClickListener {
         iconType.setOnClickListener(this);
         iconHead.setOnClickListener(this);
 
-
-//        ConvenientBanner banner = indexBanner.setPages(new CBViewHolderCreator<CBViewCreator>() {
-//            @Override
-//            public CBViewCreator createHolder() {
-//                return new CBViewCreator();
-//            }
-//        }, bannder_imglist)
-//                .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused})
-//                //设置指示器的方向
-//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
-//                .setOnItemClickListener(this)
-//                .startTurning(5 * 1000L);
-
         searchEt.addTextChangedListener(textWatcher);
-        searchEt.setFocusable(false);
-
-
 
 
     }
@@ -166,16 +155,6 @@ public class Main_index extends baseFragment implements OnItemClickListener {
             case R.id.icon_head:
                 goToActivity(getContext(), LoginActivity.class);
             default:
-                break;
-        }
-    }
-
-
-    @Override
-    public void onItemClick(int position) {
-        switch (position) {
-            case 1:
-                showSnackBar("1", ToastDuration.SHORT);
                 break;
         }
     }
@@ -207,10 +186,8 @@ public class Main_index extends baseFragment implements OnItemClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LogUtils.e(getTag(), "onCreateView");
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        LogUtils.d(getTag(), "onCreateView");
         return rootView;
 
     }

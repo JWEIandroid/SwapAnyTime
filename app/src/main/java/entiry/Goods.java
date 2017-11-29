@@ -1,6 +1,7 @@
 package entiry;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class Goods {
 
     private String name;
-    private List<String> imgUrls;
+    private ArrayList<String> imgUrls;
     private String descrtption;
     private Timestamp date_pulish;
     private User pulisher;
@@ -23,7 +24,7 @@ public class Goods {
         return name;
     }
 
-    public List<String> getImgUrls() {
+    public ArrayList<String> getImgUrls() {
         return imgUrls;
     }
 
@@ -65,7 +66,7 @@ public class Goods {
 
     public static final class Builder {
         private String name;
-        private List<String> imgUrls;
+        private ArrayList<String> imgUrls;
         private String descrtption;
         private Timestamp date_pulish;
         private User pulisher;
@@ -81,7 +82,7 @@ public class Goods {
             return this;
         }
 
-        public Builder imgUrls(List<String> val) {
+        public Builder imgUrls(ArrayList<String> val) {
             imgUrls = val;
             return this;
         }

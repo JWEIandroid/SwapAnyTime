@@ -20,6 +20,7 @@ import cn.finalteam.galleryfinal.model.PhotoInfo;
 import cn.finalteam.galleryfinal.widget.HorizontalListView;
 import entiry.Goods;
 import entiry.User;
+import minterface.OnItemClickListener;
 import ui.CircleImageView;
 import utils.CBViewCreator;
 import utils.LogUtils;
@@ -35,6 +36,13 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<String> mlist;
     private Context context;
     private List<Integer> bannder_imglist;
+
+    private OnItemClickListener onItemClickListener = null;
+
+    public item_goods_adapter setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+        return this;
+    }
 
     private final int ITEM_TYPE_HEADER = 1000;
     private final int ITEM_TYPE_NORMAL = 1001;
@@ -92,7 +100,7 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
 
 
         if (viewHolder instanceof HeadHolder) {
@@ -125,6 +133,16 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((NormalHolder) viewHolder).goods_img.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             ((NormalHolder) viewHolder).goods_img.setAdapter(index_good_itemImgAdapter);
 
+
+            //设置点击事件
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(viewHolder.itemView,position);
+                }
+            });
+
+
         } else if (viewHolder instanceof FooterHolder) {
 
         }
@@ -135,6 +153,9 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public int getItemCount() {
         return goods.size();
     }
+
+
+
 
 
     public class NormalHolder extends RecyclerView.ViewHolder {
