@@ -5,16 +5,15 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import adapter.GoodsDetail_imgAdapter;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ui.CircleImageView;
 
 /**
  * Created by Administrator on 2017/11/28.
@@ -35,43 +34,29 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     TextView goodsdetailPriceAt;
     @Bind(R.id.goodsdetail_adress)
     TextView goodsdetailAdress;
-    @Bind(R.id.goodsdetail_desc)
-    TextView goodsdetailDesc;
     @Bind(R.id.goodsdetail_imgs)
     RecyclerView goodsdetailImgs;
-    @Bind(R.id.user_head)
-    CircleImageView userHead;
-    @Bind(R.id.goodsdetail_username)
-    TextView goodsdetailUsername;
-    @Bind(R.id.comment)
-    RelativeLayout comment;
-    @Bind(R.id.goodsdetail_comment)
-    RecyclerView goodsdetailComment;
-
-
     private List<String> list;
+    private List<String> rv_data;
     private GoodsDetail_imgAdapter goodsDetail_imgAdapter;
-    private GridLayoutManager gridLayoutManager;
 
 
     @Override
     public void initData() {
 
+        rv_data = new ArrayList<>();
+        rv_data.add("");
+
         if (getIntent() != null) {
             list = getIntent().getStringArrayListExtra("img_list");
         }
+        rv_data.addAll(list);
+        rv_data.add("");
+        rv_data.add("");
 
-        if (gridLayoutManager == null) {
-            gridLayoutManager = new GridLayoutManager(GoodsDetailActivity.this, 3);
-            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                @Override
-                public int getSpanSize(int position) {
-                    return position <= 2 ? 3 : 1;
-                }
-            });
-        }
-        goodsDetail_imgAdapter = new GoodsDetail_imgAdapter(list, GoodsDetailActivity.this);
-        goodsdetailImgs.setLayoutManager(gridLayoutManager);
+
+
+        goodsDetail_imgAdapter = new GoodsDetail_imgAdapter(rv_data, GoodsDetailActivity.this);
         goodsdetailImgs.setAdapter(goodsDetail_imgAdapter);
 
 
@@ -107,4 +92,5 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
         }
     }
+
 }

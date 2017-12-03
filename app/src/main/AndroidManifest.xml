@@ -51,6 +51,8 @@
             android:name=".GoodsDetailActivity"
             android:launchMode="singleTask"
             />
+        <activity android:name=".PublishGoodsActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

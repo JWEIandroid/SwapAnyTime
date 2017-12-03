@@ -14,5 +14,6 @@
     <color name="font_selected_black">#000</color>
     <color name="divider">#dbdbdb</color>
     <color name="not_selected">#515151</color>
+    <color name="red">#FF3333</color>
 
 </resources>

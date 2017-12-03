@@ -37,7 +37,6 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
     TextView btnAddGoods;
     private String[] titles;
     private int[] icons, icons_choosed;
-    private  MGalleryFinalUtils instance;
 
     @Override
     public void initData() {
@@ -71,9 +70,9 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
         bottomTabBar.init(getSupportFragmentManager())
                 .setTabPadding(15, 6, 10)
-                    .addTabItem(titles[0], icons_choosed[0], icons[0], Main_index.class)
+                .addTabItem(titles[0], icons_choosed[0], icons[0], Main_index.class)
                 .addTabItem(titles[1], icons_choosed[1], icons[1], Main_discovery.class)
-                .addTabItem(titles[2], icons[2], Main_discovery.class)
+                .addTabItem(titles[2], icons[2], null)
                 .addTabItem(titles[3], icons_choosed[2], icons[3], Main_message.class)
                 .addTabItem(titles[4], icons_choosed[3], icons[4], Main_mine.class);
 
@@ -85,7 +84,7 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
         ActionSheet.createBuilder(MainActivity.this, getSupportFragmentManager())
                 .setCancelButtonTitle("取消")
-                .setOtherButtonTitles("拍照", "打开相册")
+                .setOtherButtonTitles("发布商品")
                 .setCancelableOnTouchOutside(true)
                 .setListener(this)
                 .show();
@@ -115,46 +114,13 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
     @Override
     public void onOtherButtonClick(ActionSheet actionSheet, int index) {
-
-        if (instance==null){
-            instance = MGalleryFinalUtils.getInstance(MainActivity.this);
-        }
-
-        switch (index) {
-            case 0:
-                instance.initGalleryFinal(true);
-                instance.openCamera(new GalleryfinalActionListener() {
-                    @Override
-                    public void success(List<PhotoInfo> list) {
-
-                    }
-
-                    @Override
-                    public void failed(String msg) {
-
-                    }
-                });
-                break;
-            case 1:
-                instance.initGalleryFinal(true);
-                instance.openAlbumSingle(new GalleryfinalActionListener() {
-                    @Override
-                    public void success(List<PhotoInfo> list) {
-
-                    }
-
-                    @Override
-                    public void failed(String msg) {
-
-                    }
-                });
-                break;
-            default:
+        switch (index){
+            case  0:
+                goActivity(PublishGoodsActivity.class);
                 break;
         }
+
     }
-
-
 
 
     @Override
@@ -194,7 +160,6 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
     @Override
     protected void onDestroy() {
 
-        instance.clearCache();
         super.onDestroy();
 
     }
