@@ -132,7 +132,7 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         } else if (holder instanceof GoodsDetail_imgAdapter.threeLineImgHolder) {
 
-            Glide.with(context).load(list.get(position)).centerCrop().into(((threeLineImgHolder) holder).imageView);
+            Glide.with(context).load(list.get(position)).fitCenter().into(((threeLineImgHolder) holder).imageView);
         }
 
 

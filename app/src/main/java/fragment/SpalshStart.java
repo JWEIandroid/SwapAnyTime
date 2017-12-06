@@ -56,7 +56,7 @@ public class SpalshStart extends baseFragment {
             @Override
             public void onFinish() {
 //                btn_jump.setText("跳过(" + 0 + "s)");
-                goToActivity(getContext(), MainActivity.class);
+                goToActivity( MainActivity.class);
 
             }
         };
@@ -103,7 +103,7 @@ public class SpalshStart extends baseFragment {
                 if (countDownTimer != null) {
                     countDownTimer.cancel();
                 }
-                goToActivity(getContext(), MainActivity.class);
+                goToActivity( MainActivity.class);
                 break;
             default:
                 break;

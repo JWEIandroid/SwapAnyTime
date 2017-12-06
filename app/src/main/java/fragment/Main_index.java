@@ -150,10 +150,10 @@ public class Main_index extends baseFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.icon_type:
-                goToActivity(getContext(), ShowTypeActivity.class);
+                goToActivity( ShowTypeActivity.class);
                 break;
             case R.id.icon_head:
-                goToActivity(getContext(), LoginActivity.class);
+                goToActivity( LoginActivity.class);
             default:
                 break;
         }

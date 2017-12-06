@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.swapanytime.MsgBoardActivity;
 import com.example.swapanytime.R;
 
 import base.baseFragment;
@@ -76,10 +77,10 @@ public class Main_message extends baseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.liuyanban:
-
+                goToActivity(MsgBoardActivity.class);
                 break;
             case R.id.comment:
-
+                goToActivity(MsgBoardActivity.class);
                 break;
         }
     }

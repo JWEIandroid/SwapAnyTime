@@ -167,8 +167,8 @@ public abstract class baseFragment extends Fragment implements View.OnClickListe
         return mview;
     }
 
-    public void goToActivity(Context context, Class<?> targetclass) {
-        Intent intent = new Intent(context, targetclass);
+    public void goToActivity(Class<?> cs) {
+        Intent intent = new Intent(this.getContext(), cs);
         startActivity(intent);
     }
 

@@ -53,6 +53,9 @@
             />
         <activity android:name=".PublishGoodsActivity"
             android:launchMode="singleTask"/>
+        <activity android:name=".MsgBoardActivity"
+            android:launchMode="singleTask"
+            />
     </application>
 
 </manifest>
