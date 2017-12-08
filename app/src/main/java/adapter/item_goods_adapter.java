@@ -46,7 +46,6 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private final int ITEM_TYPE_HEADER = 1000;
     private final int ITEM_TYPE_NORMAL = 1001;
-    private final int ITEM_TYPE_FOOTER = 1002;
 
 
 
@@ -64,8 +63,6 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public int getItemViewType(int position) {
         if (position == 0) {
             return ITEM_TYPE_HEADER;
-        } else if (position == goods.size() - 1) {
-            return ITEM_TYPE_FOOTER;
         } else {
             return ITEM_TYPE_NORMAL;
         }
@@ -88,10 +85,6 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 NormalHolder normalHolder = new NormalHolder(view);
                 return normalHolder;
 
-            case ITEM_TYPE_FOOTER:
-                view = LayoutInflater.from(context).inflate(R.layout.view_rv_footer, parent, false);
-                FooterHolder footerHolder = new FooterHolder(view);
-                return footerHolder;
 
             default:
                 return null;
@@ -143,8 +136,6 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             });
 
 
-        } else if (viewHolder instanceof FooterHolder) {
-
         }
 
     }
@@ -191,22 +182,6 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
-    public class FooterHolder extends RecyclerView.ViewHolder {
-
-        private TextView loading, net_error, no_moredata;
-
-        public FooterHolder(View itemView) {
-
-            super(itemView);
-
-            loading = (TextView) itemView.findViewById(R.id.rv_footer_loading);
-            net_error = (TextView) itemView.findViewById(R.id.rv_footer_neterror);
-            no_moredata = (TextView) itemView.findViewById(R.id.rv_footer_nodata);
-
-        }
-
-
-    }
 
 
 }

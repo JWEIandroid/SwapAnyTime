@@ -109,7 +109,6 @@ public class Main_index extends baseFragment {
             good_list.add(goods);
         }
 
-        good_list.add(null);
 
         item_goods_adapter imgAdapter = new item_goods_adapter(this.getContext(), good_list);
         imgAdapter.setOnItemClickListener(new minterface.OnItemClickListener() {

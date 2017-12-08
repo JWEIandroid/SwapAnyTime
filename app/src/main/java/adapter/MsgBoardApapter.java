@@ -19,7 +19,7 @@ import utils.LogUtils;
 
 
 /**
- * Created by Administrator on 2017/12/5.
+ * Created by weijie on 2017/12/5.
  */
 
 public class MsgBoardApapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

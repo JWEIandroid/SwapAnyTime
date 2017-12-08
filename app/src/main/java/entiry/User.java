@@ -9,6 +9,9 @@ public class User {
     private String name;
     private String userId;
     private String password;
+    private String imgUrl;
+    private String description;
+    private String imgurl;
 
     public String getName() {
         return name;
@@ -63,12 +66,6 @@ public class User {
         this.imgurl = imgurl;
         return this;
     }
-
-    private String imgUrl;
-    private String description;
-    private String imgurl;
-
-
 
 
 

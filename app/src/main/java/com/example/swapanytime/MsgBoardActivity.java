@@ -18,7 +18,7 @@ import butterknife.OnClick;
 import entiry.Msg;
 
 /**
- * Created by Administrator on 2017/12/5.
+ * Created by weijie on 2017/12/5.
  */
 
 public class MsgBoardActivity extends baseActivity {
