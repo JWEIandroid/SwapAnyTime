@@ -18,11 +18,16 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.swapanytime.R;
 
+import api.UserLogin;
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import entiry.HttpDefault;
+import retrofit2.Retrofit;
+import rx.Observable;
 import utils.ContentUtils;
+import utils.SwapNetUtils;
 
 /**
  * Created by Administrator on 2017/11/16.
@@ -287,7 +292,17 @@ public class Login extends baseFragment {
 
     @Override
     public void onClick(View v) {
+           switch (v.getId()){
 
+               case R.id.btn_login:
+                   Login();
+                   break;
+               case R.id.btn_reg:
+                   Register();
+                   break;
+               default:
+                   break;
+           }
     }
 
     private void initBackGround(){
@@ -321,5 +336,17 @@ public class Login extends baseFragment {
                 childRegarea.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+
+
+    //登陆事件
+    private void Login(){
+
+    }
+
+    //注册事件
+    private void Register(){
+
     }
 }

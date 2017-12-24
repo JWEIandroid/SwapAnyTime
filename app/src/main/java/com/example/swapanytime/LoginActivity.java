@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import fragment.Login;
 
 /**
- * Created by Administrator on 2017/11/16.
+ * Created by weijie on 2017/11/16.
  */
 
 public class LoginActivity extends baseActivity {
@@ -47,10 +47,4 @@ public class LoginActivity extends baseActivity {
 
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
-    }
 }

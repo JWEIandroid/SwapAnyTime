@@ -46,12 +46,15 @@
         </LinearLayout>
 
 
-        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+        <com.scwang.smartrefresh.layout.footer.BallPulseFooter
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content" >
 
 
-        </com.scwang.smartrefresh.layout.footer.ClassicsFooter>
+
+            </com.scwang.smartrefresh.layout.footer.BallPulseFooter>
+
+
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
