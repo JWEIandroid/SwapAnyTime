@@ -2,6 +2,7 @@ package utils;
 
 import android.util.TimeUtils;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import api.UserLogin;
@@ -20,25 +21,27 @@ public class SwapNetUtils {
     private final String TAG = "weijie";
     private Retrofit retrofit = null;
     private static SwapNetUtils instance = null;
-    private static Retrofit retrofit_instance = null;
+    private Map<String,Object> map_netparams = null;
 
     private final String BASEURL = "http://localhost:8080/";
+    //请求操作类型
+    private enum REQUSET_TYPE {
+        FILE, NORMAL
+    }
+
     private final long DEFAULT_TIMEOUT = 15 * 1000L;
 
     private SwapNetUtils() {
         initRetrofit();
     }
 
-    public  SwapNetUtils getInstance() {
+    public SwapNetUtils getInstance() {
         if (instance == null) {
             instance = new SwapNetUtils();
         }
         return instance;
     }
 
-    public static Retrofit getRetrofit_instance() {
-        return retrofit_instance;
-    }
 
     //初始化Retrofit
     protected Retrofit initRetrofit() {
@@ -57,7 +60,7 @@ public class SwapNetUtils {
                     .build();
             LogUtils.d("weijie", "init Retrofit success");
         }
-        return retrofit_instance = retrofit;
+        return  retrofit;
     }
 
     //在主线程中更新UI
@@ -65,11 +68,29 @@ public class SwapNetUtils {
 
         boolean res = true;
 
-        getRetrofit_instance().create(cs);
-
-
 
         return res;
+
+
+    }
+
+
+    protected boolean params(String key,Object data){
+
+        if (map_netparams==null){
+            return  false;
+        }
+        map_netparams.put(key, data);
+        return  true;
+    }
+
+    protected void execute(){
+
+        //遍历请求表
+        for(map_netparams.keySet():map_netparams){
+
+        }
+
 
 
     }
