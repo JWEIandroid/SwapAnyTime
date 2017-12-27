@@ -30,16 +30,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.swapanytime.SplashActivity">
+        <activity android:name="com.example.swapanytime.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.example.swapanytime.MainActivity"
-            android:launchMode="singleTask" />
+        <!--<activity-->
+            <!--android:name="com.example.swapanytime.MainActivity"-->
+            <!--android:launchMode="singleTask" />-->
+
         <activity android:name="com.example.swapanytime.TakePhotoTest" />
         <activity
             android:name=".ShowTypeActivity"

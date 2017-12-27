@@ -2,13 +2,12 @@ package entiry;
 
 import java.io.File;
 
-import cn.bmob.v3.BmobObject;
 
 /**
  * Created by weijie on 2017/9/30.
  */
 
-public class Manager extends BmobObject{
+public class Manager {
 
     private String username;
     private String name;
@@ -16,9 +15,6 @@ public class Manager extends BmobObject{
     private String password;
     private File headImg;
 
-   public Manager(){
-        this.setTableName("manager");
-    }
 
     public String getUsername() {
         return username;

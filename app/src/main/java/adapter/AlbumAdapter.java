@@ -14,7 +14,6 @@ import java.util.List;
 import cn.finalteam.galleryfinal.widget.zoonview.PhotoView;
 import cn.finalteam.galleryfinal.widget.zoonview.PhotoViewAttacher;
 
-import static cn.bmob.v3.Bmob.getApplicationContext;
 
 /**
  * Created by weijie on 2017/10/7.
@@ -49,7 +48,6 @@ public class AlbumAdapter extends PagerAdapter {
             photoView.setTransitionName("image");
         }
         container.addView(photoView, ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);
-        Glide.with(getApplicationContext()).load(imageUrls.get(position)).into(photoView);
         photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {

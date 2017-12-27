@@ -2,13 +2,12 @@ package entiry;
 
 import java.io.File;
 
-import cn.bmob.v3.BmobObject;
 
 /**
  * Created by weijie on 2017/9/30.
  */
 
-public class GoodsPics extends BmobObject {
+public class GoodsPics  {
 
 
     private File pics;

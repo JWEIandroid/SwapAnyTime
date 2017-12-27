@@ -3,7 +3,6 @@ package fragment;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,15 +17,27 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.swapanytime.R;
 
-import api.UserLogin;
+import java.io.IOException;
+
+import api.UserAPI;
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import entiry.HttpDefault;
-import retrofit2.Retrofit;
-import rx.Observable;
+import entiry.User;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import utils.ContentUtils;
+import utils.LogUtils;
 import utils.SwapNetUtils;
 
 /**
@@ -292,20 +303,9 @@ public class Login extends baseFragment {
 
     @Override
     public void onClick(View v) {
-           switch (v.getId()){
-
-               case R.id.btn_login:
-                   Login();
-                   break;
-               case R.id.btn_reg:
-                   Register();
-                   break;
-               default:
-                   break;
-           }
     }
 
-    private void initBackGround(){
+    private void initBackGround() {
 
         Login login = this;
         Glide.with(login).load(R.mipmap.login_black).centerCrop().into(loginIv);
@@ -323,9 +323,17 @@ public class Login extends baseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
+                String name = accountEt.getText().toString();
+                String psd = psdEt.getText().toString();
 
+                User user = new User.Builder().name(name)
+                        .password(psd)
+                        .build();
+                LogUtils.d("weijie", user.getName() + user.getPassword() + "\n");
+                Login(user);
                 break;
             case R.id.btn_reg:
+                Register();
                 break;
             case R.id.text_2login:
                 childLoginarea.setVisibility(View.VISIBLE);
@@ -339,14 +347,45 @@ public class Login extends baseFragment {
     }
 
 
-
     //登陆事件
-    private void Login(){
+    private void Login(User user) {
+
+        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(UserAPI.class).login(accountEt.getText().toString(),psdEt.getText().toString());
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<String>>() {
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        LogUtils.d("weijie", "login d:" + d.toString());
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault httpDefault) {
+                        LogUtils.d("weijie", httpDefault.getError_code()+"");
+                        LogUtils.d("weijie", httpDefault.getMessage()+"");
+                        LogUtils.d("weijie", httpDefault.getData()+"");
+                        if (httpDefault.getError_code()==0){
+                            showToast("登录成功",ToastDuration.SHORT);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        LogUtils.d("weijie", "error:" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LogUtils.d("weijie", "complete");
+                    }
+                });
+
 
     }
 
     //注册事件
-    private void Register(){
+    private void Register() {
 
     }
 }
