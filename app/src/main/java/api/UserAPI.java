@@ -15,8 +15,9 @@ import retrofit2.http.Query;
 
 public interface UserAPI {
 
+
     @POST("user/login")
-    Observable<HttpDefault<String>> login(
+    Observable<HttpDefault<User>> login(
             @Query("name") String name,
             @Query("password") String password
     );
@@ -27,11 +28,19 @@ public interface UserAPI {
             @Query("password") String password
             );
 
-    @POST("user/login")
-    Call<ResponseBody> test(
+    @POST("user/register")
+    Observable<HttpDefault> resetPassword(
             @Query("name") String name,
             @Query("password") String password
     );
+
+    //获取用户头像
+    @POST("userimg/getimgbyid")
+    Observable<HttpDefault> getUserHeadImg(
+            @Query("userid") int id
+    );
+
+
 
 
 }

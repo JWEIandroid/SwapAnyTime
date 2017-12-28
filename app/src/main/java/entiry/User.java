@@ -1,16 +1,24 @@
 package entiry;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by weijie on 2017/11/21.
  */
 
 public class User {
 
+    @SerializedName("name")
     private String name;
+    @SerializedName("userId")
     private String userId;
+    @SerializedName("password")
     private String password;
+    @SerializedName("imgUrl")
     private String imgUrl;
+    @SerializedName("description")
     private String description;
+    @SerializedName("imgurl")
     private String imgurl;
 
     public String getName() {

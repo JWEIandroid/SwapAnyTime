@@ -10,11 +10,7 @@ import java.util.List;
 
 public class HttpDefault<T> {
 
-    //    {
-//            "data": "success",
-//            "error_code": "0",
-//            "message": "200"
-//    }
+
     @SerializedName("error_code")
     private int error_code;
     @SerializedName("message")
@@ -47,5 +43,14 @@ public class HttpDefault<T> {
     public HttpDefault setData(T data) {
         this.data = data;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "HttpDefault{" +
+                "error_code=" + error_code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

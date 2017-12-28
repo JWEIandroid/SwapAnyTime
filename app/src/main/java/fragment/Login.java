@@ -346,43 +346,64 @@ public class Login extends baseFragment {
         }
     }
 
+    //是否登录
+    private static boolean islogin = false;
+    private static String test_id = "";
 
     //登陆事件
     private void Login(User user) {
 
-        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(UserAPI.class).login(accountEt.getText().toString(),psdEt.getText().toString());
+        Observable<HttpDefault<User>> observable = SwapNetUtils.createAPI(UserAPI.class).login(accountEt.getText().toString(), psdEt.getText().toString());
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HttpDefault<String>>() {
+                .subscribe(new Observer<HttpDefault<User>>() {
+
 
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        LogUtils.d("weijie", "login d:" + d.toString());
+
                     }
 
                     @Override
-                    public void onNext(@NonNull HttpDefault httpDefault) {
-                        LogUtils.d("weijie", httpDefault.getError_code()+"");
-                        LogUtils.d("weijie", httpDefault.getMessage()+"");
-                        LogUtils.d("weijie", httpDefault.getData()+"");
-                        if (httpDefault.getError_code()==0){
-                            showToast("登录成功",ToastDuration.SHORT);
+                    public void onNext(@NonNull HttpDefault<User> userHttpDefault) {
+                        LogUtils.d("weijie", userHttpDefault.getError_code() + "");
+                        LogUtils.d("weijie", userHttpDefault.getMessage() + "");
+                        LogUtils.d("weijie", userHttpDefault.getData() + "");
+
+
+                        if (userHttpDefault.getError_code() == 0) {
+                            showToast("登录成功", ToastDuration.SHORT);
+                            islogin = true;
+                        } else {
+                            showToast("服务器貌似出问题了...", ToastDuration.SHORT);
                         }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        showToast("服务器貌似出问题了(throwable)...", ToastDuration.SHORT);
                         LogUtils.d("weijie", "error:" + e.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-                        LogUtils.d("weijie", "complete");
+
                     }
                 });
 
-
     }
+
+//
+//    //获取头像事件
+//    private boolean getUserHeadimg(){
+//
+//        if (!islogin){
+//            return false;
+//        }
+//        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(UserAPI.class).getUserHeadImg()
+//
+//    }
+
 
     //注册事件
     private void Register() {
