@@ -20,6 +20,8 @@ public class User {
     private String description;
     @SerializedName("imgurl")
     private String imgurl;
+    @SerializedName("headimg")
+    private String headimg;
 
     public String getName() {
         return name;

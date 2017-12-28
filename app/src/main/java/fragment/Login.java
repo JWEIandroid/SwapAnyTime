@@ -57,8 +57,6 @@ public class Login extends baseFragment {
     TextView btnLogin;
     @Bind(R.id.child_regarea)
     LinearLayout childRegarea;
-
-
     @Bind(R.id.text_2reg)
     TextView text2reg;
     @Bind(R.id.phone_et)
@@ -348,7 +346,7 @@ public class Login extends baseFragment {
 
     //是否登录
     private static boolean islogin = false;
-    private static String test_id = "";
+    private static int test_id = 0;
 
     //登陆事件
     private void Login(User user) {
@@ -357,8 +355,6 @@ public class Login extends baseFragment {
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<HttpDefault<User>>() {
-
-
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
 
@@ -366,14 +362,22 @@ public class Login extends baseFragment {
 
                     @Override
                     public void onNext(@NonNull HttpDefault<User> userHttpDefault) {
-                        LogUtils.d("weijie", userHttpDefault.getError_code() + "");
-                        LogUtils.d("weijie", userHttpDefault.getMessage() + "");
-                        LogUtils.d("weijie", userHttpDefault.getData() + "");
-
 
                         if (userHttpDefault.getError_code() == 0) {
+                            LogUtils.d("weijie", userHttpDefault.getError_code() + "");
+                            LogUtils.d("weijie", userHttpDefault.getMessage() + "");
+                            User user = userHttpDefault.getData();
+                            if (user!=null){
+                                test_id = Integer.parseInt(user.getUserId());
+                                LogUtils.d(getTag(), "用户id：" + user.getUserId());
+                            }else{
+                                showSnackBar("用户：null",ToastDuration.SHORT);
+                            }
                             showToast("登录成功", ToastDuration.SHORT);
                             islogin = true;
+                            getUserHeadimg(test_id);
+                        } else if (userHttpDefault.getError_code() == -1) {
+                            showToast("登陆失败", ToastDuration.SHORT);
                         } else {
                             showToast("服务器貌似出问题了...", ToastDuration.SHORT);
                         }
@@ -393,16 +397,46 @@ public class Login extends baseFragment {
 
     }
 
-//
-//    //获取头像事件
-//    private boolean getUserHeadimg(){
-//
-//        if (!islogin){
-//            return false;
-//        }
-//        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(UserAPI.class).getUserHeadImg()
-//
-//    }
+    //
+    //获取头像事件
+    private boolean getUserHeadimg(int userid) {
+
+        final boolean[] res = {true};
+
+        if (!islogin) {
+            return false;
+        }
+        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(UserAPI.class).getUserHeadImg(userid);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<String>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<String> stringHttpDefault) {
+
+                        if (stringHttpDefault.getError_code() != -1) {
+                            LogUtils.d(getTag(), "返回的头像地址是：" + stringHttpDefault.getData().toString());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                       LogUtils.d(getTag(),"error:"+e.getMessage());
+                        res[0] = false;
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LogUtils.d(getTag(),"complete");
+                    }
+                });
+
+        return res[0];
+    }
 
 
     //注册事件

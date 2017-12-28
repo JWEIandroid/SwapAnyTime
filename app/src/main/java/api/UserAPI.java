@@ -36,10 +36,9 @@ public interface UserAPI {
 
     //获取用户头像
     @POST("userimg/getimgbyid")
-    Observable<HttpDefault> getUserHeadImg(
+    Observable<HttpDefault<String>> getUserHeadImg(
             @Query("userid") int id
     );
-
 
 
 
