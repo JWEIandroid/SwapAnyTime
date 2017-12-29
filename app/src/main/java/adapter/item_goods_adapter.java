@@ -116,7 +116,7 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             Goods good = goods.get(position);
             User user = good.getPulisher();
 
-            Glide.with(context).load(user.getImgUrl()).asBitmap().centerCrop().into(((NormalHolder) viewHolder).head);
+            Glide.with(context).load(user.getHeadimg()).asBitmap().centerCrop().into(((NormalHolder) viewHolder).head);
             ((NormalHolder) viewHolder).name.setText(good.getName());
             ((NormalHolder) viewHolder).price.setText("" + (int) good.getPrice_after());
             ((NormalHolder) viewHolder).desc.setText(good.getDescrtption());

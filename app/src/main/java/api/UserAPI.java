@@ -1,5 +1,8 @@
 package api;
 
+import java.util.List;
+import java.util.Map;
+
 import entiry.HttpDefault;
 import entiry.User;
 import io.reactivex.Observable;
@@ -17,7 +20,7 @@ public interface UserAPI {
 
 
     @POST("user/login")
-    Observable<HttpDefault<User>> login(
+    Observable<HttpDefault<Map<String,Object>>> login(
             @Query("name") String name,
             @Query("password") String password
     );

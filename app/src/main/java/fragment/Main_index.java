@@ -98,7 +98,7 @@ public class Main_index extends baseFragment {
 
         //初始化每条商品信息
         for (int i = 0; i < 10; i++) {
-            User user = new User.Builder().name("用户" + i).imgUrl(headurl).build();
+            User user = new User.Builder().name("用户" + i).headimg(headurl).build();
             Goods goods = new Goods.Builder().name("商品 " + i)
                     .descrtption("商品描述")
                     .imgUrls(imglist)

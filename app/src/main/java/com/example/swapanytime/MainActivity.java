@@ -1,6 +1,7 @@
 package com.example.swapanytime;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,16 +14,20 @@ import java.util.List;
 
 import base.MyApplication;
 import base.baseActivity;
+import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.finalteam.toolsfinal.io.stream.StringBuilderWriter;
+import entiry.User;
 import fragment.Login;
 import fragment.Main_discovery;
 import fragment.Main_index;
 import fragment.Main_message;
 import fragment.Main_mine;
 import minterface.GalleryfinalActionListener;
+import utils.LogUtils;
 import utils.MGalleryFinalUtils;
 
 import static com.example.swapanytime.R.mipmap.ic_mine;
@@ -37,6 +42,9 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
     TextView btnAddGoods;
     private String[] titles;
     private int[] icons, icons_choosed;
+
+    //默认的登录超时时间为30分钟
+    private final long LOGIN_TIMEOUT = 30 * 60 * 1000;
 
     @Override
     public void initData() {
@@ -114,19 +122,60 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
     @Override
     public void onOtherButtonClick(ActionSheet actionSheet, int index) {
-        switch (index){
-            case  0:
+        switch (index) {
+            case 0:
                 goActivity(PublishGoodsActivity.class);
                 break;
         }
 
     }
 
+    //是否登录
+    private static boolean islogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.getInstance().addActivity(MainActivity.this);
+
+        //查看是否已经登录
+        SharedPreferences sharedPreferences = this.getSharedPreferences("base64", MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", null);
+        String userid_read = sharedPreferences.getString("userid", null);
+        int userid = 0;
+        if (userid_read != null) {
+            userid = Integer.parseInt(userid_read);
+        }
+        LogUtils.d("weijie", "本地登录信息：" + "token:" + token + "\n" + "userid:" + userid);
+        if (token != null & userid != 0) {
+            if (checktoken(token)) {
+                islogin = true;
+                User user = getUserMsg(token, userid);
+            } else {
+                islogin = false;
+            }
+        }
+    }
+
+    private boolean checktoken(String token) {
+
+        long now = System.currentTimeMillis();
+        StringBuilder sb = new StringBuilder(token);
+        long time = Long.parseLong(sb.substring(sb.length() - 13, sb.length()));
+        LogUtils.d("weijie",now+"");
+        LogUtils.d("weijie", "token data:" + time);
+        LogUtils.d("weijie", ""+(now - time) / (60 * 1000L));
+
+        if ((now - time) / 60 * 1000L >= LOGIN_TIMEOUT) {
+            LogUtils.d(getTAG(), "token 过期");
+            return false;
+        }
+
+        return true;
+    }
+
+    private User getUserMsg(String token, int userid) {
+        return null;
     }
 
 
@@ -143,7 +192,6 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
         return super.onKeyDown(keyCode, event);
     }
-
 
     private void ConfirmLeave() {
 

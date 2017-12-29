@@ -21,7 +21,7 @@ public class BmobTest extends baseActivity {
         manager.setName("test");
         manager.setNumber("000000");
         manager.setPassword("123");
-        manager.setUsername("Test");
+        manager.setUsername("dadada");
 
 //        File file = new File()
 

@@ -3,99 +3,168 @@ package entiry;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by weijie on 2017/11/21.
+ * Created by Administrator on 2017/12/29.
  */
 
 public class User {
 
+
+    /**
+     * id : 19
+     * name : hello
+     * tel : 18814129361
+     * password : 7
+     * token : hello71514539624825
+     * adress : null
+     * description : nu;;
+     * sex : 男
+     * create_time : null
+     * update_time : 1514539624825
+     */
+
     @SerializedName("name")
     private String name;
-    @SerializedName("userId")
-    private String userId;
+    @SerializedName("id")
+    private int id;
     @SerializedName("password")
     private String password;
-    @SerializedName("imgUrl")
-    private String imgUrl;
+    @SerializedName("tel")
+    private String tel;
     @SerializedName("description")
     private String description;
-    @SerializedName("imgurl")
-    private String imgurl;
+    @SerializedName("sex")
+    private String sex;
     @SerializedName("headimg")
     private String headimg;
+    @SerializedName("token")
+    private String token;
+    @SerializedName("adress")
+    private String adress;
+    @SerializedName("create_time")
+    private Object create_time;
+    @SerializedName("updaie_time")
+    private String update_time;
+
+
+
+    private User(Builder builder) {
+        setName(builder.name);
+        setId(builder.id);
+        setPassword(builder.password);
+        setTel(builder.tel);
+        setDescription(builder.description);
+        setSex(builder.sex);
+        headimg = builder.headimg;
+        setToken(builder.token);
+        setAdress(builder.adress);
+        setCreate_time(builder.create_time);
+        setUpdate_time(builder.update_time);
+    }
+
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
     }
 
-    public User setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getTel() {
+        return tel;
     }
 
-    public User setUserId(String userId) {
-        this.userId = userId;
-        return this;
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public User setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
-        return this;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getToken() {
+        return token;
     }
 
-    public User setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-        return this;
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public User setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public Object getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(Object create_time) {
+        this.create_time = create_time;
+    }
+
+    public String getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(String update_time) {
+        this.update_time = update_time;
+    }
+
+
+    public User setHeadimg(String headimg) {
+        this.headimg = headimg;
         return this;
     }
 
-    public String getImgurl() {
-        return imgurl;
+    public String getHeadimg() {
+        return headimg;
     }
-
-    public User setImgurl(String imgurl) {
-        this.imgurl = imgurl;
-        return this;
-    }
-
-
-
-    private User(Builder builder) {
-        name = builder.name;
-        userId = builder.userId;
-        password = builder.password;
-        imgUrl = builder.imgUrl;
-        description = builder.description;
-        imgurl = builder.imgurl;
-    }
-
 
     public static final class Builder {
         private String name;
-        private String userId;
+        private int id;
         private String password;
-        private String imgUrl;
+        private String tel;
         private String description;
-        private String imgurl;
+        private String sex;
+        private String headimg;
+        private String token;
+        private String adress;
+        private Object create_time;
+        private String update_time;
 
         public Builder() {
         }
@@ -105,8 +174,8 @@ public class User {
             return this;
         }
 
-        public Builder userId(String val) {
-            userId = val;
+        public Builder id(int val) {
+            id = val;
             return this;
         }
 
@@ -115,8 +184,8 @@ public class User {
             return this;
         }
 
-        public Builder imgUrl(String val) {
-            imgUrl = val;
+        public Builder tel(String val) {
+            tel = val;
             return this;
         }
 
@@ -125,8 +194,33 @@ public class User {
             return this;
         }
 
-        public Builder imgurl(String val) {
-            imgurl = val;
+        public Builder sex(String val) {
+            sex = val;
+            return this;
+        }
+
+        public Builder headimg(String val) {
+            headimg = val;
+            return this;
+        }
+
+        public Builder token(String val) {
+            token = val;
+            return this;
+        }
+
+        public Builder adress(String val) {
+            adress = val;
+            return this;
+        }
+
+        public Builder create_time(Object val) {
+            create_time = val;
+            return this;
+        }
+
+        public Builder update_time(String val) {
+            update_time = val;
             return this;
         }
 
@@ -134,4 +228,7 @@ public class User {
             return new User(this);
         }
     }
+
+
 }
+/**/

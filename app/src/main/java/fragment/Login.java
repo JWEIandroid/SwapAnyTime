@@ -1,5 +1,8 @@
 package fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,9 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.swapanytime.LoginActivity;
+import com.example.swapanytime.MainActivity;
 import com.example.swapanytime.R;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import api.UserAPI;
 import base.baseFragment;
@@ -39,6 +47,8 @@ import retrofit2.Response;
 import utils.ContentUtils;
 import utils.LogUtils;
 import utils.SwapNetUtils;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Administrator on 2017/11/16.
@@ -71,10 +81,6 @@ public class Login extends baseFragment {
     TextView text2login;
     @Bind(R.id.login_iv)
     ImageView loginIv;
-
-
-    private boolean res_login = true;
-    private boolean res_reg = true;
 
 
     @Nullable
@@ -323,12 +329,12 @@ public class Login extends baseFragment {
             case R.id.btn_login:
                 String name = accountEt.getText().toString();
                 String psd = psdEt.getText().toString();
-
                 User user = new User.Builder().name(name)
                         .password(psd)
                         .build();
-                LogUtils.d("weijie", user.getName() + user.getPassword() + "\n");
+
                 Login(user);
+
                 break;
             case R.id.btn_reg:
                 Register();
@@ -344,38 +350,44 @@ public class Login extends baseFragment {
         }
     }
 
-    //是否登录
-    private static boolean islogin = false;
-    private static int test_id = 0;
 
     //登陆事件
     private void Login(User user) {
 
-        Observable<HttpDefault<User>> observable = SwapNetUtils.createAPI(UserAPI.class).login(accountEt.getText().toString(), psdEt.getText().toString());
+        Observable<HttpDefault<Map<String, Object>>> observable = SwapNetUtils.createAPI(UserAPI.class).login(accountEt.getText().toString(), psdEt.getText().toString());
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HttpDefault<User>>() {
+                .subscribe(new Observer<HttpDefault<Map<String, Object>>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(@NonNull HttpDefault<User> userHttpDefault) {
+                    public void onNext(@NonNull HttpDefault<Map<String, Object>> userHttpDefault) {
 
                         if (userHttpDefault.getError_code() == 0) {
                             LogUtils.d("weijie", userHttpDefault.getError_code() + "");
                             LogUtils.d("weijie", userHttpDefault.getMessage() + "");
-                            User user = userHttpDefault.getData();
-                            if (user!=null){
-                                test_id = Integer.parseInt(user.getUserId());
-                                LogUtils.d(getTag(), "用户id：" + user.getUserId());
-                            }else{
-                                showSnackBar("用户：null",ToastDuration.SHORT);
+                            Map<String, Object> return_config = userHttpDefault.getData();
+
+                            for (String key : return_config.keySet()) {
+                                String data = (String) return_config.get(key);
+                                LogUtils.d("weijie", data);
                             }
-                            showToast("登录成功", ToastDuration.SHORT);
-                            islogin = true;
-                            getUserHeadimg(test_id);
+
+                            if (userHttpDefault.getError_code() == 0) {
+                                //登录成功, 将token，userid写入本地
+                                List<String> config = new ArrayList<String>();
+                                config.add((String) return_config.get("token"));
+                                config.add((String) return_config.get("id"));
+                                WriteUserConfig(config);
+                                showToast("登录成功", ToastDuration.SHORT);
+                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                intent.putExtra("islogin", true);
+                                startActivity(intent);
+                            }
+
                         } else if (userHttpDefault.getError_code() == -1) {
                             showToast("登陆失败", ToastDuration.SHORT);
                         } else {
@@ -397,15 +409,28 @@ public class Login extends baseFragment {
 
     }
 
+
+    private void WriteUserConfig(List<String> list) {
+
+        if (list.size() == 0 || list == null) {
+            LogUtils.d(getTag(), "存储本地数据失败--数据出错");
+        } else {
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("base64", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("token", list.get(0));
+            editor.putString("userid", list.get(1));
+            editor.commit();
+        }
+
+
+    }
+
     //
-    //获取头像事件
-    private boolean getUserHeadimg(int userid) {
+    //获取用户信息
+    private boolean getUserMsg(int userid) {
 
         final boolean[] res = {true};
 
-        if (!islogin) {
-            return false;
-        }
         Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(UserAPI.class).getUserHeadImg(userid);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -425,13 +450,13 @@ public class Login extends baseFragment {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                       LogUtils.d(getTag(),"error:"+e.getMessage());
+                        LogUtils.d(getTag(), "error:" + e.getMessage());
                         res[0] = false;
                     }
 
                     @Override
                     public void onComplete() {
-                        LogUtils.d(getTag(),"complete");
+                        LogUtils.d(getTag(), "complete");
                     }
                 });
 
