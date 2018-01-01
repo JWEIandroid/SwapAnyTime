@@ -30,8 +30,8 @@ public class SwapNetUtils {
     private static Retrofit retrofit = null;
     private static SwapNetUtils instance = null;
 
-//    private static final String BASEURL = "http://172.168.5.127:8080/";
-    private static final String BASEURL = "http://192.168.218.128:8080/";
+    private static final String BASEURL = "http://172.168.5.131:8080/";
+    //    private static final String BASEURL = "http://192.168.218.128:8080/";
     private static final long DEFAULT_TIMEOUT = 15 * 1000L;
 
 
@@ -46,7 +46,6 @@ public class SwapNetUtils {
     //初始化Retrofit
     public static <T> T createAPI(Class<T> cs) {
 
-        LogUtils.d("weijie", "init Retrofit...");
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .client(mOkHttpClient)

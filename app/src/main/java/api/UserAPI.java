@@ -20,27 +20,30 @@ public interface UserAPI {
 
 
     @POST("user/login")
-    Observable<HttpDefault<Map<String,Object>>> login(
+    Observable<HttpDefault<User>> login(
             @Query("name") String name,
             @Query("password") String password
     );
 
     @POST("user/register")
-    Observable<HttpDefault> register(
+    Observable<HttpDefault<User>> register(
             @Query("name") String name,
             @Query("password") String password
             );
 
-    @POST("user/register")
-    Observable<HttpDefault> resetPassword(
-            @Query("name") String name,
-            @Query("password") String password
+    @POST("user/getUserMsg")
+    Observable<HttpDefault<User>> getUserdata(
+            @Query("token")String token,
+            @Query("id")int id
     );
 
-    //获取用户头像
-    @POST("userimg/getimgbyid")
-    Observable<HttpDefault<String>> getUserHeadImg(
-            @Query("userid") int id
+
+
+    @POST("user/resetpsd")
+    Observable<HttpDefault> resetPassword(
+            @Query("name") String name,
+            @Query("password") String password,
+            @Query("oldpsd")String oldpsd
     );
 
 

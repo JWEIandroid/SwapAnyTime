@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import api.UserAPI;
 import base.baseFragment;
@@ -65,6 +66,7 @@ public class Login extends baseFragment {
     AppCompatEditText psdEt;
     @Bind(R.id.btn_login)
     TextView btnLogin;
+
     @Bind(R.id.child_regarea)
     LinearLayout childRegarea;
     @Bind(R.id.text_2reg)
@@ -81,7 +83,6 @@ public class Login extends baseFragment {
     TextView text2login;
     @Bind(R.id.login_iv)
     ImageView loginIv;
-
 
     @Nullable
     @Override
@@ -337,7 +338,13 @@ public class Login extends baseFragment {
 
                 break;
             case R.id.btn_reg:
-                Register();
+                String phone = phoneEt.getText().toString();
+                String password = psdRegEt.getText().toString();
+                User user1 = new User.Builder()
+                        .tel(phone)
+                        .password(password)
+                        .build();
+                Register(user1);
                 break;
             case R.id.text_2login:
                 childLoginarea.setVisibility(View.VISIBLE);
@@ -354,44 +361,34 @@ public class Login extends baseFragment {
     //登陆事件
     private void Login(User user) {
 
-        Observable<HttpDefault<Map<String, Object>>> observable = SwapNetUtils.createAPI(UserAPI.class).login(accountEt.getText().toString(), psdEt.getText().toString());
+        Observable<HttpDefault<User>> observable = SwapNetUtils.createAPI(UserAPI.class).login(
+                accountEt.getText().toString(),
+                psdEt.getText().toString());
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HttpDefault<Map<String, Object>>>() {
+                .subscribe(new Observer<HttpDefault<User>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(@NonNull HttpDefault<Map<String, Object>> userHttpDefault) {
+                    public void onNext(@NonNull HttpDefault<User> userHttpDefault) {
 
-                        if (userHttpDefault.getError_code() == 0) {
-                            LogUtils.d("weijie", userHttpDefault.getError_code() + "");
-                            LogUtils.d("weijie", userHttpDefault.getMessage() + "");
-                            Map<String, Object> return_config = userHttpDefault.getData();
+                        if (userHttpDefault.getError_code() == -1) {
+                            showToast(userHttpDefault.getMessage(), ToastDuration.SHORT);
+                        } else if (userHttpDefault.getError_code() == 0) {
+                            //登录成功, 将token，userid写入本地
+                            User user = userHttpDefault.getData();
+                            List<String> config = new ArrayList<String>();
+                            config.add(user.getToken());
+                            config.add(user.getId() + "");
+                            WriteUserConfig(config);
 
-                            for (String key : return_config.keySet()) {
-                                String data = (String) return_config.get(key);
-                                LogUtils.d("weijie", data);
-                            }
-
-                            if (userHttpDefault.getError_code() == 0) {
-                                //登录成功, 将token，userid写入本地
-                                List<String> config = new ArrayList<String>();
-                                config.add((String) return_config.get("token"));
-                                config.add((String) return_config.get("id"));
-                                WriteUserConfig(config);
-                                showToast("登录成功", ToastDuration.SHORT);
-                                Intent intent = new Intent(getContext(), MainActivity.class);
-                                intent.putExtra("islogin", true);
-                                startActivity(intent);
-                            }
-
-                        } else if (userHttpDefault.getError_code() == -1) {
-                            showToast("登陆失败", ToastDuration.SHORT);
-                        } else {
-                            showToast("服务器貌似出问题了...", ToastDuration.SHORT);
+                            showToast(userHttpDefault.getMessage(), ToastDuration.SHORT);
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            intent.putExtra("islogin", true);
+                            startActivity(intent);
                         }
                     }
 
@@ -405,6 +402,8 @@ public class Login extends baseFragment {
                     public void onComplete() {
 
                     }
+
+
                 });
 
     }
@@ -425,47 +424,40 @@ public class Login extends baseFragment {
 
     }
 
-    //
-    //获取用户信息
-    private boolean getUserMsg(int userid) {
 
-        final boolean[] res = {true};
 
-        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(UserAPI.class).getUserHeadImg(userid);
+    //注册事件
+    private void Register(final User user) {
+
+        Observable<HttpDefault<User>> observable = SwapNetUtils.createAPI(UserAPI.class).register(
+                user.getName(),
+                user.getPassword()
+        );
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HttpDefault<String>>() {
+                .subscribe(new Observer<HttpDefault<User>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(@NonNull HttpDefault<String> stringHttpDefault) {
+                    public void onNext(@NonNull HttpDefault<User> userHttpDefault) {
+                        if (userHttpDefault.getError_code() == 100) {
 
-                        if (stringHttpDefault.getError_code() != -1) {
-                            LogUtils.d(getTag(), "返回的头像地址是：" + stringHttpDefault.getData().toString());
                         }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        LogUtils.d(getTag(), "error:" + e.getMessage());
-                        res[0] = false;
+
                     }
 
                     @Override
                     public void onComplete() {
-                        LogUtils.d(getTag(), "complete");
+
                     }
                 });
-
-        return res[0];
-    }
-
-
-    //注册事件
-    private void Register() {
 
     }
 }
