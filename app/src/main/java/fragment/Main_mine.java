@@ -25,6 +25,7 @@ import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import constant.NetConstant;
 import entiry.HttpDefault;
 import entiry.User;
 import io.reactivex.Observable;
@@ -102,6 +103,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
     @Override
     protected void initEvent() {
+
 
         //监听标题栏
         appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -291,8 +293,8 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                             if (userHttpDefault.getError_code() == 0) {
                                 user_data = userHttpDefault.getData();
                                 LogUtils.d("weijie", "成功读取用户");
-                                Uri uri = Uri.parse(user_data.getHeadimg());
-                                Glide.with(main_mine).load(uri).into(mineHead);
+                                loadPicData(user_data.getHeadimg());
+                                LogUtils.d("weijie", "成功读取用户-1");
                             }
 
                         }
@@ -309,6 +311,13 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                     });
         }
         return user_data;
+    }
+
+    //根据url读取图片
+    private void loadPicData(String headimg) {
+
+
+
     }
 
     @Override
