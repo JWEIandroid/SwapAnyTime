@@ -276,6 +276,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     private int userid_read = 0;
     Main_mine main_mine = this;
 
+
     //根据本地用户数据读取
     private User readLocaldata(String token, int userid) {
         if (token != null & userid != 0) {
@@ -292,9 +293,9 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                         public void onNext(@NonNull HttpDefault<User> userHttpDefault) {
                             if (userHttpDefault.getError_code() == 0) {
                                 user_data = userHttpDefault.getData();
-                                LogUtils.d("weijie", "成功读取用户");
-                                loadPicData(user_data.getHeadimg());
+                                LogUtils.d("weijie", "成功读取用户:"+user_data.getHeadimg());
                                 LogUtils.d("weijie", "成功读取用户-1");
+                                Glide.with(main_mine).load(user_data.getHeadimg()).asBitmap().centerCrop().into(mineHead);
                             }
 
                         }
@@ -309,6 +310,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
                         }
                     });
+
         }
         return user_data;
     }
