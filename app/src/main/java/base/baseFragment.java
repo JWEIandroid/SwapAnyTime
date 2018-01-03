@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
  * Created by weijie on 2017/9/24.
  */
 
-public abstract class baseFragment extends Fragment implements View.OnClickListener {
+public abstract class baseFragment extends Fragment {
 
 
     private boolean isFragmentVisible;
@@ -179,6 +179,12 @@ public abstract class baseFragment extends Fragment implements View.OnClickListe
         transaction.replace(parent,fragment);
         transaction.commit();
 
+    }
+
+
+    public String getmTag(){
+        return "weijie";
+//        return this.getClass().getSimpleName();
     }
 
 

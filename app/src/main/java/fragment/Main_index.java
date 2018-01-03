@@ -2,8 +2,6 @@ package fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -14,9 +12,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.example.swapanytime.GoodsDetailActivity;
 import com.example.swapanytime.LoginActivity;
 import com.example.swapanytime.R;
@@ -29,9 +24,10 @@ import adapter.item_goods_adapter;
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import entiry.Goods;
 import entiry.User;
-import utils.CBViewCreator;
+import minterface.OnItemClickListener;
 import utils.ContentUtils;
 import utils.LogUtils;
 
@@ -111,11 +107,11 @@ public class Main_index extends baseFragment {
 
 
         item_goods_adapter imgAdapter = new item_goods_adapter(this.getContext(), good_list);
-        imgAdapter.setOnItemClickListener(new minterface.OnItemClickListener() {
+        imgAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
-                intent.putStringArrayListExtra("img_list",good_list.get(position).getImgUrls());
+                intent.putStringArrayListExtra("img_list", good_list.get(position).getImgUrls());
                 startActivity(intent);
             }
         });
@@ -123,6 +119,26 @@ public class Main_index extends baseFragment {
         LogUtils.d(getTag(), "首页商品信息条数--------" + good_list.size());
         rv_goods.setLayoutManager(Linlayoutmanager);
         rv_goods.setAdapter(imgAdapter);
+    }
+
+    @OnClick({R.id.icon_head, R.id.search_et, R.id.icon_search, R.id.icon_cancel, R.id.icon_type, R.id.list_good})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.icon_head:
+                goToActivity(LoginActivity.class);
+                break;
+            case R.id.search_et:
+                break;
+            case R.id.icon_search:
+                break;
+            case R.id.icon_cancel:
+                break;
+            case R.id.icon_type:
+                goToActivity(ShowTypeActivity.class);
+                break;
+            case R.id.list_good:
+                break;
+        }
     }
 
 
@@ -136,8 +152,6 @@ public class Main_index extends baseFragment {
 
     @Override
     protected void initEvent() {
-        iconType.setOnClickListener(this);
-        iconHead.setOnClickListener(this);
 
         searchEt.addTextChangedListener(textWatcher);
 
@@ -145,18 +159,7 @@ public class Main_index extends baseFragment {
     }
 
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.icon_type:
-                goToActivity( ShowTypeActivity.class);
-                break;
-            case R.id.icon_head:
-                goToActivity( LoginActivity.class);
-            default:
-                break;
-        }
-    }
+
 
 
     private TextWatcher textWatcher = new TextWatcher() {

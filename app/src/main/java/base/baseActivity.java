@@ -150,7 +150,7 @@ public abstract class baseActivity extends AppCompatActivity {
 
 
     public String getTag(){
-        return "weijie";
+        return this.getClass().getSimpleName();
     }
 
 }

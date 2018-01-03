@@ -21,31 +21,29 @@ public interface UserAPI {
 
     @POST("user/login")
     Observable<HttpDefault<User>> login(
-            @Query("name") String name,
+            @Query("tel") String tel,
             @Query("password") String password
     );
 
     @POST("user/register")
     Observable<HttpDefault<User>> register(
-            @Query("name") String name,
+            @Query("tel") String tel,
             @Query("password") String password
-            );
+    );
 
     @POST("user/getUserMsg")
     Observable<HttpDefault<User>> getUserdata(
-            @Query("token")String token,
-            @Query("id")int id
+            @Query("token") String token,
+            @Query("id") int id
     );
-
 
 
     @POST("user/resetpsd")
     Observable<HttpDefault> resetPassword(
-            @Query("name") String name,
+            @Query("name") String tel,
             @Query("password") String password,
-            @Query("oldpsd")String oldpsd
+            @Query("oldpsd") String oldpsd
     );
-
 
 
 }

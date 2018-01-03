@@ -2,7 +2,6 @@ package fragment;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +11,9 @@ import com.example.swapanytime.MainActivity;
 import com.example.swapanytime.R;
 
 import base.baseFragment;
-import utils.LogUtils;
-
-import static com.example.swapanytime.R.id.btn_jump;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by weijie on 2017/9/24.
@@ -23,7 +22,9 @@ import static com.example.swapanytime.R.id.btn_jump;
 public class SpalshIndex extends baseFragment {
 
 
-    private static final String  TAG = SpalshIndex.class.getSimpleName();
+    private static final String TAG = SpalshIndex.class.getSimpleName();
+    @Bind(R.id.btn_jump_splashindex)
+    Button btnJumpSplashindex;
 
 
     //计时器
@@ -36,7 +37,7 @@ public class SpalshIndex extends baseFragment {
         @Override
         public void onFinish() {
             btn_jump_index.setText("跳过(" + 0 + "s)");
-            goToActivity( MainActivity.class);
+            goToActivity(MainActivity.class);
 
         }
     };
@@ -66,7 +67,6 @@ public class SpalshIndex extends baseFragment {
 
     @Override
     protected void initEvent() {
-        btn_jump_index.setOnClickListener(this);
         startClock();
 
     }
@@ -87,19 +87,6 @@ public class SpalshIndex extends baseFragment {
         super.onFragmentVisibleChange(IsVisible);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_jump_splashindex:
-                if (countDownTimer != null) {
-                    countDownTimer.cancel();
-                }
-                goToActivity( MainActivity.class);
-                break;
-            default:
-                break;
-        }
-    }
 
     @Override
     public void onDestroy() {
@@ -107,5 +94,27 @@ public class SpalshIndex extends baseFragment {
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @OnClick(R.id.btn_jump_splashindex)
+    public void onViewClicked() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        goToActivity( MainActivity.class);
     }
 }

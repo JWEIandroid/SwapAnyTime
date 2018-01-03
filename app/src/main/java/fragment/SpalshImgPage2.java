@@ -48,10 +48,6 @@ public class SpalshImgPage2 extends baseFragment {
 
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

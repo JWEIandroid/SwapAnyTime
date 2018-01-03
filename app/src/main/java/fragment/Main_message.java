@@ -60,10 +60,6 @@ public class Main_message extends baseFragment {
 
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
 
 
 

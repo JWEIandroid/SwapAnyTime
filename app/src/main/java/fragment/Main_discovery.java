@@ -36,8 +36,5 @@ public class Main_discovery extends baseFragment {
 
     }
 
-    @Override
-    public void onClick(View v) {
 
-    }
 }

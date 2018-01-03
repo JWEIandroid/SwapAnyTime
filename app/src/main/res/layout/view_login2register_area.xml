@@ -7,6 +7,20 @@
     android:background="@color/transparent"
     >
 
+
+    <TextView
+        android:id="@+id/text_resetpsd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="找回密码"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
     <!--Login area-->
 
     <LinearLayout
@@ -339,6 +353,153 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="30dp"
             />
+
+
+    </LinearLayout>
+
+    <!--ResetPsd area-->
+
+    <LinearLayout
+        android:id="@+id/child_resetpsdarea"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="120dp"
+        android:visibility="gone"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@color/transparent">
+
+
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/oldpsd_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:paddingLeft="30dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="15dp"
+                android:textColor="@color/white"
+                android:textCursorDrawable="@drawable/cursorcolor"
+                android:textSize="15sp"
+                android:hint="请输入旧密码"
+                android:textColorHint="@color/white"
+                android:inputType="number"
+                app:theme="@style/mEdittext"
+                />
+
+        </FrameLayout>
+
+
+        <!--下划线-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hui"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@color/transparent">
+
+
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/newpsd_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:paddingLeft="30dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="15dp"
+                android:textColor="@color/white"
+                android:textCursorDrawable="@drawable/cursorcolor"
+                android:textSize="15sp"
+                android:hint="请输入新密码"
+                android:textColorHint="@color/white"
+                android:inputType="number"
+                app:theme="@style/mEdittext"
+                />
+
+        </FrameLayout>
+
+        <!--下划线-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hui"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@color/transparent">
+
+
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/psd_confirm_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:paddingLeft="30dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="15dp"
+                android:textColor="@color/white"
+                android:textCursorDrawable="@drawable/cursorcolor"
+                android:textSize="15sp"
+                android:inputType="textPassword"
+                android:hint="再次输入新密码"
+                android:textColorHint="@color/white"
+                app:theme="@style/mEdittext"
+                />
+
+        </FrameLayout>
+
+        <!--下划线-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/hui"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            />
+
+        <TextView
+            android:id="@+id/btn_resetpsd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/btn_unenabled_shape"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="确认"
+            android:textColor="@color/white" />
+
+
 
 
     </LinearLayout>

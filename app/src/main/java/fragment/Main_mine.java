@@ -1,7 +1,6 @@
 package fragment;
 
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 
 import com.baoyz.actionsheet.ActionSheet;
 import com.bumptech.glide.Glide;
+import com.example.swapanytime.LoginActivity;
 import com.example.swapanytime.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -24,8 +24,8 @@ import api.UserAPI;
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import constant.NetConstant;
 import entiry.HttpDefault;
 import entiry.User;
 import io.reactivex.Observable;
@@ -50,6 +50,8 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
 
     private static final long LOGIN_TIMEOUT = 30;
+
+
     private static MGalleryFinalUtils instance = null;
 
     @Bind(R.id.ic_forward)
@@ -96,6 +98,29 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
     private BAR_STATUS bar_status;
 
+    @OnClick({R.id.ic_forward, R.id.mine_head, R.id.mine_name, R.id.mine_desc, R.id.mine_titlebar, R.id.title_name, R.id.collapsingToolbarLayout})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+
+
+            case R.id.ic_forward:
+                break;
+            case R.id.mine_head:
+                showActionsheet();
+                break;
+            case R.id.mine_name:
+                break;
+            case R.id.mine_desc:
+                break;
+            case R.id.mine_titlebar:
+                break;
+            case R.id.title_name:
+                break;
+            case R.id.collapsingToolbarLayout:
+                break;
+        }
+    }
+
     // 标题栏状态 : 展开,折叠,中间
     private enum BAR_STATUS {
         EXPANDED, COLLAPSED, INTERNEDIATE
@@ -132,24 +157,10 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
             }
         });
 
-        mineHead.setOnClickListener(this);
 
         if (checkIsLogin()) {
             readLocaldata(token_read, userid_read);
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()) {
-
-            case R.id.mine_head:
-                showActionsheet();
-                break;
-
-        }
-
     }
 
 
@@ -227,7 +238,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         return options;
     }
 
-    //本地数据读取登陆用户信息
+    //本地数据读取登陆用户信息:本地数据包括token和id
     private static User user_data = null;
 
     //检查登陆状态
@@ -238,19 +249,18 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         token_read = sharedPreferences.getString("token", null);
         userid_read = Integer.parseInt(sharedPreferences.getString("userid", null));
 
-
         if (userid_read == 0 & token_read == null) {
             return false;
         }
         LogUtils.d("weijie", "本地登录信息：" + "token:" + token_read + "\n" + "userid:" + userid_read);
-        if (userid_read != 0) {
-            if (checktoken(token_read)) {
-                return true;
-            } else {
-                return false;
-            }
+
+        if (checktoken(token_read)) {
+            return true;
+        } else {
+            showToast("用户信息过期，请重新登录", ToastDuration.SHORT);
+            return false;
         }
-        return false;
+
     }
 
     //检查token是否过期
@@ -259,7 +269,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         long now = System.currentTimeMillis();
         StringBuilder sb = new StringBuilder(token);
         long time = Long.parseLong(sb.substring(sb.length() - 13, sb.length()));
-        LogUtils.d("weijie", "token time:" + time);
+        LogUtils.d("weijie", "token :" + time);
         long pasttime = (now - time) / (60 * 1000L);
         LogUtils.d("weijie", "token还有：" + (LOGIN_TIMEOUT - pasttime) + "分钟过期");
 
@@ -271,13 +281,14 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         return true;
     }
 
-
+    //从本地数据读取的token id headimg;
     private String token_read = null;
     private int userid_read = 0;
+
     Main_mine main_mine = this;
 
 
-    //根据本地用户数据读取
+    //根据token,id请求客户信息
     private User readLocaldata(String token, int userid) {
         if (token != null & userid != 0) {
             Observable<HttpDefault<User>> observable = SwapNetUtils.createAPI(UserAPI.class).getUserdata(token, userid);
@@ -292,22 +303,22 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                         @Override
                         public void onNext(@NonNull HttpDefault<User> userHttpDefault) {
                             if (userHttpDefault.getError_code() == 0) {
+                                //请求到的用户
                                 user_data = userHttpDefault.getData();
-                                LogUtils.d("weijie", "成功读取用户:"+user_data.getHeadimg());
-                                LogUtils.d("weijie", "成功读取用户-1");
+                                LogUtils.d("weijie", "成功读取用户:" + user_data.getTel());
+                                //更新头像
                                 Glide.with(main_mine).load(user_data.getHeadimg()).asBitmap().centerCrop().into(mineHead);
                             }
-
                         }
 
                         @Override
                         public void onError(@NonNull Throwable e) {
+                            LogUtils.d(getTag(), "请求用户信息出错");
                             LogUtils.d(getTag(), e.getMessage());
                         }
 
                         @Override
                         public void onComplete() {
-
                         }
                     });
 
@@ -315,12 +326,6 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         return user_data;
     }
 
-    //根据url读取图片
-    private void loadPicData(String headimg) {
-
-
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

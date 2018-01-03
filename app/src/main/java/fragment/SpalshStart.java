@@ -24,12 +24,16 @@ import butterknife.OnClick;
 public class SpalshStart extends baseFragment {
 
     private final String TAG = SpalshStart.class.getSimpleName();
-    @Bind(R.id.splashstart_bg)
-    ImageView splashstartBg;
-    @Bind(R.id.btn_splashstart)
-    Button btnSplashstart;
     @Bind(R.id.btn_jump)
     Button btn_jump;
+    @Bind(R.id.splashstart_bg)
+    ImageView splashstartBg;
+    @Bind(R.id.p1)
+    ImageView p1;
+    @Bind(R.id.p2)
+    ImageView p2;
+    @Bind(R.id.p3)
+    ImageView p3;
 
 
     @Override
@@ -56,7 +60,7 @@ public class SpalshStart extends baseFragment {
             @Override
             public void onFinish() {
 //                btn_jump.setText("跳过(" + 0 + "s)");
-                goToActivity( MainActivity.class);
+                goToActivity(MainActivity.class);
 
             }
         };
@@ -69,9 +73,7 @@ public class SpalshStart extends baseFragment {
 
     @Override
     protected void initEvent() {
-        btn_jump.setOnClickListener(this);
     }
-
 
 
     private CountDownTimer countDownTimer;
@@ -93,21 +95,6 @@ public class SpalshStart extends baseFragment {
     private void startClock() {
         btn_jump.setVisibility(View.VISIBLE);
         countDownTimer.start();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_jump:
-            case R.id.btn_splashstart:
-                if (countDownTimer != null) {
-                    countDownTimer.cancel();
-                }
-                goToActivity( MainActivity.class);
-                break;
-            default:
-                break;
-        }
     }
 
 
@@ -133,4 +120,25 @@ public class SpalshStart extends baseFragment {
         ButterKnife.unbind(this);
     }
 
+    @OnClick({R.id.splashstart_bg, R.id.btn_splashstart, R.id.btn_jump, R.id.p1, R.id.p2, R.id.p3})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.splashstart_bg:
+                break;
+            case R.id.btn_splashstart:
+                break;
+            case R.id.btn_jump:
+                if (countDownTimer != null) {
+                    countDownTimer.cancel();
+                }
+                goToActivity( MainActivity.class);
+                break;
+            case R.id.p1:
+                break;
+            case R.id.p2:
+                break;
+            case R.id.p3:
+                break;
+        }
+    }
 }
