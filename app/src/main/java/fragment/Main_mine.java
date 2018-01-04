@@ -18,6 +18,7 @@ import com.example.swapanytime.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.io.File;
 import java.util.List;
 
 import api.UserAPI;
@@ -35,6 +36,9 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import minterface.GalleryfinalActionListener;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import ui.CircleImageView;
 import utils.LogUtils;
 import utils.MGalleryFinalUtils;
@@ -73,6 +77,9 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
     //登陆状态
     private boolean islogin = false;
+
+    //拍照、打开相册取的的文件
+    File file_result = null;
 
 
     @Override
@@ -195,6 +202,8 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                         PhotoInfo photoInfo = list.get(0);
                         DisplayImageOptions options = initGalleryfinalActionConfig();
                         ImageLoader.getInstance().displayImage("file:/" + photoInfo.getPhotoPath(), mineHead, options);
+
+                        file_result = new File(photoInfo.getPhotoPath());
                     }
 
                     @Override
@@ -213,6 +222,9 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                         PhotoInfo photoInfo = list.get(0);
                         DisplayImageOptions options = initGalleryfinalActionConfig();
                         ImageLoader.getInstance().displayImage("file:/" + photoInfo.getPhotoPath(), mineHead, options);
+
+                        file_result = new File(photoInfo.getPhotoPath());
+                        uploadFile(46,file_result,"file");
                     }
 
                     @Override
@@ -247,7 +259,10 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         //查看是否已经登录
         SharedPreferences sharedPreferences = this.getContext().getSharedPreferences("base64", MODE_PRIVATE);
         token_read = sharedPreferences.getString("token", null);
-        userid_read = Integer.parseInt(sharedPreferences.getString("userid", null));
+        String userid_data = sharedPreferences.getString("userid", null);
+        if (userid_data != null) {
+            userid_read = Integer.parseInt(sharedPreferences.getString("userid", null));
+        }
 
         if (userid_read == 0 & token_read == null) {
             return false;
@@ -257,6 +272,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         if (checktoken(token_read)) {
             return true;
         } else {
+//            goToActivity(Login.class);
             showToast("用户信息过期，请重新登录", ToastDuration.SHORT);
             return false;
         }
@@ -280,6 +296,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
         return true;
     }
+
 
     //从本地数据读取的token id headimg;
     private String token_read = null;
@@ -326,6 +343,48 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         return user_data;
     }
 
+
+    //上传文件到服务器
+    private boolean uploadFile(int userid,File file, String paramsname) {
+
+        if (!file.exists()) {
+            return false;
+        }
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData(paramsname, file.getName(), requestBody);
+
+        String description_title = "";
+        RequestBody description = RequestBody.create(
+                        MediaType.parse("multipart/form-data"), description_title);
+
+
+        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(UserAPI.class).updateHeadImg(userid,body);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<String>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<String> stringHttpDefault) {
+
+                            LogUtils.d(getmTag(),"upload status"+stringHttpDefault.getMessage());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                         LogUtils.d(getmTag(),"upload error:"+e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        return true;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -6,6 +6,8 @@ package constant;
 
 public class NetConstant {
 
+
     public  static  final String IP = "192.168.218.153";
+//    public  static  final String IP = "192.168.218.153";
 
 }

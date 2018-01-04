@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -133,8 +134,7 @@ public class Login extends baseFragment {
 
         final ContentUtils contentUtils = ContentUtils.getInstance();
 
-
-        TextWatcher textWatcher_et_lenth6 = new TextWatcher() {
+        TextWatcher login_watcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -147,31 +147,25 @@ public class Login extends baseFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                boolean step_confirm = false;
+                String account = accountEt.getText().toString();
+                String psd = psdEt.getText().toString();
 
-                if (!contentUtils.isNumLegal(psdRegEt.getText().toString(), 6)) {
-                    showSnackBar("密码长度不对欸 ?", ToastDuration.SHORT);
+                if (account.length() != 11 ||
+                        TextUtils.isEmpty(psd) ||
+                        !contentUtils.isNumLegal(psd, 6) ||
+                        !contentUtils.isMobileNO(account)) {
                     Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_unenabled_shape);
-                    btnReg.setBackground(drawable);
-                    return;
-                }
-                step_confirm = true;
-                if (contentUtils.isContentLegal("" + phoneEt.getText().toString()) &
-                        contentUtils.isMobileNO(phoneEt.getText().toString()) &
-                        contentUtils.isContentLegal("" + codeEt.getText().toString()) &
-                        contentUtils.isNumLegal("" + codeEt.getText().toString(), 4)
-                        ) {
-                    if (step_confirm) {
-                        Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
-                        btnReg.setBackground(drawable);
-                    }
-                    return;
+                    btnLogin.setBackground(drawable);
+                    btnLogin.setEnabled(false);
+                } else {
+                    Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
+                    btnLogin.setBackground(drawable);
+                    btnLogin.setEnabled(true);
                 }
             }
         };
 
-        //登录--账号输入
-        accountEt.addTextChangedListener(new TextWatcher() {
+        TextWatcher reg_watcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -185,69 +179,30 @@ public class Login extends baseFragment {
             @Override
             public void afterTextChanged(Editable s) {
 
-                boolean step_confirm = false;
+                String phone = phoneEt.getText().toString();
+                String code = codeEt.getText().toString();
+                String psd_reg = psdRegEt.getText().toString();
 
-                if (!contentUtils.isMobileNO(accountEt.getText().toString())) {
-                    showSnackBar("手机号码不对欸 ?", ToastDuration.SHORT);
-                    Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_unenabled_shape);
-                    btnLogin.setBackground(drawable);
-                    return;
-                }
-                step_confirm = true;
-                if (contentUtils.isContentLegal("" + psdEt.getText().toString()) &
-                        contentUtils.isNumLegal(psdEt.getText().toString(), 6)) {
-                    if (step_confirm) {
-                        Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
-                        btnLogin.setBackground(drawable);
-                    }
-                    return;
-                }
-            }
-        });
-        //登录--密码输入
-        psdEt.addTextChangedListener(textWatcher_et_lenth6);
-
-        //注册--账号输入
-        phoneEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                boolean step_confirm = false;
-
-                if (!contentUtils.isMobileNO(phoneEt.getText().toString())) {
-                    showSnackBar("手机号码不对欸 ?", ToastDuration.SHORT);
+                if (phone.length() != 11 ||
+                        TextUtils.isEmpty(code) ||
+                        TextUtils.isEmpty(psd_reg) ||
+                        !contentUtils.isMobileNO(phone) ||
+                        !contentUtils.isNumLegal(psd_reg, 6)
+                        ) {
                     Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_unenabled_shape);
                     btnReg.setBackground(drawable);
-                    return;
-                }
-                step_confirm = true;
-                if (contentUtils.isContentLegal("" + psdRegEt.getText().toString()) &
-                        contentUtils.isNumLegal(psdRegEt.getText().toString(), 6) &
-                        contentUtils.isContentLegal(codeEt.getText().toString()) &
-                        contentUtils.isNumLegal(codeEt.getText().toString(), 4)
-                        ) {
-                    if (step_confirm) {
-                        Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
-                        btnReg.setBackground(drawable);
-                    }
-                    return;
+                    btnReg.setEnabled(false);
+                } else {
+                    Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
+                    btnReg.setBackground(drawable);
+                    btnReg.setEnabled(true);
                 }
             }
-        });
-        //注册--验证码输入
-        codeEt.addTextChangedListener(new TextWatcher() {
+        };
+
+        TextWatcher reset_watcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 
             }
 
@@ -258,38 +213,44 @@ public class Login extends baseFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                boolean step_confirm = false;
 
-                if (!contentUtils.isNumLegal(codeEt.getText().toString(), 4)) {
-                    showSnackBar("验证码不对欸 ?", ToastDuration.SHORT);
-                    Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_unenabled_shape);
-                    btnReg.setBackground(drawable);
-                    return;
-                }
-                step_confirm = true;
-                if (contentUtils.isContentLegal("" + phoneEt.getText().toString()) &
-                        contentUtils.isMobileNO(phoneEt.getText().toString()) &
-                        contentUtils.isContentLegal(psdRegEt.getText().toString()) &
-                        contentUtils.isNumLegal(psdRegEt.getText().toString(), 6)
+                String oldpsd = oldpsdEt.getText().toString();
+                String newpsd = newpsdEt.getText().toString();
+                String confirmpsd = psdConfirmEt.getText().toString();
+
+                if (TextUtils.isEmpty(oldpsd) ||
+                        TextUtils.isEmpty(newpsd) ||
+                        TextUtils.isEmpty(confirmpsd) ||
+                        oldpsd.length() < 6 ||
+                        newpsd.length() < 6 ||
+                        confirmpsd.length() < 6
                         ) {
-                    if (step_confirm) {
-                        Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
-                        btnReg.setBackground(drawable);
-                    }
-                    return;
+                    Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_unenabled_shape);
+                    btnResetpsd.setBackground(drawable);
+                    btnResetpsd.setEnabled(false);
+                } else {
+                    Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
+                    btnResetpsd.setBackground(drawable);
+                    btnResetpsd.setEnabled(true);
                 }
             }
-        });
-        //注册--密码输入
-        psdRegEt.addTextChangedListener(textWatcher_et_lenth6);
+        };
 
-        //重设密码
-        oldpsdEt.addTextChangedListener(textWatcher_et_lenth6);
-        newpsdEt.addTextChangedListener(textWatcher_et_lenth6);
-        psdConfirmEt.addTextChangedListener(textWatcher_et_lenth6);
+        //登录--监听
+        accountEt.addTextChangedListener(login_watcher);
+        psdEt.addTextChangedListener(login_watcher);
+
+        //注册--监听
+        phoneEt.addTextChangedListener(reg_watcher);
+        codeEt.addTextChangedListener(reg_watcher);
+        psdRegEt.addTextChangedListener(reg_watcher);
+
+        //重设密码-监听
+        oldpsdEt.addTextChangedListener(reset_watcher);
+        newpsdEt.addTextChangedListener(reset_watcher);
+        psdConfirmEt.addTextChangedListener(reset_watcher);
 
     }
-
 
 
     @Override

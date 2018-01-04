@@ -50,7 +50,7 @@ public class ContentUtils {
 
     public boolean isNumLegal(String num, int length) {
 
-        if (num.length() != length) {
+        if (num.length() < length) {
             return false;
         }
         return true;
