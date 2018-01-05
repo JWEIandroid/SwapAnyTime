@@ -22,26 +22,28 @@ import retrofit2.http.Query;
 
 public interface UserAPI {
 
-
+    //登录
     @POST("user/login")
     Observable<HttpDefault<User>> login(
             @Query("tel") String tel,
             @Query("password") String password
     );
 
+    //注册
     @POST("user/register")
     Observable<HttpDefault<User>> register(
             @Query("tel") String tel,
             @Query("password") String password
     );
 
+    //获取用户信息
     @POST("user/getUserMsg")
     Observable<HttpDefault<User>> getUserdata(
             @Query("token") String token,
             @Query("id") int id
     );
 
-
+    //重置密码
     @POST("user/resetpsd")
     Observable<HttpDefault> resetPassword(
             @Query("name") String tel,
@@ -49,12 +51,13 @@ public interface UserAPI {
             @Query("oldpsd") String oldpsd
     );
 
+    //设置用户头像
     @Multipart
     @POST("user/upload")
     Observable<HttpDefault<String>> updateHeadImg(
             @Query("id") int userid,
             @Part MultipartBody.Part file
-            );
+    );
 
 
 }
