@@ -53,11 +53,18 @@ public interface UserAPI {
 
     //设置用户头像
     @Multipart
-    @POST("user/upload")
+    @POST("file/upload")
     Observable<HttpDefault<String>> updateHeadImg(
             @Query("id") int userid,
             @Part MultipartBody.Part file
     );
+
+    //用户id查询用户信息
+    @POST("user/QueryUser")
+    Observable<HttpDefault<User>> queryUser(
+            @Query("userid")int userid
+    );
+
 
 
 }

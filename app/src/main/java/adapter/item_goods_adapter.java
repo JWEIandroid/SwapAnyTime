@@ -114,14 +114,14 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (viewHolder instanceof NormalHolder) {
 
             Goods good = goods.get(position);
-            User user = good.getPulisher();
+            User user = good.getUser();
 
             Glide.with(context).load(user.getHeadimg()).asBitmap().centerCrop().into(((NormalHolder) viewHolder).head);
             ((NormalHolder) viewHolder).name.setText(good.getName());
-            ((NormalHolder) viewHolder).price.setText("" + (int) good.getPrice_after());
-            ((NormalHolder) viewHolder).desc.setText(good.getDescrtption());
+            ((NormalHolder) viewHolder).price.setText("￥ "+good.getPrice_sale());
+            ((NormalHolder) viewHolder).desc.setText((String) good.getDescription());
 
-            index_good_itemImgAdapter index_good_itemImgAdapter = new index_good_itemImgAdapter(context, good.getImgUrls());
+            index_good_itemImgAdapter index_good_itemImgAdapter = new index_good_itemImgAdapter(context, good.getImgurl());
 
             ((NormalHolder) viewHolder).goods_img.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             ((NormalHolder) viewHolder).goods_img.setAdapter(index_good_itemImgAdapter);

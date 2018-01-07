@@ -30,10 +30,9 @@ public class SwapNetUtils {
     private static Retrofit retrofit = null;
     private static SwapNetUtils instance = null;
 
+    private static final String IP = "172.168.5.97";
 //    private static final String BASEURL = "http://172.168.5.131:8080/";
-        private static final String BASEURL = "http://192.168.218.153:8080/";
-    private static final long DEFAULT_TIMEOUT = 15 * 1000L;
-
+        private static final String BASEURL = "http://"+IP+":8080/";
 
     private static OkHttpClient mOkHttpClient;
     private static Cache cache;

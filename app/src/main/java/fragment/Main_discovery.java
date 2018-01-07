@@ -1,5 +1,6 @@
 package fragment;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.example.swapanytime.R;
@@ -13,6 +14,7 @@ import base.baseFragment;
 public class Main_discovery extends baseFragment {
     @Override
     protected int getContentView() {
+
         return R.layout.fragment_main_discovery;
     }
 

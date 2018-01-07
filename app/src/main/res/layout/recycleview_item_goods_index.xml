@@ -12,9 +12,9 @@
 
         <ui.CircleImageView
             android:id="@+id/head"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="7dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="5dp"
             android:background="@color/white"
@@ -27,8 +27,7 @@
             android:layout_toRightOf="@id/head"
             android:ellipsize="end"
             android:maxLines="1"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="10dp"
             android:text="这是一个昵称点点滴滴" />
 
 
@@ -38,9 +37,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
             android:text="￥100"
             android:textColor="@color/blue"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
 
     </RelativeLayout>
@@ -49,21 +49,26 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/item_goods_listview"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="100dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="10dp"
+        android:padding="2dp"
+        />
 
 
     <TextView
         android:id="@+id/item_goods_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="4dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:text="这是一段非常长的商品描述这是一段非常长的商品描述这是一段非常长的商品描述这是一段非常长的商品描述"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textColor="@color/hui"
+        android:textSize="15sp" />
 
     <ImageView
         android:layout_width="match_parent"

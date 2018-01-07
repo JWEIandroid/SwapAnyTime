@@ -195,6 +195,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
         switch (index) {
             case 0:
+                //拍照
                 instance.initGalleryFinal(true);
                 instance.openCamera(new GalleryfinalActionListener() {
                     @Override
@@ -212,9 +213,8 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                     }
                 });
                 break;
-
-
             case 1:
+                //打开相册
                 instance.initGalleryFinal(true);
                 instance.openAlbumSingle(new GalleryfinalActionListener() {
                     @Override

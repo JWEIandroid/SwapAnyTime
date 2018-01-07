@@ -21,15 +21,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.item_goods_adapter;
+import api.GoodsAPI;
+import api.UserAPI;
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import entiry.Goods;
+import entiry.HttpDefault;
 import entiry.User;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import minterface.OnItemClickListener;
 import utils.ContentUtils;
 import utils.LogUtils;
+import utils.SwapNetUtils;
 
 /**
  * Created by weijie on 2017/10/8.
@@ -52,8 +62,11 @@ public class Main_index extends baseFragment {
     RecyclerView rv_goods;
 
     private ContentUtils contentUtils;
+    //全部商品信息
     private List<Goods> good_list;
+    //一条商品信息的全部图片
     private ArrayList<String> imglist;
+
     private final String imgurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3208352253,560928408&fm=173&s=6F302AC24A7220942AA16C090300C092&w=218&h=146&img.JPEG";
     private final String headurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=480915072,3609081711&fm=173&s=A4D031C41416BA741EE1658903007081&w=218&h=146&img.JPEG";
 
@@ -77,12 +90,19 @@ public class Main_index extends baseFragment {
 
     @Override
     protected void initData() {
-
-
         contentUtils = ContentUtils.getInstance();
 
         good_list = new ArrayList<>();
         imglist = new ArrayList<String>();
+
+        //请求首页商品信息
+        getGoodsmessage();
+
+        for (int i = 0;i<good_list.size();i++){
+
+            User user = good_list.get(i).getUser();
+            imglist = getGoodsImgUrl(good_list.get(i).getImgurl());
+        }
 
         // 初始化商品图片
         for (int j = 0; j < 10; j++) {
@@ -91,17 +111,17 @@ public class Main_index extends baseFragment {
 
         good_list.add(0, null);
 
-
         //初始化每条商品信息
         for (int i = 0; i < 10; i++) {
-            User user = new User.Builder().name("用户" + i).headimg(headurl).build();
-            Goods goods = new Goods.Builder().name("商品 " + i)
-                    .descrtption("商品描述")
-                    .imgUrls(imglist)
-                    .price_after(2000 + i)
-                    .pulisher(user)
-                    .build();
 
+            User user = new User.Builder().name("用户" + i).headimg(headurl).build();
+
+            Goods goods = new Goods.Builder().name("商品 " + i)
+                    .description("这是一段非常长的商品描述这是一段非常长的商品描述这是一段非常长的商品描述这是一段非常长的商品描述")
+                    .imgurl(imglist)
+                    .user(user)
+                    .price_sale(2000 + i)
+                    .build();
             good_list.add(goods);
         }
 
@@ -111,7 +131,7 @@ public class Main_index extends baseFragment {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
-                intent.putStringArrayListExtra("img_list", good_list.get(position).getImgUrls());
+                intent.putStringArrayListExtra("img_list", good_list.get(position).getImgurl());
                 startActivity(intent);
             }
         });
@@ -120,6 +140,111 @@ public class Main_index extends baseFragment {
         rv_goods.setLayoutManager(Linlayoutmanager);
         rv_goods.setAdapter(imgAdapter);
     }
+
+    //请求全部首页展示商品
+    private void getGoodsmessage() {
+
+        Observable<HttpDefault<List<Goods>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).QueryGoods();
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<List<Goods>>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<List<Goods>> goodsHttpDefault) {
+
+                        if (goodsHttpDefault.getError_code() == 0) {
+
+                            if (goodsHttpDefault.getData() != null) {
+                                good_list = goodsHttpDefault.getData();
+                            }
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
+
+
+    //请求商品的图片
+    private void getGoodsImgUrl(int goodid){
+        Observable<HttpDefault<ArrayList<String>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).QueryGoodsAllImgs(goodid);
+        observable.observeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<ArrayList<String>>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<ArrayList<String>> listHttpDefault) {
+                            imglist = listHttpDefault.getData();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //请求用户信息
+    private User getUserMsg(int userid) {
+
+        final User[] user = {null};
+
+        Observable<HttpDefault<User>> observable = SwapNetUtils.createAPI(UserAPI.class).queryUser(userid);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<User>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<User> userHttpDefault) {
+                        user[0] = userHttpDefault.getData();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+                   if (user[0] !=null){
+                       return user[0];
+                   }
+                   return null;
+
+
+    }
+
 
     @OnClick({R.id.icon_head, R.id.search_et, R.id.icon_search, R.id.icon_cancel, R.id.icon_type, R.id.list_good})
     public void onViewClicked(View view) {
@@ -157,9 +282,6 @@ public class Main_index extends baseFragment {
 
 
     }
-
-
-
 
 
     private TextWatcher textWatcher = new TextWatcher() {

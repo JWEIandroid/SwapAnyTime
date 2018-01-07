@@ -1,5 +1,6 @@
 package api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entiry.Goods;
@@ -25,12 +26,11 @@ public interface GoodsAPI {
             @Query("userid") int id
     );
 
-    //查询商品(具体)
-    @POST("goods/getgoodbyname")
-    Observable<HttpDefault<List<Goods>>> getGoodsWithUserid(
-            @Query("name") String name
-    );
-
+//    //查询商品(具体)
+//    @POST("goods/getgoodbyname")
+//    Observable<HttpDefault<List<Goods>>> getGoodsWithUserid(
+//            @Query("name") String name
+//    );
 
     //查询商品(模糊查询)
     @POST("goods/getgoodbyname")
@@ -65,7 +65,7 @@ public interface GoodsAPI {
 
     //查询商品的全部图片
     @POST("goodimgs/getImgByGoodid")
-    Observable<HttpDefault<List<String>>> QueryGoodsAllImgs(
+    Observable<HttpDefault<ArrayList<String>>> QueryGoodsAllImgs(
             @Query("goodid") int id
     );
 
