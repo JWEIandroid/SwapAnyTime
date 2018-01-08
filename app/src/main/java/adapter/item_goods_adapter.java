@@ -113,7 +113,7 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         } else if (viewHolder instanceof NormalHolder) {
 
-            Goods good = goods.get(position);
+            Goods good = goods.get(position-1);
             User user = good.getUser();
 
             Glide.with(context).load(user.getHeadimg()).asBitmap().centerCrop().into(((NormalHolder) viewHolder).head);
@@ -131,7 +131,7 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClickListener.onItemClick(viewHolder.itemView,position);
+                    onItemClickListener.onItemClick(viewHolder.itemView,position-1);
                 }
             });
 
@@ -142,7 +142,7 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return goods.size();
+        return goods.size()+1;
     }
 
 

@@ -19,6 +19,7 @@ import com.example.swapanytime.R;
 import com.example.swapanytime.ShowTypeActivity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import adapter.item_goods_adapter;
@@ -104,14 +105,15 @@ public class Main_index extends baseFragment {
             @Override
             public void updateUI(List<?> list) {
                 good_list = (List<Goods>) list;
-                LogUtils.d("weijie", good_list.get(0).getName());
-                LogUtils.d("weijie", good_list.get(0).getImgurl().get(0));
+
+
+                LogUtils.d("weijie", good_list.size()+"");
+                LogUtils.d("weijie", good_list.get(1).getName());
+                LogUtils.d("weijie", good_list.get(1).getImgurl().get(0));
                 //请求首页商品信息
 //                good_list.add(0, null);
 
                 for (int i = 0; i < good_list.size(); i++) {
-
-                    LogUtils.d("weijie", "run" + i);
 
                     User user = new User.Builder().name("用户" + i)
                             .headimg(headurl)

@@ -32,8 +32,8 @@ public class SwapNetUtils {
     private static Retrofit retrofit = null;
     private static SwapNetUtils instance = null;
 
-//    private static final String IP = "172.168.5.97";
-    private static final String IP = "192.168.218.157";
+    private static final String IP = "172.168.6.174";
+//    private static final String IP = "192.168.218.157";
 //    private static String IP = "";
     private static final String BASEURL = "http://" + IP + ":8080/";
     private static OkHttpClient mOkHttpClient;
