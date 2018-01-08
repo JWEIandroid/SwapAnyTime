@@ -17,7 +17,7 @@ import retrofit2.http.Query;
 public interface GoodsAPI {
 
     //查询所有商品
-    @GET("getgoods/result_goods")
+    @GET("goods/result_goods")
     Observable<HttpDefault<List<Goods>>> QueryGoods();
 
     //查询用户发布的商品

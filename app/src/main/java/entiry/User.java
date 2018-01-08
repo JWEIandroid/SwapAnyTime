@@ -2,6 +2,8 @@ package entiry;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/12/29.
  */
@@ -228,6 +230,9 @@ public class User {
             return new User(this);
         }
     }
+
+
+
 
 
 }

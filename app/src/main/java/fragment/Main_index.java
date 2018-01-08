@@ -1,5 +1,6 @@
 package fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +37,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import minterface.FragmentListener;
 import minterface.OnItemClickListener;
 import utils.ContentUtils;
 import utils.LogUtils;
@@ -67,6 +69,8 @@ public class Main_index extends baseFragment {
     //一条商品信息的全部图片
     private ArrayList<String> imglist;
 
+    private Context context;
+
     private final String imgurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3208352253,560928408&fm=173&s=6F302AC24A7220942AA16C090300C092&w=218&h=146&img.JPEG";
     private final String headurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=480915072,3609081711&fm=173&s=A4D031C41416BA741EE1658903007081&w=218&h=146&img.JPEG";
 
@@ -90,59 +94,60 @@ public class Main_index extends baseFragment {
 
     @Override
     protected void initData() {
+        context = this.getContext();
         contentUtils = ContentUtils.getInstance();
 
         good_list = new ArrayList<>();
         imglist = new ArrayList<String>();
 
-        //请求首页商品信息
-        getGoodsmessage();
-
-        for (int i = 0;i<good_list.size();i++){
-
-            User user = good_list.get(i).getUser();
-            imglist = getGoodsImgUrl(good_list.get(i).getImgurl());
-        }
-
-        // 初始化商品图片
-        for (int j = 0; j < 10; j++) {
-            imglist.add(imgurl);
-        }
-
-        good_list.add(0, null);
-
-        //初始化每条商品信息
-        for (int i = 0; i < 10; i++) {
-
-            User user = new User.Builder().name("用户" + i).headimg(headurl).build();
-
-            Goods goods = new Goods.Builder().name("商品 " + i)
-                    .description("这是一段非常长的商品描述这是一段非常长的商品描述这是一段非常长的商品描述这是一段非常长的商品描述")
-                    .imgurl(imglist)
-                    .user(user)
-                    .price_sale(2000 + i)
-                    .build();
-            good_list.add(goods);
-        }
-
-
-        item_goods_adapter imgAdapter = new item_goods_adapter(this.getContext(), good_list);
-        imgAdapter.setOnItemClickListener(new OnItemClickListener() {
+        getGoodsmessage(new FragmentListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
-                intent.putStringArrayListExtra("img_list", good_list.get(position).getImgurl());
-                startActivity(intent);
+            public void updateUI(List<?> list) {
+                good_list = (List<Goods>) list;
+                LogUtils.d("weijie", good_list.get(0).getName());
+                LogUtils.d("weijie", good_list.get(0).getImgurl().get(0));
+                //请求首页商品信息
+//                good_list.add(0, null);
+
+                for (int i = 0; i < good_list.size(); i++) {
+
+                    LogUtils.d("weijie", "run" + i);
+
+                    User user = new User.Builder().name("用户" + i)
+                            .headimg(headurl)
+                            .build();
+
+                    good_list.get(i).setUserid(user);
+//                    Goods goods = new Goods.Builder().name("商品 " + good_list.get(i).getName())
+//                            .description(good_list.get(i).getDescription())
+//                            .imgurl(good_list.get(i).getImgurl())
+//                            .user(user)
+//                            .price_sale(good_list.get(i).getPrice_sale())
+//                            .build();
+                }
+
+                item_goods_adapter imgAdapter = new item_goods_adapter(context, good_list);
+                imgAdapter.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
+                        intent.putStringArrayListExtra("img_list", good_list.get(position).getImgurl());
+                        startActivity(intent);
+                    }
+                });
+
+                LogUtils.d(getTag(), "首页商品信息条数--------" + good_list.size());
+                rv_goods.setLayoutManager(Linlayoutmanager);
+                rv_goods.setAdapter(imgAdapter);
             }
         });
 
-        LogUtils.d(getTag(), "首页商品信息条数--------" + good_list.size());
-        rv_goods.setLayoutManager(Linlayoutmanager);
-        rv_goods.setAdapter(imgAdapter);
+
     }
 
+
     //请求全部首页展示商品
-    private void getGoodsmessage() {
+    private void getGoodsmessage(final FragmentListener listener) {
 
         Observable<HttpDefault<List<Goods>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).QueryGoods();
         observable.subscribeOn(Schedulers.io())
@@ -155,20 +160,13 @@ public class Main_index extends baseFragment {
 
                     @Override
                     public void onNext(@NonNull HttpDefault<List<Goods>> goodsHttpDefault) {
-
-                        if (goodsHttpDefault.getError_code() == 0) {
-
-                            if (goodsHttpDefault.getData() != null) {
-                                good_list = goodsHttpDefault.getData();
-                            }
-                        }
-
-
+                        good_list = goodsHttpDefault.getData();
+                        listener.updateUI(good_list);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        LogUtils.d("weijie", "error:" + e.getMessage());
                     }
 
                     @Override
@@ -181,7 +179,7 @@ public class Main_index extends baseFragment {
 
 
     //请求商品的图片
-    private void getGoodsImgUrl(int goodid){
+    private void getGoodsImgUrl(int goodid) {
         Observable<HttpDefault<ArrayList<String>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).QueryGoodsAllImgs(goodid);
         observable.observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -193,7 +191,7 @@ public class Main_index extends baseFragment {
 
                     @Override
                     public void onNext(@NonNull HttpDefault<ArrayList<String>> listHttpDefault) {
-                            imglist = listHttpDefault.getData();
+                        imglist = listHttpDefault.getData();
                     }
 
                     @Override
@@ -237,10 +235,10 @@ public class Main_index extends baseFragment {
 
                     }
                 });
-                   if (user[0] !=null){
-                       return user[0];
-                   }
-                   return null;
+        if (user[0] != null) {
+            return user[0];
+        }
+        return null;
 
 
     }

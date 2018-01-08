@@ -77,9 +77,9 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
     //登陆状态
     private boolean islogin = false;
-
     //拍照、打开相册取的的文件
     File file_result = null;
+    Main_mine main_mine = this;
 
 
     @Override
@@ -302,7 +302,6 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     private String token_read = null;
     private int userid_read = 0;
 
-    Main_mine main_mine = this;
 
 
     //根据token,id请求客户信息
@@ -342,7 +341,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         }
         return user_data;
     }
-
+    
 
     //上传文件到服务器
     private boolean uploadFile(int userid,File file, String paramsname) {

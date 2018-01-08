@@ -1,5 +1,6 @@
 package entiry;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by Administrator on 2017/11/21.
  */
 
-public class Goods {
+public class Goods implements Serializable{
 
 
     /**
@@ -31,7 +32,6 @@ public class Goods {
     private Object description;
     private int express;
     private ArrayList<String> imgurl;
-
     private User user;
 
     private Goods(Builder builder) {
@@ -186,6 +186,7 @@ public class Goods {
     public User getUser() {
         return user;
     }
+
 
     public void setUserid(User user) {
         this.user = user;

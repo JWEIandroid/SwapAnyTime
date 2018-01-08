@@ -4,6 +4,8 @@ import android.os.Environment;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
 import api.GoodsAPI;
@@ -30,10 +32,10 @@ public class SwapNetUtils {
     private static Retrofit retrofit = null;
     private static SwapNetUtils instance = null;
 
-    private static final String IP = "172.168.5.97";
-//    private static final String BASEURL = "http://172.168.5.131:8080/";
-        private static final String BASEURL = "http://"+IP+":8080/";
-
+//    private static final String IP = "172.168.5.97";
+    private static final String IP = "192.168.218.157";
+//    private static String IP = "";
+    private static final String BASEURL = "http://" + IP + ":8080/";
     private static OkHttpClient mOkHttpClient;
     private static Cache cache;
 
@@ -53,6 +55,7 @@ public class SwapNetUtils {
                     .baseUrl(BASEURL)
                     .build();
             LogUtils.d("weijie", "init Retrofit success");
+            LogUtils.d("weijie", "BaseUrl:" + BASEURL);
         }
         return retrofit.create(cs);
     }
