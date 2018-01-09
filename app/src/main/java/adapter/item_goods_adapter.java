@@ -26,7 +26,7 @@ import utils.CBViewCreator;
 import utils.LogUtils;
 
 /**
- * Created by Administrator on 2017/11/21.
+ * Created by weijie on 2017/11/21.
  */
 
 public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

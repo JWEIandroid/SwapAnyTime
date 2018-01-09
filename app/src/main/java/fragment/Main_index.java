@@ -164,6 +164,9 @@ public class Main_index extends baseFragment {
                     public void onNext(@NonNull HttpDefault<List<Goods>> goodsHttpDefault) {
                         good_list = goodsHttpDefault.getData();
                         listener.updateUI(good_list);
+                        for (Goods goods:good_list){
+                            getUserMsg(goods.getUser().getId());
+                        }
                     }
 
                     @Override
@@ -178,6 +181,9 @@ public class Main_index extends baseFragment {
                 });
 
     }
+
+
+
 
 
     //请求商品的图片

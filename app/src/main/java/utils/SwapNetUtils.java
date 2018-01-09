@@ -16,6 +16,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.internal.cache.CacheInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -32,9 +33,8 @@ public class SwapNetUtils {
     private static Retrofit retrofit = null;
     private static SwapNetUtils instance = null;
 
-    private static final String IP = "172.168.6.174";
-//    private static final String IP = "192.168.218.157";
-//    private static String IP = "";
+//    private static final String IP = "172.168.6.174";
+    private static final String IP = "192.168.218.157";
     private static final String BASEURL = "http://" + IP + ":8080/";
     private static OkHttpClient mOkHttpClient;
     private static Cache cache;
@@ -78,8 +78,7 @@ public class SwapNetUtils {
                             .writeTimeout(30, TimeUnit.SECONDS)
                             .readTimeout(20, TimeUnit.SECONDS)
                             .build();
-                    LogUtils.d("weijie", String.valueOf("initOkHttpClient: " + mOkHttpClient == null));
-                    LogUtils.d("weijie", "initOkHttpClient: ");
+                    LogUtils.d("weijie", "initOkHttpClient成功: ");
                 }
             }
         }
