@@ -3,6 +3,7 @@ package fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -17,9 +18,14 @@ import com.example.swapanytime.GoodsDetailActivity;
 import com.example.swapanytime.LoginActivity;
 import com.example.swapanytime.R;
 import com.example.swapanytime.ShowTypeActivity;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import adapter.item_goods_adapter;
@@ -63,6 +69,8 @@ public class Main_index extends baseFragment {
     ImageButton iconType;
     @Bind(R.id.list_good)
     RecyclerView rv_goods;
+    @Bind(R.id.refresh_layout_mainindex)
+    SmartRefreshLayout smartRefreshLayout;
 
     private ContentUtils contentUtils;
     //全部商品信息
@@ -71,6 +79,7 @@ public class Main_index extends baseFragment {
     private ArrayList<String> imglist;
 
     private Context context;
+    private static int pagenum = 0;
 
     private final String imgurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3208352253,560928408&fm=173&s=6F302AC24A7220942AA16C090300C092&w=218&h=146&img.JPEG";
     private final String headurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=480915072,3609081711&fm=173&s=A4D031C41416BA741EE1658903007081&w=218&h=146&img.JPEG";
@@ -101,57 +110,16 @@ public class Main_index extends baseFragment {
         good_list = new ArrayList<>();
         imglist = new ArrayList<String>();
 
-        getGoodsmessage(new FragmentListener() {
-            @Override
-            public void updateUI(List<?> list) {
-                good_list = (List<Goods>) list;
-
-
-                LogUtils.d("weijie", good_list.size()+"");
-                LogUtils.d("weijie", good_list.get(1).getName());
-                LogUtils.d("weijie", good_list.get(1).getImgurl().get(0));
-                //请求首页商品信息
-//                good_list.add(0, null);
-
-                for (int i = 0; i < good_list.size(); i++) {
-
-                    User user = new User.Builder().name("用户" + i)
-                            .headimg(headurl)
-                            .build();
-
-                    good_list.get(i).setUserid(user);
-//                    Goods goods = new Goods.Builder().name("商品 " + good_list.get(i).getName())
-//                            .description(good_list.get(i).getDescription())
-//                            .imgurl(good_list.get(i).getImgurl())
-//                            .user(user)
-//                            .price_sale(good_list.get(i).getPrice_sale())
-//                            .build();
-                }
-
-                item_goods_adapter imgAdapter = new item_goods_adapter(context, good_list);
-                imgAdapter.setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
-                        intent.putStringArrayListExtra("img_list", good_list.get(position).getImgurl());
-                        startActivity(intent);
-                    }
-                });
-
-                LogUtils.d(getTag(), "首页商品信息条数--------" + good_list.size());
-                rv_goods.setLayoutManager(Linlayoutmanager);
-                rv_goods.setAdapter(imgAdapter);
-            }
-        });
+        getGoodsmessage(fragmentListener, pagenum);
 
 
     }
 
 
     //请求全部首页展示商品
-    private void getGoodsmessage(final FragmentListener listener) {
+    private void getGoodsmessage(final FragmentListener listener, int pagenum) {
 
-        Observable<HttpDefault<List<Goods>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).QueryGoods();
+        Observable<HttpDefault<List<Goods>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).QueryGoods(pagenum);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<HttpDefault<List<Goods>>>() {
@@ -164,9 +132,9 @@ public class Main_index extends baseFragment {
                     public void onNext(@NonNull HttpDefault<List<Goods>> goodsHttpDefault) {
                         good_list = goodsHttpDefault.getData();
                         listener.updateUI(good_list);
-                        for (Goods goods:good_list){
-                            getUserMsg(goods.getUser().getId());
-                        }
+//                        for (Goods goods : good_list) {
+//                            getUserMsg(goods.getUser().getId());
+//                        }
                     }
 
                     @Override
@@ -180,38 +148,6 @@ public class Main_index extends baseFragment {
                     }
                 });
 
-    }
-
-
-
-
-
-    //请求商品的图片
-    private void getGoodsImgUrl(int goodid) {
-        Observable<HttpDefault<ArrayList<String>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).QueryGoodsAllImgs(goodid);
-        observable.observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HttpDefault<ArrayList<String>>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull HttpDefault<ArrayList<String>> listHttpDefault) {
-                        imglist = listHttpDefault.getData();
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
     }
 
     //请求用户信息
@@ -286,6 +222,9 @@ public class Main_index extends baseFragment {
 
         searchEt.addTextChangedListener(textWatcher);
 
+        smartRefreshLayout.setOnRefreshListener(refreshListener);
+        smartRefreshLayout.setOnLoadmoreListener(loadmoreListener);
+
 
     }
 
@@ -313,6 +252,78 @@ public class Main_index extends baseFragment {
         }
     };
 
+
+    private FragmentListener fragmentListener = new FragmentListener() {
+        @Override
+        public void updateUI(List<?> list) {
+
+            good_list = (List<Goods>) list;
+            LogUtils.d("weijie", good_list.size() + "");
+            LogUtils.d("weijie", good_list.get(1).getName());
+            LogUtils.d("weijie", good_list.get(1).getImgurl().get(0));
+
+            for (int i = 0; i < good_list.size(); i++) {
+
+                User user = new User.Builder().name("用户" + i)
+                        .headimg(headurl)
+                        .build();
+                good_list.get(i).setUserid(user);
+//                    Goods goods = new Goods.Builder().name("商品 " + good_list.get(i).getName())
+//                            .description(good_list.get(i).getDescription())
+//                            .imgurl(good_list.get(i).getImgurl())
+//                            .user(user)
+//                            .price_sale(good_list.get(i).getPrice_sale())
+//                            .build();
+            }
+
+            item_goods_adapter imgAdapter = new item_goods_adapter(context, good_list);
+            imgAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
+                    intent.putStringArrayListExtra("img_list", good_list.get(position).getImgurl());
+                    startActivity(intent);
+                }
+            });
+
+            LogUtils.d(getTag(), "首页商品信息条数--------" + good_list.size());
+            rv_goods.setLayoutManager(Linlayoutmanager);
+            rv_goods.setAdapter(imgAdapter);
+        }
+    };
+
+
+    private OnRefreshListener refreshListener = new OnRefreshListener() {
+
+        @Override
+        public void onRefresh(RefreshLayout refreshlayout) {
+            pagenum = 1;
+            good_list = new ArrayList<>();
+            smartRefreshLayout.autoRefresh();
+            getGoodsmessage(fragmentListener, pagenum);
+            smartRefreshLayout.finishRefresh();
+        }
+    };
+
+    private OnLoadmoreListener loadmoreListener = new OnLoadmoreListener() {
+        @Override
+        public void onLoadmore(RefreshLayout refreshlayout) {
+            smartRefreshLayout.autoLoadmore();
+            List<Goods> list = new ArrayList<>();
+            list = good_list;
+            pagenum++;
+            getGoodsmessage(fragmentListener, pagenum);
+
+
+            Iterator<Goods> iterator = list.iterator();
+            while (iterator.hasNext()){
+                Goods goods = iterator.next();
+            }
+            LogUtils.d(getmTag(), "刷新后数据大小" + list.size());
+            smartRefreshLayout.finishLoadmore();
+
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

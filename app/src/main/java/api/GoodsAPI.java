@@ -17,8 +17,10 @@ import retrofit2.http.Query;
 public interface GoodsAPI {
 
     //查询所有商品
-    @GET("goods/result_goods")
-    Observable<HttpDefault<List<Goods>>> QueryGoods();
+    @POST("goods/result_goods")
+    Observable<HttpDefault<List<Goods>>> QueryGoods(
+            @Query("pagenum")int pagenum
+    );
 
     //查询用户发布的商品
     @POST("goods/getwithUserid")

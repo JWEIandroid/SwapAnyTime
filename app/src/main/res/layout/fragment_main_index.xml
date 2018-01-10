@@ -7,6 +7,7 @@
 
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout_mainindex"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srlDragRate="0.7"
