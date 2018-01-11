@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by Administrator on 2017/12/29.
  */
 
-public class User {
+public class User implements Serializable{
 
 
     /**

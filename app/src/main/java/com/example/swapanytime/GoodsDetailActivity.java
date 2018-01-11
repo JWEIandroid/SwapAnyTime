@@ -50,12 +50,14 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
         rv_data.add("");
 
         if (getIntent() != null) {
-            list = getIntent().getStringArrayListExtra("img_list");
-//            goods = (Goods) getIntent().getSerializableExtra("goodlist");
+
+//            list = getIntent().getParcelableExtra("imglist");
+            goods = (Goods) getIntent().getSerializableExtra("goodsmsg");
+            list = goods.getImgurl();
         }
 
 
-        goodsDetail_imgAdapter = new GoodsDetail_imgAdapter(list, GoodsDetailActivity.this);
+        goodsDetail_imgAdapter = new GoodsDetail_imgAdapter(goods,list, GoodsDetailActivity.this);
         goodsdetailImgs.setAdapter(goodsDetail_imgAdapter);
 
 

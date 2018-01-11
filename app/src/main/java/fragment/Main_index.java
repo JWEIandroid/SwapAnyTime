@@ -70,7 +70,7 @@ public class Main_index extends baseFragment {
     ImageButton iconType;
     @Bind(R.id.list_good)
     RecyclerView rv_goods;
-    @Bind(R.id.refresh_layout_mainindex)
+    @Bind(R.id.refreshlayout_main)
     SmartRefreshLayout smartRefreshLayout;
 
     private ContentUtils contentUtils;
@@ -105,9 +105,9 @@ public class Main_index extends baseFragment {
 
     @Override
     protected void initData() {
+
         context = this.getContext();
         contentUtils = ContentUtils.getInstance();
-
         good_list = new ArrayList<>();
         imglist = new ArrayList<String>();
 
@@ -231,7 +231,7 @@ public class Main_index extends baseFragment {
 
         //返回刷新的list
         @Override
-        public void updateUI(List<?> list) {
+        public void updateUI(final List<?> list) {
 
             good_list = (List<Goods>) list;
             savedata_list = good_list;
@@ -243,8 +243,8 @@ public class Main_index extends baseFragment {
                 @Override
                 public void onItemClick(View view, int position) {
                     Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
-//                    intent.putExtra("goodlist", (Parcelable) good_list.get(position).getImgurl());
-                    intent.putStringArrayListExtra("img_list", good_list.get(position).getImgurl());
+                    intent.putExtra("goodsmsg",good_list.get(position));
+//  intent.putStringArrayListExtra("img_list", good_list.get(position).getImgurl());
                     startActivity(intent);
                 }
             });

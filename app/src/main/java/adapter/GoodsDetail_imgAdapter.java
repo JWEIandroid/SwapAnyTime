@@ -15,6 +15,7 @@ import com.example.swapanytime.R;
 import java.util.List;
 
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import entiry.Goods;
 import ui.CircleImageView;
 import utils.LogUtils;
 
@@ -31,6 +32,8 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     //开始显示三行格式图片的位置
     private int middle = 0;
 
+    private Goods goods;
+
 
     private static final int TYPE_GOOD_TITLE = 1000;
     private static final int TYPE_ONELINE = 1001;
@@ -39,23 +42,23 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int TYPE_COMMENT = 1004;
 
 
-    public GoodsDetail_imgAdapter(List<String> list, Context context) {
+    public GoodsDetail_imgAdapter(Goods goods, List<String> list, Context context) {
         this.list = list;
         this.context = context;
         middle = list.size() / 2;
+        this.goods = goods;
     }
 
 
     @Override
     public int getItemViewType(int position) {
-
         if (position == 0) {
             return TYPE_GOOD_TITLE;
-        } else if (position == list.size()) {
+        } else if (position == list.size() + 1) {
             return TYPE_USE;
-        } else if (position == list.size()+1) {
+        } else if (position == list.size() + 2) {
             return TYPE_COMMENT;
-        } else if (position <= middle) {
+        } else if (position <= middle + 1) {
             return TYPE_ONELINE;
         }
         return TYPE_THREE;
@@ -63,7 +66,7 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return list.size()+2;
+        return list.size() + 3;
     }
 
 
@@ -128,11 +131,22 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         if (holder instanceof GoodsDetail_imgAdapter.NormalImgHolder) {
 
-            Glide.with(context).load(list.get(position-2)).fitCenter().into(((NormalImgHolder) holder).imageView);
+            Glide.with(context).load(list.get(position - 1)).fitCenter().into(((NormalImgHolder) holder).imageView);
 
         } else if (holder instanceof GoodsDetail_imgAdapter.threeLineImgHolder) {
 
-            Glide.with(context).load(list.get(position-2)).fitCenter().into(((threeLineImgHolder) holder).imageView);
+            Glide.with(context).load(list.get(position - 1)).fitCenter().into(((threeLineImgHolder) holder).imageView);
+        } else if (holder instanceof GoodsDetail_imgAdapter.GoodMsgHolder) {
+
+            ((GoodMsgHolder) holder).goodsdetail_desc.setText((String)goods.getDescription());
+
+        } else if (holder instanceof GoodsDetail_imgAdapter.UserMsgHolder) {
+
+            Glide.with(context).load(goods.getUser().getHeadimg()).asBitmap().fitCenter().into(((UserMsgHolder) holder).head);
+
+        } else if (holder instanceof GoodsDetail_imgAdapter.CommentHolder) {
+
+
         }
 
 
@@ -148,7 +162,6 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             goodsdetail_desc = (TextView) itemView.findViewById(R.id.goodsdetail_desc);
         }
     }
-
 
 
     public class NormalImgHolder extends RecyclerView.ViewHolder {
