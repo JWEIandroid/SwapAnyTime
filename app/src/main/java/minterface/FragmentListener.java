@@ -10,4 +10,6 @@ public interface FragmentListener {
 
     public void updateUI(List<?> list);
 
+    public void appenddata(List<?> list);
+
 }

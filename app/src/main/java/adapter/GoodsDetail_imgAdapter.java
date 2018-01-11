@@ -51,9 +51,9 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         if (position == 0) {
             return TYPE_GOOD_TITLE;
-        } else if (position == list.size() - 2) {
+        } else if (position == list.size()) {
             return TYPE_USE;
-        } else if (position == list.size() - 1) {
+        } else if (position == list.size()+1) {
             return TYPE_COMMENT;
         } else if (position <= middle) {
             return TYPE_ONELINE;
@@ -63,7 +63,7 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list.size()+2;
     }
 
 
@@ -128,11 +128,11 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         if (holder instanceof GoodsDetail_imgAdapter.NormalImgHolder) {
 
-            Glide.with(context).load(list.get(position)).fitCenter().into(((NormalImgHolder) holder).imageView);
+            Glide.with(context).load(list.get(position-2)).fitCenter().into(((NormalImgHolder) holder).imageView);
 
         } else if (holder instanceof GoodsDetail_imgAdapter.threeLineImgHolder) {
 
-            Glide.with(context).load(list.get(position)).fitCenter().into(((threeLineImgHolder) holder).imageView);
+            Glide.with(context).load(list.get(position-2)).fitCenter().into(((threeLineImgHolder) holder).imageView);
         }
 
 
@@ -149,6 +149,8 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
+
+
     public class NormalImgHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageView;
@@ -158,7 +160,6 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             imageView = (ImageView) itemView.findViewById(R.id.goods_detailimg_item);
         }
     }
-
 
     public class threeLineImgHolder extends RecyclerView.ViewHolder {
 
@@ -179,7 +180,6 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             head = (CircleImageView) itemView.findViewById(R.id.user_head);
         }
     }
-
 
     public class CommentHolder extends RecyclerView.ViewHolder {
 

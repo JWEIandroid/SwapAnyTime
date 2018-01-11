@@ -114,10 +114,10 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (viewHolder instanceof NormalHolder) {
 
             Goods good = goods.get(position-1);
-            User user = good.getUser();
+            User user = goods.get(position-1).getUser();
 
             Glide.with(context).load(user.getHeadimg()).asBitmap().centerCrop().into(((NormalHolder) viewHolder).head);
-            ((NormalHolder) viewHolder).name.setText(good.getName());
+            ((NormalHolder) viewHolder).name.setText(user.getName());
             ((NormalHolder) viewHolder).price.setText("￥ "+good.getPrice_sale());
             ((NormalHolder) viewHolder).desc.setText((String) good.getDescription());
 

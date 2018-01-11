@@ -3,6 +3,7 @@ package fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -79,12 +80,12 @@ public class Main_index extends baseFragment {
     private ArrayList<String> imglist;
 
     private Context context;
-    private static int pagenum = 0;
+    private static int pagenum = 1;
 
     private final String imgurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3208352253,560928408&fm=173&s=6F302AC24A7220942AA16C090300C092&w=218&h=146&img.JPEG";
     private final String headurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=480915072,3609081711&fm=173&s=A4D031C41416BA741EE1658903007081&w=218&h=146&img.JPEG";
 
-
+    private item_goods_adapter imgAdapter = null;
     private LinearLayoutManager Linlayoutmanager = new LinearLayoutManager(this.getContext());
 
     @Override
@@ -110,14 +111,20 @@ public class Main_index extends baseFragment {
         good_list = new ArrayList<>();
         imglist = new ArrayList<String>();
 
-        getGoodsmessage(fragmentListener, pagenum);
+        getGoodsmessage(fragmentListener, pagenum, 1);
 
 
     }
 
 
-    //请求全部首页展示商品
-    private void getGoodsmessage(final FragmentListener listener, int pagenum) {
+    /**
+     * 请求全部首页展示商品
+     *
+     * @param listener
+     * @param pagenum
+     * @param type     类型 1：刷新  2：加载更多
+     */
+    private void getGoodsmessage(final FragmentListener listener, int pagenum, final int type) {
 
         Observable<HttpDefault<List<Goods>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).QueryGoods(pagenum);
         observable.subscribeOn(Schedulers.io())
@@ -131,10 +138,11 @@ public class Main_index extends baseFragment {
                     @Override
                     public void onNext(@NonNull HttpDefault<List<Goods>> goodsHttpDefault) {
                         good_list = goodsHttpDefault.getData();
-                        listener.updateUI(good_list);
-//                        for (Goods goods : good_list) {
-//                            getUserMsg(goods.getUser().getId());
-//                        }
+                        if (type == 1) {
+                            listener.updateUI(good_list);
+                        } else if (type == 2) {
+                            listener.appenddata(good_list);
+                        }
                     }
 
                     @Override
@@ -150,44 +158,11 @@ public class Main_index extends baseFragment {
 
     }
 
-    //请求用户信息
-    private User getUserMsg(int userid) {
 
-        final User[] user = {null};
-
-        Observable<HttpDefault<User>> observable = SwapNetUtils.createAPI(UserAPI.class).queryUser(userid);
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HttpDefault<User>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull HttpDefault<User> userHttpDefault) {
-                        user[0] = userHttpDefault.getData();
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        if (user[0] != null) {
-            return user[0];
-        }
-        return null;
-
-
-    }
-
-
+    /**
+     * 点击事件
+     * @param view
+     */
     @OnClick({R.id.icon_head, R.id.search_et, R.id.icon_search, R.id.icon_cancel, R.id.icon_type, R.id.list_good})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -221,11 +196,8 @@ public class Main_index extends baseFragment {
     protected void initEvent() {
 
         searchEt.addTextChangedListener(textWatcher);
-
         smartRefreshLayout.setOnRefreshListener(refreshListener);
         smartRefreshLayout.setOnLoadmoreListener(loadmoreListener);
-
-
     }
 
 
@@ -254,41 +226,52 @@ public class Main_index extends baseFragment {
 
 
     private FragmentListener fragmentListener = new FragmentListener() {
+
+        private List<Goods> savedata_list ;
+
+        //返回刷新的list
         @Override
         public void updateUI(List<?> list) {
 
             good_list = (List<Goods>) list;
-            LogUtils.d("weijie", good_list.size() + "");
-            LogUtils.d("weijie", good_list.get(1).getName());
-            LogUtils.d("weijie", good_list.get(1).getImgurl().get(0));
+            savedata_list = good_list;
+            LogUtils.d(getmTag(), "刷新得到商品信息条数：" + good_list.size());
 
-            for (int i = 0; i < good_list.size(); i++) {
-
-                User user = new User.Builder().name("用户" + i)
-                        .headimg(headurl)
-                        .build();
-                good_list.get(i).setUserid(user);
-//                    Goods goods = new Goods.Builder().name("商品 " + good_list.get(i).getName())
-//                            .description(good_list.get(i).getDescription())
-//                            .imgurl(good_list.get(i).getImgurl())
-//                            .user(user)
-//                            .price_sale(good_list.get(i).getPrice_sale())
-//                            .build();
-            }
-
-            item_goods_adapter imgAdapter = new item_goods_adapter(context, good_list);
+            imgAdapter = new item_goods_adapter(context, good_list);
+            imgAdapter.notifyDataSetChanged();
             imgAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
                     Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
+//                    intent.putExtra("goodlist", (Parcelable) good_list.get(position).getImgurl());
                     intent.putStringArrayListExtra("img_list", good_list.get(position).getImgurl());
                     startActivity(intent);
                 }
             });
 
-            LogUtils.d(getTag(), "首页商品信息条数--------" + good_list.size());
             rv_goods.setLayoutManager(Linlayoutmanager);
             rv_goods.setAdapter(imgAdapter);
+            smartRefreshLayout.finishRefresh(1000);
+        }
+
+        //返回加载固定页码的list
+        @Override
+        public void appenddata(List<?> list) {
+
+            for (Goods goods:(List<Goods>)list){
+                LogUtils.d(getmTag(),goods.getName());
+            }
+
+            if (savedata_list==null){
+                return;
+            }
+            int positionstart = savedata_list.size();
+            savedata_list.addAll((List<Goods>)list);
+            good_list = savedata_list;
+            int itemcount = savedata_list.size() -positionstart;
+            imgAdapter.notifyItemRangeInserted(positionstart+1,itemcount);
+            smartRefreshLayout.finishLoadmore(500);
+
         }
     };
 
@@ -297,36 +280,32 @@ public class Main_index extends baseFragment {
 
         @Override
         public void onRefresh(RefreshLayout refreshlayout) {
+            LogUtils.d("refreshlayout","onrefresh");
             pagenum = 1;
             good_list = new ArrayList<>();
-            smartRefreshLayout.autoRefresh();
-            getGoodsmessage(fragmentListener, pagenum);
-            smartRefreshLayout.finishRefresh();
+            getGoodsmessage(fragmentListener, pagenum, 1);
         }
     };
 
     private OnLoadmoreListener loadmoreListener = new OnLoadmoreListener() {
         @Override
         public void onLoadmore(RefreshLayout refreshlayout) {
-            smartRefreshLayout.autoLoadmore();
-            List<Goods> list = new ArrayList<>();
-            list = good_list;
+            LogUtils.d("refreshlayout","loadmore");
+            List<Goods> list = good_list;
             pagenum++;
-            getGoodsmessage(fragmentListener, pagenum);
+            LogUtils.d(getmTag(),"pagenum:"+pagenum);
+            getGoodsmessage(fragmentListener, pagenum, 2);
+//            int positonstart = list.size();
+//            list.addAll(good_list);
+//            int itemcount = list.size() - positonstart;
+//            imgAdapter.notifyItemRangeInserted(positonstart + 1, itemcount);
 
-
-            Iterator<Goods> iterator = list.iterator();
-            while (iterator.hasNext()){
-                Goods goods = iterator.next();
-            }
-            LogUtils.d(getmTag(), "刷新后数据大小" + list.size());
-            smartRefreshLayout.finishLoadmore();
 
         }
     };
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) /**/ {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;

@@ -224,12 +224,12 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                         ImageLoader.getInstance().displayImage("file:/" + photoInfo.getPhotoPath(), mineHead, options);
 
                         file_result = new File(photoInfo.getPhotoPath());
-                        uploadFile(46,file_result,"file");
+                        uploadFile(userid_read, file_result, "file");
                     }
 
                     @Override
                     public void failed(String msg) {
-
+                        LogUtils.d(getmTag(),"打开相册Error:"+msg);
                     }
                 });
                 break;
@@ -253,31 +253,37 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     //本地数据读取登陆用户信息:本地数据包括token和id
     private static User user_data = null;
 
+
     //检查登陆状态
     private boolean checkIsLogin() {
 
-        //查看是否已经登录
+        //检查是否存在本地数据
         SharedPreferences sharedPreferences = this.getContext().getSharedPreferences("base64", MODE_PRIVATE);
         token_read = sharedPreferences.getString("token", null);
         String userid_data = sharedPreferences.getString("userid", null);
-        if (userid_data != null) {
-            userid_read = Integer.parseInt(sharedPreferences.getString("userid", null));
-        }
-
         if (userid_read == 0 & token_read == null) {
             return false;
         }
-        LogUtils.d("weijie", "本地登录信息：" + "token:" + token_read + "\n" + "userid:" + userid_read);
+        if (userid_data != null) {
+            userid_read = Integer.parseInt(sharedPreferences.getString("userid", null));
+        }
+        LogUtils.d("weijie", "本地登录信息：" + "token:" + token_read
+                + "\n" + "userid:" + userid_read);
 
+        //检查登录信息是否过期
         if (checktoken(token_read)) {
             return true;
         } else {
-//            goToActivity(Login.class);
             showToast("用户信息过期，请重新登录", ToastDuration.SHORT);
             return false;
         }
 
     }
+
+
+    //从本地数据读取的token id headimg;
+    private String token_read = null;
+    private int userid_read = 0;
 
     //检查token是否过期
     private boolean checktoken(String token) {
@@ -296,12 +302,6 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
         return true;
     }
-
-
-    //从本地数据读取的token id headimg;
-    private String token_read = null;
-    private int userid_read = 0;
-
 
 
     //根据token,id请求客户信息
@@ -341,10 +341,10 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         }
         return user_data;
     }
-    
+
 
     //上传文件到服务器
-    private boolean uploadFile(int userid,File file, String paramsname) {
+    private boolean uploadFile(int userid, File file, String paramsname) {
 
         if (!file.exists()) {
             return false;
@@ -354,10 +354,10 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
         String description_title = "";
         RequestBody description = RequestBody.create(
-                        MediaType.parse("multipart/form-data"), description_title);
+                MediaType.parse("multipart/form-data"), description_title);
 
 
-        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(UserAPI.class).updateHeadImg(userid,body);
+        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(UserAPI.class).updateHeadImg(userid, body);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<HttpDefault<String>>() {
@@ -369,12 +369,12 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                     @Override
                     public void onNext(@NonNull HttpDefault<String> stringHttpDefault) {
 
-                            LogUtils.d(getmTag(),"upload status"+stringHttpDefault.getMessage());
+                        LogUtils.d(getmTag(), "upload status" + stringHttpDefault.getMessage());
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                         LogUtils.d(getmTag(),"upload error:"+e.getMessage());
+                        LogUtils.d(getmTag(), "upload error:" + e.getMessage());
                     }
 
                     @Override

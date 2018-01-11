@@ -14,6 +14,7 @@ import adapter.GoodsDetail_imgAdapter;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import entiry.Goods;
 
 /**
  * Created by Administrator on 2017/11/28.
@@ -39,6 +40,7 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     private List<String> list;
     private List<String> rv_data;
     private GoodsDetail_imgAdapter goodsDetail_imgAdapter;
+    private Goods goods;
 
 
     @Override
@@ -49,14 +51,11 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
         if (getIntent() != null) {
             list = getIntent().getStringArrayListExtra("img_list");
+//            goods = (Goods) getIntent().getSerializableExtra("goodlist");
         }
-        rv_data.addAll(list);
-        rv_data.add("");
-        rv_data.add("");
 
 
-
-        goodsDetail_imgAdapter = new GoodsDetail_imgAdapter(rv_data, GoodsDetailActivity.this);
+        goodsDetail_imgAdapter = new GoodsDetail_imgAdapter(list, GoodsDetailActivity.this);
         goodsdetailImgs.setAdapter(goodsDetail_imgAdapter);
 
 
