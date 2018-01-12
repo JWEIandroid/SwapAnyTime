@@ -42,7 +42,9 @@ public class MsgBoardActivity extends baseActivity {
         for (int i = 0; i < 20; i++) {
             if (i % 2 == 0) {
                 Msg msg = new Msg.Builder().type(0)
-                        .content("傻逼你好啊你好啊你好啊你啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊" + i)
+                        .content("我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思\n" +
+                                "我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思\n" +
+                                "我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思" + i)
                         .isLeft(1)
                         .build();
                 msgdata.add(msg);

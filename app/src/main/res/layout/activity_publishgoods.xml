@@ -11,21 +11,23 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <include layout="@layout/titlebar" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:background="@color/white"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <ImageView
                     android:id="@+id/publish_ic_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:layout_gravity="center"
                     android:src="@mipmap/camera_150" />
 
@@ -52,9 +54,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="3dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <android.support.v7.widget.AppCompatEditText
                     android:layout_width="match_parent"
@@ -78,8 +82,10 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white">
+                android:layout_height="0dp"
+                android:background="@color/white"
+                android:layout_weight="7"
+                >
 
                 <LinearLayout
                     android:id="@+id/price_lin"
@@ -114,7 +120,9 @@
                         android:layout_marginTop="10dp"
                         android:background="@null"
                         android:maxLines="1"
-                        android:hint="0.00" />
+                        android:hint="0.00"
+                        android:inputType="number"
+                        />
                 </LinearLayout>
 
 
@@ -153,6 +161,7 @@
                         android:layout_marginTop="10dp"
                         android:background="@null"
                         android:maxLines="1"
+                        android:inputType="number"
                         android:hint="0.00"
 
                         />
@@ -194,6 +203,7 @@
                         android:layout_toRightOf="@id/yunfei"
                         android:background="@null"
                         android:maxLines="1"
+                        android:inputType="number"
                         android:hint="0.00" />
                 </LinearLayout>
 
@@ -204,7 +214,9 @@
             <LinearLayout
                 android:id="@+id/type_lin"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:background="@color/white"
                 >
@@ -238,7 +250,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
-                android:padding="10dp">
+                android:padding="10dp"
+                >
 
                 <TextView
                     android:id="@+id/btn_publish"
