@@ -6,7 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -49,7 +51,7 @@ public class mBottomFragment extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(this.getContext()).inflate(R.layout.bottomdialog_type, viewGroup, false);
+        View view = LayoutInflater.from(this.getContext()).inflate(R.layout.bottomdialog_type, container, false);
 
 //        ListView left = (ListView) view.findViewById(R.id.bottomdialog_type_left);
 //        ListView right = (ListView) view.findViewById(R.id.bottomdialog_type_right);
@@ -59,8 +61,8 @@ public class mBottomFragment extends BottomSheetDialogFragment {
         RecyclerView right = (RecyclerView) view.findViewById(R.id.bottomdialog_type_right);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext());
-        SimpleRecycleViewAdapter simpleRecycleViewAdapter1 = new SimpleRecycleViewAdapter(this.getContext(),data_left,viewGroup);
-        SimpleRecycleViewAdapter simpleRecycleViewAdapter2 = new SimpleRecycleViewAdapter(this.getContext(),data_right,viewGroup);
+        SimpleRecycleViewAdapter simpleRecycleViewAdapter1 = new SimpleRecycleViewAdapter(this.getContext(), data_left, viewGroup);
+        SimpleRecycleViewAdapter simpleRecycleViewAdapter2 = new SimpleRecycleViewAdapter(this.getContext(), data_right, viewGroup);
 
         left.setLayoutManager(linearLayoutManager);
         right.setLayoutManager(linearLayoutManager1);

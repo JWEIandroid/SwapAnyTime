@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +21,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapter.SimpleRecycleViewAdapter;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.finalteam.galleryfinal.widget.HorizontalListView;
 import fragment.mBottomFragment;
+import utils.DialogUtil;
 
 /**
  * Created by weij on 2017/12/2.
@@ -147,9 +150,27 @@ public class PublishGoodsActivity extends baseActivity {
 
     public void openBottomFragment() {
 
-        mBottomFragment  mBottomFragment = new mBottomFragment();
-        mBottomFragment.setParams(publishGoodsImgs,data_left,data_right);
-        mBottomFragment.show(getSupportFragmentManager(),"fragmentDialog");
+
+        DialogUtil.showBottomDialog(R.layout.bottomdialog_type,R.style.ActionButtomDialogStyle, PublishGoodsActivity.this, new DialogUtil.IDialogInitListener() {
+
+            @Override
+            public void initDialogView(View view) {
+                RecyclerView left = (RecyclerView) view.findViewById(R.id.bottomdialog_type_left);
+                RecyclerView right = (RecyclerView) view.findViewById(R.id.bottomdialog_type_right);
+                LinearLayoutManager linearLayout1 = new LinearLayoutManager(PublishGoodsActivity.this);
+                LinearLayoutManager linearLayout2 = new LinearLayoutManager(PublishGoodsActivity.this);
+                SimpleRecycleViewAdapter simpleRecycleViewAdapter1 = new SimpleRecycleViewAdapter(PublishGoodsActivity.this, data_left, null);
+                SimpleRecycleViewAdapter simpleRecycleViewAdapter2 = new SimpleRecycleViewAdapter(PublishGoodsActivity.this, data_right, null);
+
+                left.setLayoutManager(linearLayout1);
+                left.setAdapter(simpleRecycleViewAdapter1);
+                right.setLayoutManager(linearLayout2);
+                right.setAdapter(simpleRecycleViewAdapter2);
+            }
+        }).show();
+//        mBottomFragment mBottomFragment = new mBottomFragment();
+//        mBottomFragment.setParams(publishGoodsImgs, data_left, data_right);
+//        mBottomFragment.show(getSupportFragmentManager(), "fragmentDialog");
 
 
     }

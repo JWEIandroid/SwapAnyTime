@@ -20,9 +20,9 @@ public class SimpleRecycleViewAdapter extends RecyclerView.Adapter<SimpleRecycle
 
     private List<String> data = new ArrayList<>();
     private Context context;
-    private ViewGroup viewGroup;
+    private View viewGroup;
 
-    public SimpleRecycleViewAdapter(Context context,List<String> data,ViewGroup viewGroup) {
+    public SimpleRecycleViewAdapter(Context context,List<String> data,View viewGroup) {
         this.context = context;
         this.data = data;
         this.viewGroup = viewGroup;
@@ -31,7 +31,7 @@ public class SimpleRecycleViewAdapter extends RecyclerView.Adapter<SimpleRecycle
     @Override
     public mHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.text,viewGroup,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.text,parent,false);
         mHolder mHolder = new mHolder(view);
         return mHolder;
     }

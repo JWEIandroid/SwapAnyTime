@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +18,6 @@ import adapter.Type_right_adapter;
 import base.MyApplication;
 import base.baseActivity;
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import constant.type_imgHelper;
 import entiry.SortDetail;
 import utils.LogUtils;
@@ -93,10 +90,10 @@ public class ShowTypeActivity extends baseActivity {
         }
 
         List<Integer> list = type_imgHelper.getInstance().getImglist();
-        for (int k = 0;k<list.size();k++){
+        for (int k = 0; k < list.size(); k++) {
             right_data.get(k).setImageSrc(list.get(k));
         }
-        LogUtils.d(getTAG(),"imglist size"+ type_imgHelper.getInstance().getImglist().size());
+        LogUtils.d(getTAG(), "imglist size" + type_imgHelper.getInstance().getImglist().size());
         Log.d(getTAG(), "right: " + right_data.size());
         Log.d(TAG, "left: " + left_data_after.size());
 
@@ -114,7 +111,6 @@ public class ShowTypeActivity extends baseActivity {
     }
 
     private final LinearLayoutManager leftmanager = new LinearLayoutManager(this);
-    private LinearLayoutManager rightmanager = new LinearLayoutManager(this);
     private GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
 
     private boolean move;
@@ -144,7 +140,7 @@ public class ShowTypeActivity extends baseActivity {
     @Override
     public void initEvent() {
 
-        final Type_left_adapter left_adapter = new Type_left_adapter(ShowTypeActivity.this, left_data_after);
+        final Type_left_adapter left_adapter1 = new Type_left_adapter(ShowTypeActivity.this, left_data_after);
         Type_right_adapter right_adapter = new Type_right_adapter(ShowTypeActivity.this, right_data);
 
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -157,7 +153,7 @@ public class ShowTypeActivity extends baseActivity {
         left.setLayoutManager(leftmanager);
         right.setLayoutManager(gridLayoutManager);
 
-        left_adapter.setOnItemClickListener(new Type_left_adapter.OnItemClickListener() {
+        left_adapter1.setOnItemClickListener(new Type_left_adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 mIndex = position;
@@ -166,7 +162,7 @@ public class ShowTypeActivity extends baseActivity {
 //                right.scrollToPosition(position);
             }
         });
-        left.setAdapter(left_adapter);
+        left.setAdapter(left_adapter1);
         right.setAdapter(right_adapter);
         right.addOnScrollListener(new RecyclerViewListener());
 
