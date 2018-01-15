@@ -30,6 +30,7 @@ import org.w3c.dom.Text;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import adapter.ChoosePhotoListAdapter;
 import adapter.SimpleRecycleViewAdapter;
@@ -53,6 +54,9 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import minterface.GalleryfinalActionListener;
 import minterface.OnItemClickListener;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import utils.DialogUtil;
 import utils.LogUtils;
 import utils.MGalleryFinalUtils;
@@ -203,7 +207,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                 showBottomDialog();
                 break;
             case R.id.btn_publish:
-                uploadPics(PostGoods(), photo_list);
+                PostGoods();
                 break;
             case R.id.publish_ic_camera:
                 showActionsheet();
@@ -215,7 +219,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
     /**
      * @return 提交用户填写的商品信息
      */
-    private int PostGoods() {
+    private void PostGoods() {
 
         final Goods good = new Goods.Builder()
                 .name(goodsnameEt.getText().toString())
@@ -228,7 +232,11 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                 .build();
 
 
-        int userid = Integer.parseInt(getSharedPreferences("base64", MODE_PRIVATE).getString("userid", null));
+        String user_data = getSharedPreferences("base", MODE_PRIVATE).getString("userid", null);
+        int userid = 2;
+        if (user_data != null) {
+            userid = Integer.parseInt(user_data);
+        }
 
         final int[] goodid = {0};
 
@@ -255,11 +263,12 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                     public void onNext(@NonNull HttpDefault<Goods> userHttpDefault) {
 
                         goodid[0] = userHttpDefault.getData().getId();
+                        uploadPics(goodid[0], photo_list);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        LogUtils.d("weijie", "postgoods error" + e.getMessage());
                     }
 
                     @Override
@@ -267,8 +276,6 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
 
                     }
                 });
-
-        return goodid[0];
 
     }
 
@@ -403,34 +410,48 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
     // TODO: 2018/1/15   上传图片
     public void uploadPics(int goodid, List<PhotoInfo> list) {
 
-        for (PhotoInfo photoInfo : list) {
-            File file = new File(photoInfo.getPhotoPath());
+
+        for (int i = 0; i < list.size(); i++) {
+            File file = new File(list.get(i).getPhotoPath());
+            if (!file.exists()) {
+                LogUtils.d("weijie", "找不到图片：" + i);
+                continue;
+            }
+
+            //图片存在，开始上传图片
+            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+            String description_title = "";
+            RequestBody description = RequestBody.create(
+                    MediaType.parse("multipart/form-data"), description_title);
+            LogUtils.d("weijie", "开始上传第：" + i + "张图片...");
+            Observable<HttpDefault<List<String>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).uploadPics(2, body, 1);
+            observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<HttpDefault<List<String>>>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(@NonNull HttpDefault<List<String>> stringHttpDefault) {
+
+                            LogUtils.d("weijie", "上传结果:" + stringHttpDefault.getMessage());
+
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            LogUtils.d("weijie", "postpics error" + e.getMessage());
+                        }
+
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+            LogUtils.d("weijie", "第" + i + "张图片上传完成");
         }
-
-        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(GoodsAPI.class).uploadPics(goodid, null);
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HttpDefault<String>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull HttpDefault<String> stringHttpDefault) {
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
 
 
     }

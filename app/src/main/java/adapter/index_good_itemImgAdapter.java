@@ -16,6 +16,7 @@ import com.example.swapanytime.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.finalteam.galleryfinal.model.PhotoInfo;
@@ -28,7 +29,7 @@ import utils.LogUtils;
 
 public class index_good_itemImgAdapter extends RecyclerView.Adapter<index_good_itemImgAdapter.Holder> {
 
-    private List<String> mlist;
+    private List<String> mlist = new ArrayList<>();
     private LayoutInflater layoutInflater;
     private Context context;
 
