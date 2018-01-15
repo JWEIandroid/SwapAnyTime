@@ -1,7 +1,9 @@
 package adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import com.example.swapanytime.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import minterface.OnItemClickListener;
+
 /**
  * Created by weijie on 2018/1/12.
  */
@@ -19,14 +23,23 @@ import java.util.List;
 public class SimpleRecycleViewAdapter extends RecyclerView.Adapter<SimpleRecycleViewAdapter.mHolder>{
 
     private List<String> data = new ArrayList<>();
-    private Context context;
-    private View viewGroup;
+    private Context context =null;
+    private View viewGroup = null;
+    private Dialog dialog = null;
 
-    public SimpleRecycleViewAdapter(Context context,List<String> data,View viewGroup) {
+    private OnItemClickListener onItemClickListener;
+
+    public SimpleRecycleViewAdapter(Context context,List<String> data) {
         this.context = context;
         this.data = data;
-        this.viewGroup = viewGroup;
     }
+
+    public void addTextClickListener(OnItemClickListener onItemClickListener){
+        if (this.onItemClickListener==null){
+            this.onItemClickListener = onItemClickListener;
+        }
+    }
+
 
     @Override
     public mHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,10 +50,21 @@ public class SimpleRecycleViewAdapter extends RecyclerView.Adapter<SimpleRecycle
     }
 
     @Override
-    public void onBindViewHolder(mHolder holder, int position) {
+    public void onBindViewHolder(final mHolder holder, final int position) {
 
         if (holder instanceof mHolder){
+
+            if (TextUtils.isEmpty(data.get(position))){
+                holder.textview.setVisibility(View.GONE);
+            }
             holder.textview.setText(data.get(position));
+            holder.textview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(v,position);
+                }
+            });
+
         }
     }
 

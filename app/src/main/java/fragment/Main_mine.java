@@ -196,7 +196,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         switch (index) {
             case 0:
                 //拍照
-                instance.initGalleryFinal(true);
+                instance.initGalleryFinal(true,1);
                 instance.openCamera(new GalleryfinalActionListener() {
                     @Override
                     public void success(List<PhotoInfo> list) {
@@ -215,7 +215,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                 break;
             case 1:
                 //打开相册
-                instance.initGalleryFinal(true);
+                instance.initGalleryFinal(true,1);
                 instance.openAlbumSingle(new GalleryfinalActionListener() {
                     @Override
                     public void success(List<PhotoInfo> list) {

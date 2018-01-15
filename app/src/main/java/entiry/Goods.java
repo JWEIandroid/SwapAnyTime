@@ -26,9 +26,9 @@ public class Goods implements Serializable{
     private int id;
     private String name;
     private String type;
-    private int price_before;
-    private int price_sale;
-    private boolean status;
+    private float price_before;
+    private float price_sale;
+    private String status;
     private Object description;
     private int express;
     private ArrayList<String> imgurl;
@@ -52,9 +52,9 @@ public class Goods implements Serializable{
         private int id;
         private String name;
         private String type;
-        private int price_before;
-        private int price_sale;
-        private boolean status;
+        private float price_before;
+        private float price_sale;
+        private String status;
         private Object description;
         private int express;
         private User user;
@@ -78,17 +78,17 @@ public class Goods implements Serializable{
             return this;
         }
 
-        public Builder price_before(int val) {
+        public Builder price_before(float val) {
             price_before = val;
             return this;
         }
 
-        public Builder price_sale(int val) {
+        public Builder price_sale(float val) {
             price_sale = val;
             return this;
         }
 
-        public Builder status(boolean val) {
+        public Builder status(String val) {
             status = val;
             return this;
         }
@@ -143,27 +143,27 @@ public class Goods implements Serializable{
         this.type = type;
     }
 
-    public int getPrice_before() {
+    public float getPrice_before() {
         return price_before;
     }
 
-    public void setPrice_before(int price_before) {
+    public void setPrice_before(float price_before) {
         this.price_before = price_before;
     }
 
-    public int getPrice_sale() {
+    public float getPrice_sale() {
         return price_sale;
     }
 
-    public void setPrice_sale(int price_sale) {
+    public void setPrice_sale(float price_sale) {
         this.price_sale = price_sale;
     }
 
-    public boolean isStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

@@ -53,16 +53,12 @@ public class mBottomFragment extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(this.getContext()).inflate(R.layout.bottomdialog_type, container, false);
 
-//        ListView left = (ListView) view.findViewById(R.id.bottomdialog_type_left);
-//        ListView right = (ListView) view.findViewById(R.id.bottomdialog_type_right);
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1,data_left);
-//        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, data_right);
         RecyclerView left = (RecyclerView) view.findViewById(R.id.bottomdialog_type_left);
         RecyclerView right = (RecyclerView) view.findViewById(R.id.bottomdialog_type_right);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext());
-        SimpleRecycleViewAdapter simpleRecycleViewAdapter1 = new SimpleRecycleViewAdapter(this.getContext(), data_left, viewGroup);
-        SimpleRecycleViewAdapter simpleRecycleViewAdapter2 = new SimpleRecycleViewAdapter(this.getContext(), data_right, viewGroup);
+        SimpleRecycleViewAdapter simpleRecycleViewAdapter1 = new SimpleRecycleViewAdapter(this.getContext(), data_left);
+        SimpleRecycleViewAdapter simpleRecycleViewAdapter2 = new SimpleRecycleViewAdapter(this.getContext(), data_right);
 
         left.setLayoutManager(linearLayoutManager);
         right.setLayoutManager(linearLayoutManager1);

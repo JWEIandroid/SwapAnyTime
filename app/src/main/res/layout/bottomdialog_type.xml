@@ -5,31 +5,34 @@
     android:orientation="horizontal">
 
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:background="@color/white"
-        >
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/bottomdialog_type_right"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:layout_margin="5dp"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@color/white">
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/bottomdialog_type_left"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            />
-    </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/bottomdialog_type_left"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1" />
 
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/bottomdialog_type_right"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1" />
+        </LinearLayout>
 
+    </ScrollView>
 
 </LinearLayout>

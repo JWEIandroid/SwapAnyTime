@@ -62,7 +62,6 @@ public class ShowTypeActivity extends baseActivity {
             left_data.add(array_type[i]);
         }
 
-
 //        初始化右边数据
         for (int i = 0; i < left_data.size(); i++) {
 

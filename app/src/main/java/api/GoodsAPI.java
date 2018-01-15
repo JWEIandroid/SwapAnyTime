@@ -6,8 +6,11 @@ import java.util.List;
 import entiry.Goods;
 import entiry.HttpDefault;
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -33,6 +36,20 @@ public interface GoodsAPI {
 //    Observable<HttpDefault<List<Goods>>> getGoodsWithUserid(
 //            @Query("name") String name
 //    );
+
+    //新增一条商品信息
+    @POST("goods/addgoods")
+    Observable<HttpDefault<Goods>> addgoods(
+            @Query("name") String name,
+            @Query("status") String status,
+            @Query("type") String type,
+            @Query("price_before") float price_before,
+            @Query("price_sale") float price_sale,
+            @Query("description") String description,
+            @Query("express") int express,
+            @Query("userid") int userid
+    );
+
 
     //查询商品(模糊查询)
     @POST("goods/getgoodbyname")
@@ -76,6 +93,16 @@ public interface GoodsAPI {
     Observable<HttpDefault<List<String>>> addGoodsImg(
             @Query("goodid") int id,
             @Query("url") String url
+    );
+
+
+
+    //上传多张商品图片
+    @Multipart
+    @POST("file/upload2")
+    Observable<HttpDefault<String>> uploadPics(
+            @Query("goodid") int goodid,
+            @Part MultipartBody.Part file
     );
 
 }

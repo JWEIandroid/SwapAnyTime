@@ -36,6 +36,8 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     @Bind(R.id.goodsdetail_adress)
     TextView goodsdetailAdress;
     @Bind(R.id.goodsdetail_imgs)
+
+
     RecyclerView goodsdetailImgs;
     private List<String> list;
     private List<String> rv_data;
@@ -85,6 +87,8 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     public void initEvent() {
 
         icBack.setOnClickListener(this);
+
+
 
     }
 

@@ -23,7 +23,7 @@ import minterface.GalleryfinalActionListener;
  * Created by Administrator on 2017/11/10.
  */
 
-public class MGalleryFinalUtils {
+public class MGalleryFinalUtils extends FunctionConfig.Builder {
 
 
     private static String TAG = "weijie";
@@ -40,7 +40,7 @@ public class MGalleryFinalUtils {
     private static List<PhotoInfo> mphotoList;
 
 
-    private static  GalleryfinalActionListener listener;
+    private static GalleryfinalActionListener listener;
 
 
     private static final int REQUEST_CODE_OPENCAMERA = 1000;
@@ -68,15 +68,18 @@ public class MGalleryFinalUtils {
     /***************************************
      * 初始化galleryfinal
      */
-    public static void initGalleryFinal(boolean ISsingle) {
+    public void initGalleryFinal(boolean ISsingle, int photonum) {
 
         //配置主题
-        theme = new ThemeConfig.Builder()
-                .build();
+        theme = new ThemeConfig.Builder().build();
         //配置功能
+//        this = FunctionConfig.Builder;
+
         builder = new FunctionConfig.Builder();
 
-        functionConfig_single = builder.setEnableCamera(true)
+        functionConfig_single = this
+                .setMutiSelect(false)
+                .setEnableCamera(true)
                 .setEnableEdit(true)
                 .setEnableCrop(true)
                 .setEnableRotate(true)
@@ -88,7 +91,9 @@ public class MGalleryFinalUtils {
                 .build();
 
 
-        functionConfig_notsingle = builder.setEnableCamera(true)
+        functionConfig_notsingle = this
+                .setMutiSelect(true)
+                .setEnableCamera(true)
                 .setEnableEdit(true)
                 .setEnableCrop(true)
                 .setEnableRotate(true)
@@ -96,18 +101,29 @@ public class MGalleryFinalUtils {
                 .setEnableCamera(true)
                 .setEnablePreview(true)
                 .setSelected(mphotoList)
-                .setMutiSelectMaxSize(8)
+                .setMutiSelectMaxSize(photonum)
                 .build();
+
+//        functionConfig_notsingle = builder.setEnableCamera(true)
+//                .setEnableEdit(true)
+//                .setEnableCrop(true)
+//                .setEnableRotate(true)
+//                .setCropSquare(true)
+//                .setEnableCamera(true)
+//                .setEnablePreview(true)
+//                .setSelected(mphotoList)
+//                .setMutiSelectMaxSize(photonum)
+//                .build();
 
 
         //配置imageloader
         imageloader = new GildeImageLoader();
         //设置核心配置信息
-        if (ISsingle){
+        if (ISsingle) {
             coreConfig = new CoreConfig.Builder(context, imageloader, theme)
                     .setFunctionConfig(functionConfig_single)
                     .build();
-        }else {
+        } else {
             coreConfig = new CoreConfig.Builder(context, imageloader, theme)
                     .setFunctionConfig(functionConfig_notsingle)
                     .build();
@@ -116,7 +132,6 @@ public class MGalleryFinalUtils {
         initImageloader(context);
 
     }
-
 
 
     private static void initImageloader(Context context) {
@@ -149,19 +164,16 @@ public class MGalleryFinalUtils {
         this.listener = listener;
         GalleryFinal.openGalleryMuti(REQUEST_CODE_GALLERYSINGLE, functionConfig_single, mOnHanlderResultCallback);
     }
+
     /*************************************
      * 打开相册 多选
      */
-    public  void openAlbumMore(GalleryfinalActionListener listener) {
+    public void openAlbumMore(GalleryfinalActionListener listener) {
         this.listener = listener;
         GalleryFinal.openGalleryMuti(REQUEST_CODE_GALLERY, functionConfig_notsingle, mOnHanlderResultCallback);
     }
 
 
-
-//    public static List<PhotoInfo> getMphotoList() {
-//        return mphotoList;
-//    }
 
 
     private static GalleryFinal.OnHanlderResultCallback mOnHanlderResultCallback = new GalleryFinal.OnHanlderResultCallback() {
@@ -169,16 +181,16 @@ public class MGalleryFinalUtils {
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
 
             mphotoList = new ArrayList<>();
-            switch (reqeustCode){
+            switch (reqeustCode) {
 
                 case REQUEST_CODE_OPENCAMERA:
                 case REQUEST_CODE_GALLERYSINGLE:
-                    if (resultList!=null){
+                    if (resultList != null) {
                         mphotoList.add(resultList.get(0));
                     }
                     listener.success(mphotoList);
                     break;
-                case  REQUEST_CODE_GALLERY:
+                case REQUEST_CODE_GALLERY:
                     if (resultList != null) {
                         mphotoList.addAll(resultList);
                     }
