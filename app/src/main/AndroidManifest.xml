@@ -38,8 +38,8 @@
         </activity>
 
         <!--<activity-->
-            <!--android:name="com.example.swapanytime.MainActivity"-->
-            <!--android:launchMode="singleTask" />-->
+        <!--android:name="com.example.swapanytime.MainActivity"-->
+        <!--android:launchMode="singleTask" />-->
 
         <activity android:name="com.example.swapanytime.TakePhotoTest" />
         <activity
@@ -50,14 +50,15 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".GoodsDetailActivity"
-            android:launchMode="singleTask"
-            />
-        <activity android:name=".PublishGoodsActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".PublishGoodsActivity"
+            android:launchMode="singleTask" />
 
-        <activity android:name=".MsgBoardActivity"
-            android:launchMode="singleTask"
-            />
+        <activity android:name=".ConfirmOrderActivity" />
+        <activity
+            android:name=".MsgBoardActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

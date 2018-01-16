@@ -69,7 +69,7 @@ public class SwapNetUtils {
             synchronized (SwapNetUtils.class) {
                 if (mOkHttpClient == null) {
                     File cacheFile = new File(Environment.getDownloadCacheDirectory(), "HttpCache");
-                    cache = new Cache(cacheFile, 1024 * 1024 * 10);
+                    cache = new Cache(cacheFile, 1024 * 1024 * 20);
                     mOkHttpClient = new OkHttpClient.Builder()
                             .cache(cache)
 //                            .addNetworkInterceptor(new CacheInterceptor())

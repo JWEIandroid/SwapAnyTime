@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.baoyz.actionsheet.ActionSheet;
@@ -109,6 +110,8 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
     AppCompatEditText goods_descriptionEt;
     @Bind(R.id.goodsnameEt)
     AppCompatEditText goodsnameEt;
+    @Bind(R.id.login_progressbar)
+    ProgressBar login_progressbar;
 
 
     private List<String> data_left;
@@ -207,7 +210,10 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                 showBottomDialog();
                 break;
             case R.id.btn_publish:
+                showProgressbar(1);
                 PostGoods();
+                showProgressbar(0);
+                goActivity(MainActivity.class);
                 break;
             case R.id.publish_ic_camera:
                 showActionsheet();
@@ -407,7 +413,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
     }
 
 
-    // TODO: 2018/1/15   上传图片
+    // TODO: 2018/1/15   上传图片   有出现图片上传报500的情况
     public void uploadPics(int goodid, List<PhotoInfo> list) {
 
 
@@ -450,16 +456,30 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                         public void onComplete() {
                         }
                     });
-            LogUtils.d("weijie", "第" + i + "张图片上传完成");
         }
 
+    }
+
+
+    private void showProgressbar(int way) {
+
+        if (login_progressbar.getVisibility() == View.VISIBLE){
+            login_progressbar.setVisibility(View.GONE);
+        }
+
+        if (way == 1) {
+            login_progressbar.setVisibility(View.VISIBLE);
+        }
+        if (way == 0) {
+            login_progressbar.setVisibility(View.GONE);
+        }
 
     }
 
 
     @Override
     protected void onDestroy() {
-        MGalleryFinalUtils.clearCache();
+        MGalleryFinalUtils.getInstance(context).clearCache();
         super.onDestroy();
     }
 }

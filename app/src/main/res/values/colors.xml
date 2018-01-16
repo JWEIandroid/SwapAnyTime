@@ -15,5 +15,6 @@
     <color name="divider">#dbdbdb</color>
     <color name="not_selected">#515151</color>
     <color name="red">#FF3333</color>
+    <color name="background">#cdcdcd</color>
 
 </resources>

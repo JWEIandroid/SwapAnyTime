@@ -1,7 +1,7 @@
 package com.example.swapanytime;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,10 +14,11 @@ import adapter.GoodsDetail_imgAdapter;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import entiry.Goods;
 
 /**
- * Created by Administrator on 2017/11/28.
+ * Created by weijie on 2017/11/28.
  */
 
 public class GoodsDetailActivity extends baseActivity implements View.OnClickListener {
@@ -36,9 +37,11 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     @Bind(R.id.goodsdetail_adress)
     TextView goodsdetailAdress;
     @Bind(R.id.goodsdetail_imgs)
-
-
     RecyclerView goodsdetailImgs;
+    @Bind(R.id.btn_buy)
+    TextView btnBuy;
+
+
     private List<String> list;
     private List<String> rv_data;
     private GoodsDetail_imgAdapter goodsDetail_imgAdapter;
@@ -55,10 +58,10 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
 //            list = getIntent().getParcelableExtra("imglist");
             goods = (Goods) getIntent().getSerializableExtra("goodsmsg");
-            if (goods!=null){
+            if (goods != null) {
                 goodsdetailName.setText(goods.getName());
-                goodsdetailPriceBf.setText("￥ "+goods.getPrice_before());
-                goodsdetailPriceAt.setText("￥ "+goods.getPrice_sale());
+                goodsdetailPriceBf.setText("￥ " + goods.getPrice_before());
+                goodsdetailPriceAt.setText("￥ " + goods.getPrice_sale());
                 goodsdetailAdress.setText(goods.getUser().getAdress());
                 list = goods.getImgurl();
 
@@ -87,7 +90,7 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     public void initEvent() {
 
         icBack.setOnClickListener(this);
-
+        btnBuy.setOnClickListener(this);
 
 
     }
@@ -99,6 +102,11 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
             case R.id.ic_back:
                 goActivity(MainActivity.class);
+                break;
+            case R.id.btn_buy:
+                Intent intent = new Intent(GoodsDetailActivity.this,ConfirmOrderActivity.class);
+                intent.putExtra("good",goods);
+                startActivity(intent);
                 break;
 
         }

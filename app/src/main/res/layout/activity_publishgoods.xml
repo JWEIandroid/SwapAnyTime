@@ -81,6 +81,18 @@
                     android:padding="10dp"
                     android:textCursorDrawable="@drawable/cursorcolor" />
 
+                <ProgressBar
+                    android:id="@+id/login_progressbar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="8dp"
+                    android:max="100"
+                    android:progress="0"
+                    android:visibility="gone"
+                    />
+
+
             </LinearLayout>
 
 
