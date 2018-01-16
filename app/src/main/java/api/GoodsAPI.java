@@ -9,6 +9,8 @@ import entiry.HttpDefault;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -41,20 +43,22 @@ public interface GoodsAPI {
 //    );
 
     //新增一条商品信息
+    @FormUrlEncoded
     @POST("goods/addgoods")
     Observable<HttpDefault<Goods>> addgoods(
-            @Query("name") String name,
-            @Query("status") String status,
-            @Query("type") String type,
-            @Query("price_before") float price_before,
-            @Query("price_sale") float price_sale,
-            @Query("description") String description,
-            @Query("express") int express,
-            @Query("userid") int userid
+            @Field("name") String name,
+            @Field("status") String status,
+            @Field("type") String type,
+            @Field("price_before") float price_before,
+            @Field("price_sale") float price_sale,
+            @Field("description") String description,
+            @Field("express") int express,
+            @Field("userid") int userid
     );
 
 
     //查询商品(模糊查询)
+    @FormUrlEncoded
     @POST("goods/getgoodbyname")
     Observable<HttpDefault<List<Goods>>> SearchGoods(
             @Query("name") String name
@@ -67,6 +71,7 @@ public interface GoodsAPI {
     );
 
     //更新商品
+    @FormUrlEncoded
     @POST("goods/updategoods")
     Observable<HttpDefault<String>> UpdateGoods(
             @Query("name") String name,
@@ -92,6 +97,7 @@ public interface GoodsAPI {
     );
 
     //新增一条商品图片信息
+    @FormUrlEncoded
     @POST("goodimgs/addimgs")
     Observable<HttpDefault<List<String>>> addGoodsImg(
             @Query("goodid") int id,

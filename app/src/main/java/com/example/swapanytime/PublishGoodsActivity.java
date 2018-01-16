@@ -233,7 +233,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
 
 
         String user_data = getSharedPreferences("base", MODE_PRIVATE).getString("userid", null);
-        int userid = 2;
+        int userid = 46;
         if (user_data != null) {
             userid = Integer.parseInt(user_data);
         }
@@ -425,7 +425,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
             RequestBody description = RequestBody.create(
                     MediaType.parse("multipart/form-data"), description_title);
             LogUtils.d("weijie", "开始上传第：" + i + "张图片...");
-            Observable<HttpDefault<List<String>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).uploadPics(2, body, 1);
+            Observable<HttpDefault<List<String>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).uploadPics(goodid, body, 1);
             observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<HttpDefault<List<String>>>() {
