@@ -49,6 +49,7 @@ public class MyApplication extends Application {
         super.onCreate();
         context = getApplicationContext();
         initGalleryFinal();
+        OpenImmersionModel();
     }
 
 
@@ -59,6 +60,7 @@ public class MyApplication extends Application {
 
     //沉浸模式开关
     public static boolean OpenImmersionModel() {
+
         if (IsImmersionModelOpened == false) {
             IsImmersionModelOpened = true;
         }

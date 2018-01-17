@@ -143,8 +143,10 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else if (holder instanceof GoodsDetail_imgAdapter.UserMsgHolder) {
 
             Glide.with(context).load(goods.getUser().getHeadimg()).asBitmap().fitCenter().into(((UserMsgHolder) holder).head);
+            ((UserMsgHolder) holder).name.setText(goods.getUser().getName());
 
         } else if (holder instanceof GoodsDetail_imgAdapter.CommentHolder) {
+
 
 
         }
@@ -187,10 +189,12 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public class UserMsgHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView head;
+        private TextView name;
 
         public UserMsgHolder(View itemView) {
             super(itemView);
             head = (CircleImageView) itemView.findViewById(R.id.user_head);
+            name = (TextView) itemView.findViewById(R.id.goodsdetail_username);
         }
     }
 
