@@ -26,7 +26,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/goodsdetail_price_bf"
+            android:id="@+id/goodsdetail_price_at"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -38,11 +38,11 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/goodsdetail_price_at"
+            android:id="@+id/goodsdetail_price_bf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/goodsdetail_price_bf"
+            android:layout_below="@id/goodsdetail_price_at"
             android:layout_marginRight="10dp"
             android:text="$1000"
             android:textColor="@color/hui" />

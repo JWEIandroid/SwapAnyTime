@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entiry.SortDetail;
+import minterface.FragmentListener;
 
 /**
  * Created by weijie on 2017/10/12.
@@ -30,6 +31,12 @@ public class Type_right_adapter extends RecyclerView.Adapter<Type_right_adapter.
         this.list = list;
     }
 
+    private FragmentListener fragmentListener = null;
+
+    public Type_right_adapter addOnItemClickListener(FragmentListener fragmentListener) {
+        this.fragmentListener = fragmentListener;
+        return this;
+    }
 
     @Override
     public int getItemViewType(int position) {
@@ -69,6 +76,13 @@ public class Type_right_adapter extends RecyclerView.Adapter<Type_right_adapter.
             Glide.with(context).load(list.get(position).getImageSrc()).crossFade().into(holder.imageView);
 //            holder.imageView.setImageResource(list.get(position).getImageSrc());
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentListener.updateUI(null);
+            }
+        });
 
     }
 

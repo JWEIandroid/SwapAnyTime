@@ -20,6 +20,7 @@ import base.baseActivity;
 import butterknife.Bind;
 import constant.type_imgHelper;
 import entiry.SortDetail;
+import minterface.FragmentListener;
 import utils.LogUtils;
 
 /**
@@ -161,9 +162,22 @@ public class ShowTypeActivity extends baseActivity {
 //                right.scrollToPosition(position);
             }
         });
+        right_adapter.addOnItemClickListener(new FragmentListener() {
+            @Override
+            public void updateUI(List<?> list) {
+                showSnackBar("click",ToastDuration.SHORT,right);
+            }
+
+            @Override
+            public void appenddata(List<?> list) {
+
+            }
+        });
+
         left.setAdapter(left_adapter1);
         right.setAdapter(right_adapter);
         right.addOnScrollListener(new RecyclerViewListener());
+
 
         icBack.setOnClickListener(new View.OnClickListener() {
             @Override

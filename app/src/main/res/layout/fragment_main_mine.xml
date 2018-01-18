@@ -12,18 +12,16 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="115dp"
-        android:fitsSystemWindows="true"
-        >
+        android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:statusBarScrim="@color/colorPrimary"
-            app:contentScrim="@color/colorPrimary"
             android:fitsSystemWindows="true"
-            >
+            app:contentScrim="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:statusBarScrim="@color/colorPrimary">
 
 
             <RelativeLayout
@@ -86,24 +84,22 @@
                 android:layout_height="60dp"
                 android:layout_gravity="top"
                 android:background="@color/colorPrimary"
+                android:fitsSystemWindows="true"
                 android:title="Helloworld"
                 android:titleMarginTop="15dp"
                 app:layout_collapseMode="pin"
-                android:fitsSystemWindows="true"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                >
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <TextView
                     android:id="@+id/title_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
                     android:gravity="center"
                     android:text="helloworld"
                     android:textColor="@color/black"
                     android:textSize="25sp"
-                    android:textStyle="bold"
-                    android:fitsSystemWindows="true"
-                    />
+                    android:textStyle="bold" />
 
             </android.support.v7.widget.Toolbar>
 
@@ -120,71 +116,104 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            >
+            android:weightSum="12">
 
             <TextView
+                android:id="@+id/txt_publish_buyreord"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="我发布的"
-                android:gravity="center"
+                android:layout_height="0dp"
+                android:layout_marginBottom="20dp"
                 android:layout_marginTop="40dp"
-                android:layout_marginBottom="20dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="我发布的"
+                android:textSize="18sp"
+
                 />
 
             <TextView
+                android:id="@+id/txt_sale_record"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="2"
+                android:gravity="center"
                 android:text="我卖出的"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:textSize="18sp"
+
                 />
 
             <TextView
+                android:id="@+id/txt_buy_record"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="2"
+                android:gravity="center"
                 android:text="我买到的"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:textSize="18sp"
+
                 />
 
             <TextView
+                android:id="@+id/txt_shoucang"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="2"
+                android:gravity="center"
                 android:text="我收藏的"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:textSize="18sp"
+
                 />
 
             <TextView
+                android:id="@+id/txt_mine_pay"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="2"
+                android:gravity="center"
                 android:text="我的账单"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:textSize="18sp"
+
                 />
-
-
 
 
             <TextView
+                android:id="@+id/txt_change_account"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="设置"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_height="0dp"
                 android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="切换账号"
+                android:textSize="18sp"
+
                 />
+
+
+            <TextView
+                android:id="@+id/txt_exit"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="- 退出 -"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-
 
 
 </android.support.design.widget.CoordinatorLayout>

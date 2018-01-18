@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import com.example.swapanytime.GoodsDetailActivity;
 import com.example.swapanytime.LoginActivity;
 import com.example.swapanytime.R;
+import com.example.swapanytime.SearchActivity;
 import com.example.swapanytime.ShowTypeActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -172,8 +173,10 @@ public class Main_index extends baseFragment {
             case R.id.search_et:
                 break;
             case R.id.icon_search:
+                goToActivity(SearchActivity.class);
                 break;
             case R.id.icon_cancel:
+                searchEt.setText("");
                 break;
             case R.id.icon_type:
                 goToActivity(ShowTypeActivity.class);
@@ -216,7 +219,7 @@ public class Main_index extends baseFragment {
         public void afterTextChanged(Editable s) {
             if (contentUtils.isContentLegal(s.toString())) {
                 iconCancel.setVisibility(View.VISIBLE);
-                iconSearch.setVisibility(View.GONE);
+                iconSearch.setVisibility(View.VISIBLE);
             } else {
                 iconCancel.setVisibility(View.GONE);
                 iconSearch.setVisibility(View.VISIBLE);
@@ -244,7 +247,6 @@ public class Main_index extends baseFragment {
                 public void onItemClick(View view, int position) {
                     Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
                     intent.putExtra("goodsmsg",good_list.get(position));
-//  intent.putStringArrayListExtra("img_list", good_list.get(position).getImgurl());
                     startActivity(intent);
                 }
             });

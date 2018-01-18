@@ -57,6 +57,9 @@
 
         <activity android:name=".ConfirmOrderActivity" />
         <activity
+            android:name=".SearchActivity"
+            android:launchMode="singleTask" />
+        <activity
             android:name=".MsgBoardActivity"
             android:launchMode="singleTask" />
     </application>

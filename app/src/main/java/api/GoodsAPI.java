@@ -57,12 +57,22 @@ public interface GoodsAPI {
     );
 
 
-    //查询商品(模糊查询)
+    //查询商品(模糊查询) 名字查询
     @FormUrlEncoded
     @POST("goods/getgoodbyname")
     Observable<HttpDefault<List<Goods>>> SearchGoods(
             @Query("name") String name
     );
+
+
+    //查询商品(模糊查询) 类别查询
+    @FormUrlEncoded
+    @POST("goods/searchbytype")
+    Observable<HttpDefault<List<Goods>>> SearchGoods_type(
+            @Query("type") String type
+    );
+
+
 
     //删除商品
     @POST("goods/delwithid")

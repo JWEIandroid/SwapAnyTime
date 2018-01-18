@@ -55,8 +55,6 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
         rv_data.add("");
 
         if (getIntent() != null) {
-
-//            list = getIntent().getParcelableExtra("imglist");
             goods = (Goods) getIntent().getSerializableExtra("goodsmsg");
             if (goods != null) {
                 goodsdetailName.setText(goods.getName());
@@ -64,7 +62,6 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
                 goodsdetailPriceAt.setText("￥ " + goods.getPrice_sale());
                 goodsdetailAdress.setText(goods.getUser().getAdress());
                 list = goods.getImgurl();
-
             }
 
         }
@@ -104,8 +101,8 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
                 goActivity(MainActivity.class);
                 break;
             case R.id.btn_buy:
-                Intent intent = new Intent(GoodsDetailActivity.this,ConfirmOrderActivity.class);
-                intent.putExtra("good",goods);
+                Intent intent = new Intent(GoodsDetailActivity.this, ConfirmOrderActivity.class);
+                intent.putExtra("good", goods);
                 startActivity(intent);
                 break;
 

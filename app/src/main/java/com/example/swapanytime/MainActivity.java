@@ -40,9 +40,9 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
     BottomTabBar bottomTabBar;
     @Bind(R.id.btn_addGoods)
     TextView btnAddGoods;
+
     private String[] titles;
     private int[] icons, icons_choosed;
-
     //默认的登录超时时间为30分钟
     private final long LOGIN_TIMEOUT = 30;
 

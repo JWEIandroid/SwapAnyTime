@@ -1,13 +1,16 @@
 package base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.swapanytime.R;
@@ -19,6 +22,9 @@ import butterknife.ButterKnife;
  */
 
 public abstract class baseActivity extends AppCompatActivity {
+
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,13 +92,28 @@ public abstract class baseActivity extends AppCompatActivity {
         }
     }
 
+    protected void showSnackBar(String msg, ToastDuration toastDuration,View view) {
+        switch (toastDuration) {
+            case LONG:
+                Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show();
+                break;
+            case SHORT:
+                Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
 
     protected void goActivity(Class<?> cs) {
         Intent intent = new Intent(this, cs);
         startActivity(intent);
     }
 
-    public String getTAG(){
+    public String getTAG() {
         return this.getClass().getSimpleName();
     }
 
@@ -149,7 +170,7 @@ public abstract class baseActivity extends AppCompatActivity {
     }
 
 
-    public String getTag(){
+    public String getTag() {
         return this.getClass().getSimpleName();
     }
 

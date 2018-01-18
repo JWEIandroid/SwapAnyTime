@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -56,6 +57,8 @@ public class ConfirmOrderActivity extends baseActivity {
     TextView priceall;
     @Bind(R.id.pic)
     ImageView pic;
+    @Bind(R.id.confirm_order_progressbar)
+    ProgressBar confirm_order_progressbar;
 
 
     private Goods goods = null;
@@ -101,6 +104,18 @@ public class ConfirmOrderActivity extends baseActivity {
 
     }
 
+    /**
+     * 提交订单信息
+     *
+     */
+    private  boolean PostOrder(){
+
+
+
+        return true;
+
+    }
+
 
     @OnClick({R.id.ic_back, R.id.txt_confirm_order})
     public void onViewClicked(View view) {
@@ -108,6 +123,11 @@ public class ConfirmOrderActivity extends baseActivity {
             case R.id.ic_back:
                 break;
             case R.id.txt_confirm_order:
+
+                if (PostOrder()){
+                    showSnackBar("支付成功",ToastDuration.SHORT,confirm_order_progressbar);
+                }
+
                 break;
         }
     }
