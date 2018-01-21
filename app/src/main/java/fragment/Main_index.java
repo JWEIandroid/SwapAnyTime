@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 
 import com.example.swapanytime.GoodsDetailActivity;
 import com.example.swapanytime.LoginActivity;
+import com.example.swapanytime.MainActivity;
 import com.example.swapanytime.R;
 import com.example.swapanytime.SearchActivity;
 import com.example.swapanytime.ShowTypeActivity;
@@ -173,7 +174,9 @@ public class Main_index extends baseFragment {
             case R.id.search_et:
                 break;
             case R.id.icon_search:
-                goToActivity(SearchActivity.class);
+                Intent intent = new Intent(getContext(),SearchActivity.class);
+                intent.putExtra("content",searchEt.getText().toString());
+                startActivity(intent);
                 break;
             case R.id.icon_cancel:
                 searchEt.setText("");

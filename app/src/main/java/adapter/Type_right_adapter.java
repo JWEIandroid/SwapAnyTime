@@ -62,7 +62,7 @@ public class Type_right_adapter extends RecyclerView.Adapter<Type_right_adapter.
     }
 
     @Override
-    public void onBindViewHolder(Type_right_holder holder, int position) {
+    public void onBindViewHolder(final Type_right_holder holder, int position) {
 
         int itemViewType = Type_right_adapter.this.getItemViewType(position);
 
@@ -80,7 +80,9 @@ public class Type_right_adapter extends RecyclerView.Adapter<Type_right_adapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentListener.updateUI(null);
+                List<String> list = new ArrayList<String>();
+                list.add(holder.name.getText().toString());
+                fragmentListener.updateUI(list);
             }
         });
 

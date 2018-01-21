@@ -61,7 +61,8 @@ public interface GoodsAPI {
     @FormUrlEncoded
     @POST("goods/getgoodbyname")
     Observable<HttpDefault<List<Goods>>> SearchGoods(
-            @Query("name") String name
+            @Field("name") String name,
+            @Query("pagenum")int pagenum
     );
 
 
@@ -69,7 +70,8 @@ public interface GoodsAPI {
     @FormUrlEncoded
     @POST("goods/searchbytype")
     Observable<HttpDefault<List<Goods>>> SearchGoods_type(
-            @Query("type") String type
+            @Field("type") String type,
+            @Query("pagenum")int num
     );
 
 

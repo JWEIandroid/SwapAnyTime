@@ -1,5 +1,6 @@
 package com.example.swapanytime;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -157,15 +158,16 @@ public class ShowTypeActivity extends baseActivity {
             @Override
             public void onItemClick(View view, int position) {
                 mIndex = position;
-//                Log.d(getTAG(), "onItemClick: " + position);
                 smoothMoveToPosition(right, position);
-//                right.scrollToPosition(position);
             }
         });
         right_adapter.addOnItemClickListener(new FragmentListener() {
             @Override
             public void updateUI(List<?> list) {
-                showSnackBar("click",ToastDuration.SHORT,right);
+                showSnackBar(list.get(0).toString(), ToastDuration.SHORT, right);
+                Intent intent = new Intent(ShowTypeActivity.this, SearchActivity.class);
+                intent.putExtra("type", list.get(0).toString());
+                startActivity(intent);
             }
 
             @Override
