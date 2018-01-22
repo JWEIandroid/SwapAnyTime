@@ -85,9 +85,10 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 NormalHolder normalHolder = new NormalHolder(view);
                 return normalHolder;
 
-
             default:
-                return null;
+                view = LayoutInflater.from(context).inflate(R.layout.recycleview_item_goods_index, parent, false);
+                NormalHolder normalHolder1 = new NormalHolder(view);
+                return normalHolder1;
         }
 
     }
@@ -109,8 +110,6 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
 
                     .startTurning(5 * 1000L);
-
-
         } else if (viewHolder instanceof NormalHolder) {
 
             Goods good = goods.get(position-1);

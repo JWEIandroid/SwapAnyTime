@@ -130,7 +130,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
     public void initData() {
 
         //显示选择商品图片的rv
-        gridlayoutmanager = new GridLayoutManager(this, 3);
+        gridlayoutmanager = new GridLayoutManager(this, 4);
         publishGoodsImgs.setLayoutManager(gridlayoutmanager);
         context = this;
         data_left = new ArrayList<String>();

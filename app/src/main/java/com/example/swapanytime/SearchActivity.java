@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -15,6 +16,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import adapter.SearchGoodsAdapter;
@@ -32,6 +34,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import minterface.FragmentListener;
+import utils.LogUtils;
 import utils.SwapNetUtils;
 
 /**
@@ -55,8 +58,8 @@ public class SearchActivity extends baseActivity {
     //请求页码
     private int pagenum = 1;
     //
-    private String type = "";
-    private String content = "";
+    private static String type = "";
+    private static String content = "";
     //展示的商品
     private List<Goods> goods_data = new ArrayList<>();
 
@@ -81,9 +84,11 @@ public class SearchActivity extends baseActivity {
             content = getIntent().getStringExtra("content");
 
             if (type != null) {
-                GoSearch(type, fragmentListener_down, REQUEST_TYPE);
+                searchEt.setText(type);
+                GoSearch(type, fragmentListener, REQUEST_TYPE, 0);
             } else if (content != null) {
-                GoSearch(content, fragmentListener_down, REQUEST_CONTENT);
+                searchEt.setText(content);
+                GoSearch(content, fragmentListener, REQUEST_CONTENT, 0);
             }
 
         }
@@ -113,8 +118,14 @@ public class SearchActivity extends baseActivity {
     private OnRefreshListener onRefreshListener = new OnRefreshListener() {
         @Override
         public void onRefresh(RefreshLayout refreshlayout) {
+
             pagenum = 1;
-            GoSearch(type, fragmentListener_down, REQUEST_TYPE);
+            if (!TextUtils.isEmpty(type)) {
+                GoSearch(type, fragmentListener, REQUEST_TYPE, 0);
+            } else {
+                GoSearch(content, fragmentListener, REQUEST_CONTENT, 0);
+            }
+
         }
     };
 
@@ -123,52 +134,79 @@ public class SearchActivity extends baseActivity {
         public void onLoadmore(RefreshLayout refreshlayout) {
 
             pagenum++;
-            GoSearch(type, fragmentListener_up, REQUEST_TYPE);
+            if (!TextUtils.isEmpty(type)) {
+                GoSearch(type, fragmentListener, REQUEST_TYPE, 1);
+            } else {
+                GoSearch(content, fragmentListener, REQUEST_CONTENT, 1);
+            }
 
         }
     };
 
 
-    //下拉加载回调
-    private FragmentListener fragmentListener_down = new FragmentListener() {
+    //下拉上拉回调
+    private FragmentListener fragmentListener = new FragmentListener() {
+
+        private List<Goods> save_datas;
+
+
         @Override
         public void updateUI(List<?> list) {
+            LogUtils.d("weijie", "下拉商品数：" + list.size());
+
+            for (Goods goods : (List<Goods>) list) {
+                LogUtils.d("weijie", goods.getName());
+            }
+
 
             goods_data = (List<Goods>) list;
+            save_datas = goods_data;
+
             searchGoodsAdapter = new SearchGoodsAdapter(goods_data, SearchActivity.this, SearchGoodsAdapter.LAYOUT_TYPE);
+            refreshlayoutMain.finishRefresh(1000);
+            searchGoodsAdapter.notifyDataSetChanged();
             rvSearch.setLayoutManager(gridLayoutManager);
             rvSearch.setAdapter(searchGoodsAdapter);
-            refreshlayoutMain.finishRefresh(1000);
 
         }
 
         @Override
         public void appenddata(List<?> list) {
 
+            LogUtils.d("weijie", "上拉商品数：" + list.size());
+
+            for (Goods goods : (List<Goods>) list) {
+                LogUtils.d("weijie", goods.getName());
+            }
+
+            if (save_datas == null) {
+                return;
+            }
+
+            int positionstart = save_datas.size();
+            save_datas.addAll((List<Goods>) list);
+            goods_data = save_datas;
+            int itemcount = goods_data.size() - positionstart;
+            refreshlayoutMain.finishLoadmore(1000);
+            searchGoodsAdapter.notifyItemRangeInserted(positionstart, itemcount);
+
+
         }
     };
 
-    //上拉刷新回调
-    private FragmentListener fragmentListener_up = new FragmentListener() {
-        @Override
-        public void updateUI(List<?> list) {
-            goods_data = (List<Goods>) list;
 
-
-        }
-
-        @Override
-        public void appenddata(List<?> list) {
-
-        }
-    };
-
-
-    private void GoSearch(String content, final FragmentListener fragmentListener, int type) {
+    /**
+     * @param content          搜索内容
+     * @param fragmentListener 接口回调
+     * @param type             搜索类型（种类搜索，关键字搜索）
+     * @param way              接口回调方式 0：第一次请求 1：加载更多
+     */
+    private void GoSearch(String content, final FragmentListener fragmentListener, int type, final int way) {
         Observable<HttpDefault<List<Goods>>> observable = null;
         if (type == REQUEST_TYPE) {
             observable = SwapNetUtils.createAPI(GoodsAPI.class).SearchGoods_type(content, pagenum);
         } else if (type == REQUEST_CONTENT) {
+            LogUtils.d("weijie", "" + pagenum);
             observable = SwapNetUtils.createAPI(GoodsAPI.class).SearchGoods(content, pagenum);
         } else {
             return;
@@ -185,7 +223,11 @@ public class SearchActivity extends baseActivity {
                     @Override
                     public void onNext(@NonNull HttpDefault<List<Goods>> listHttpDefault) {
 
-                        fragmentListener.updateUI((listHttpDefault.getData()));
+                        if (way == 0) {
+                            fragmentListener.updateUI((listHttpDefault.getData()));
+                        } else if (way == 1) {
+                            fragmentListener.appenddata(listHttpDefault.getData());
+                        }
                     }
 
                     @Override
@@ -206,6 +248,15 @@ public class SearchActivity extends baseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_search:
+
+                content = searchEt.getText().toString();
+
+                if (!TextUtils.isEmpty(content)) {
+                    GoSearch(searchEt.getText().toString(), fragmentListener, REQUEST_CONTENT, 0);
+                } else {
+                    showSnackBar("搜索内容不能为空", ToastDuration.SHORT, btnSearch);
+                }
+
                 break;
             case R.id.rv_search:
                 break;

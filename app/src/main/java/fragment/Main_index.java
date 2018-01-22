@@ -163,6 +163,7 @@ public class Main_index extends baseFragment {
 
     /**
      * 点击事件
+     *
      * @param view
      */
     @OnClick({R.id.icon_head, R.id.search_et, R.id.icon_search, R.id.icon_cancel, R.id.icon_type, R.id.list_good})
@@ -174,8 +175,8 @@ public class Main_index extends baseFragment {
             case R.id.search_et:
                 break;
             case R.id.icon_search:
-                Intent intent = new Intent(getContext(),SearchActivity.class);
-                intent.putExtra("content",searchEt.getText().toString());
+                Intent intent = new Intent(getContext(), SearchActivity.class);
+                intent.putExtra("content", searchEt.getText().toString());
                 startActivity(intent);
                 break;
             case R.id.icon_cancel:
@@ -233,7 +234,7 @@ public class Main_index extends baseFragment {
 
     private FragmentListener fragmentListener = new FragmentListener() {
 
-        private List<Goods> savedata_list ;
+        private List<Goods> savedata_list;
 
         //返回刷新的list
         @Override
@@ -249,7 +250,7 @@ public class Main_index extends baseFragment {
                 @Override
                 public void onItemClick(View view, int position) {
                     Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
-                    intent.putExtra("goodsmsg",good_list.get(position));
+                    intent.putExtra("goodsmsg", good_list.get(position));
                     startActivity(intent);
                 }
             });
@@ -263,18 +264,18 @@ public class Main_index extends baseFragment {
         @Override
         public void appenddata(List<?> list) {
 
-            for (Goods goods:(List<Goods>)list){
-                LogUtils.d(getmTag(),goods.getName());
+            for (Goods goods : (List<Goods>) list) {
+                LogUtils.d(getmTag(), goods.getName());
             }
 
-            if (savedata_list==null){
+            if (savedata_list == null) {
                 return;
             }
             int positionstart = savedata_list.size();
-            savedata_list.addAll((List<Goods>)list);
+            savedata_list.addAll((List<Goods>) list);
             good_list = savedata_list;
-            int itemcount = savedata_list.size() -positionstart;
-            imgAdapter.notifyItemRangeInserted(positionstart+1,itemcount);
+            int itemcount = savedata_list.size() - positionstart;
+            imgAdapter.notifyItemRangeInserted(positionstart + 1, itemcount);
             smartRefreshLayout.finishLoadmore(500);
 
         }
@@ -285,7 +286,7 @@ public class Main_index extends baseFragment {
 
         @Override
         public void onRefresh(RefreshLayout refreshlayout) {
-            LogUtils.d("refreshlayout","onrefresh");
+            LogUtils.d("refreshlayout", "onrefresh");
             pagenum = 1;
             good_list = new ArrayList<>();
             getGoodsmessage(fragmentListener, pagenum, 1);
@@ -295,10 +296,10 @@ public class Main_index extends baseFragment {
     private OnLoadmoreListener loadmoreListener = new OnLoadmoreListener() {
         @Override
         public void onLoadmore(RefreshLayout refreshlayout) {
-            LogUtils.d("refreshlayout","loadmore");
+            LogUtils.d("refreshlayout", "loadmore");
             List<Goods> list = good_list;
             pagenum++;
-            LogUtils.d(getmTag(),"pagenum:"+pagenum);
+            LogUtils.d(getmTag(), "pagenum:" + pagenum);
             getGoodsmessage(fragmentListener, pagenum, 2);
 //            int positonstart = list.size();
 //            list.addAll(good_list);

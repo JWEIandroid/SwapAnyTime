@@ -68,7 +68,7 @@ public class SearchGoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             Glide.with(context).load(list.get(position).getImgurl().get(0)).asBitmap().centerCrop().into(((SearchHolder2View) holder).pic);
             ((SearchHolder2View) holder).txt_good_name.setText(list.get(position).getName());
-            ((SearchHolder2View) holder).txt_good_price.setText(list.get(position).getPrice_sale()+"");
+            ((SearchHolder2View) holder).txt_good_price.setText("￥ "+list.get(position).getPrice_sale()+"");
         }
 
     }

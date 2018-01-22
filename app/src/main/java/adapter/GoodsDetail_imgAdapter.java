@@ -73,7 +73,7 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 4);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -82,7 +82,7 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     case TYPE_USE:
                     case TYPE_ONELINE:
                     case TYPE_COMMENT:
-                        return 2;
+                        return 4;
                     case TYPE_THREE:
                         return 1;
                 }
