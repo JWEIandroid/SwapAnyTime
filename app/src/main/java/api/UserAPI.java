@@ -46,8 +46,8 @@ public interface UserAPI {
     //重置密码
     @POST("user/resetpsd")
     Observable<HttpDefault> resetPassword(
-            @Query("name") String tel,
-            @Query("password") String password,
+            @Query("id") int id,
+            @Query("newpsd") String newpsd,
             @Query("oldpsd") String oldpsd
     );
 

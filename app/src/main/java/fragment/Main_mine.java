@@ -1,5 +1,6 @@
 package fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -14,7 +15,9 @@ import android.widget.TextView;
 import com.baoyz.actionsheet.ActionSheet;
 import com.bumptech.glide.Glide;
 import com.example.swapanytime.LoginActivity;
+import com.example.swapanytime.MainActivity;
 import com.example.swapanytime.R;
+import com.example.swapanytime.mine_sort_Activity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -22,6 +25,7 @@ import java.io.File;
 import java.util.List;
 
 import api.UserAPI;
+import base.MyApplication;
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -74,6 +78,20 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     CollapsingToolbarLayout collapsingToolbarLayout;
     @Bind(R.id.app_bar)
     AppBarLayout appBar;
+    @Bind(R.id.txt_publish_buyreord)
+    TextView txtPublishBuyreord;
+    @Bind(R.id.txt_sale_record)
+    TextView txtSaleRecord;
+    @Bind(R.id.txt_buy_record)
+    TextView txtBuyRecord;
+    @Bind(R.id.txt_shoucang)
+    TextView txtShoucang;
+    @Bind(R.id.txt_mine_pay)
+    TextView txtMinePay;
+    @Bind(R.id.txt_change_account)
+    TextView txtChangeAccount;
+    @Bind(R.id.txt_exit)
+    TextView txtExit;
 
     //登陆状态
     private boolean islogin = false;
@@ -105,11 +123,9 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
     private BAR_STATUS bar_status;
 
-    @OnClick({R.id.ic_forward, R.id.mine_head, R.id.mine_name, R.id.mine_desc, R.id.mine_titlebar, R.id.title_name, R.id.collapsingToolbarLayout})
+    @OnClick({R.id.ic_forward, R.id.mine_head, R.id.mine_name, R.id.mine_desc, R.id.mine_titlebar, R.id.title_name, R.id.collapsingToolbarLayout, R.id.app_bar, R.id.txt_publish_buyreord, R.id.txt_sale_record, R.id.txt_buy_record, R.id.txt_shoucang, R.id.txt_mine_pay, R.id.txt_change_account, R.id.txt_exit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-
-
             case R.id.ic_forward:
                 break;
             case R.id.mine_head:
@@ -125,8 +141,39 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                 break;
             case R.id.collapsingToolbarLayout:
                 break;
+            case R.id.app_bar:
+                break;
+            case R.id.txt_publish_buyreord:
+                Intent intent = new Intent(getContext(), mine_sort_Activity.class);
+                intent.putExtra("title", txtPublishBuyreord.getText().toString());
+                startActivity(intent);
+                break;
+            case R.id.txt_sale_record:
+                Intent intent1 = new Intent(getContext(), mine_sort_Activity.class);
+                intent1.putExtra("title", txtSaleRecord.getText().toString());
+                startActivity(intent1);
+                break;
+            case R.id.txt_buy_record:
+                Intent intent2 = new Intent(getContext(), mine_sort_Activity.class);
+                intent2.putExtra("title", txtBuyRecord.getText().toString());
+                startActivity(intent2);
+                break;
+            case R.id.txt_shoucang:
+                Intent intent3 = new Intent(getContext(), mine_sort_Activity.class);
+                intent3.putExtra("title", txtShoucang.getText().toString());
+                startActivity(intent3);
+                break;
+            case R.id.txt_mine_pay:
+                break;
+            case R.id.txt_change_account:
+                goToActivity(LoginActivity.class);
+                break;
+            case R.id.txt_exit:
+                MyApplication.getInstance().exit();
+                break;
         }
     }
+
 
     // 标题栏状态 : 展开,折叠,中间
     private enum BAR_STATUS {
@@ -196,7 +243,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         switch (index) {
             case 0:
                 //拍照
-                instance.initGalleryFinal(true,1);
+                instance.initGalleryFinal(true, 1);
                 instance.openCamera(new GalleryfinalActionListener() {
                     @Override
                     public void success(List<PhotoInfo> list) {
@@ -215,7 +262,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                 break;
             case 1:
                 //打开相册
-                instance.initGalleryFinal(true,1);
+                instance.initGalleryFinal(true, 1);
                 instance.openAlbumSingle(new GalleryfinalActionListener() {
                     @Override
                     public void success(List<PhotoInfo> list) {
@@ -229,7 +276,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
                     @Override
                     public void failed(String msg) {
-                        LogUtils.d(getmTag(),"打开相册Error:"+msg);
+                        LogUtils.d(getmTag(), "打开相册Error:" + msg);
                     }
                 });
                 break;
@@ -262,6 +309,8 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         token_read = sharedPreferences.getString("token", null);
         String userid_data = sharedPreferences.getString("userid", null);
         if (userid_read == 0 & token_read == null) {
+            showToast("您还未登录", ToastDuration.SHORT);
+            goToActivity(LoginActivity.class);
             return false;
         }
         if (userid_data != null) {
@@ -275,6 +324,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
             return true;
         } else {
             showToast("用户信息过期，请重新登录", ToastDuration.SHORT);
+            goToActivity(LoginActivity.class);
             return false;
         }
 
@@ -305,7 +355,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
 
     //根据token,id请求客户信息
-    private User readLocaldata(String token, int userid) {
+    private User readLocaldata(String token, final int userid) {
         if (token != null & userid != 0) {
             Observable<HttpDefault<User>> observable = SwapNetUtils.createAPI(UserAPI.class).getUserdata(token, userid);
             observable.subscribeOn(Schedulers.io())
@@ -323,7 +373,20 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                                 user_data = userHttpDefault.getData();
                                 LogUtils.d("weijie", "成功读取用户:" + user_data.getTel());
                                 //更新头像
-                                Glide.with(main_mine).load(user_data.getHeadimg()).asBitmap().centerCrop().into(mineHead);
+                                Glide.with(main_mine)
+                                        .load(user_data.getHeadimg())
+                                        .asBitmap()
+                                        .error(R.mipmap.pic_error)
+                                        .placeholder(R.mipmap.pic_loading)
+                                        .centerCrop()
+                                        .into(mineHead);
+                                mineName.setText(user_data.getName());
+                                titleName.setText(user_data.getName());
+                                if (user_data.getDescription() == null) {
+                                    mineDesc.setText("咩都无....");
+                                } else {
+                                    mineDesc.setText(user_data.getDescription());
+                                }
                             }
                         }
 

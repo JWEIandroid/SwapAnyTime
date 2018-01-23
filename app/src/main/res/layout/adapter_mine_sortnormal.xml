@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginLeft="20dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/mine_goods_goods_imgs"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+
+        />
+
+    <TextView
+        android:id="@+id/mine_goods_goods_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_toRightOf="@id/mine_goods_goods_imgs"
+        android:layout_alignParentTop="true"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="name" />
+
+
+    <TextView
+        android:id="@+id/mine_goods_goods_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_toRightOf="@id/mine_goods_goods_imgs"
+        android:layout_below="@id/mine_goods_goods_name"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="name" />
+
+
+    <TextView
+        android:id="@+id/mine_goods_pricesale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_toRightOf="@id/mine_goods_goods_imgs"
+        android:text="price"
+        android:textColor="@color/blue" />
+
+
+
+    <TextView
+        android:id="@+id/mine_goods_price_before"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:text="￥888"
+        android:layout_marginLeft="10dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_toLeftOf="@id/mine_goods_price_before"
+        android:text="原价"
+        />
+
+
+</RelativeLayout>

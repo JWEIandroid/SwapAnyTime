@@ -77,6 +77,7 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
 
         bottomTabBar.init(getSupportFragmentManager())
                 .setTabPadding(15, 6, 10)
+                .setFontSize(12)
                 .addTabItem(titles[0], icons_choosed[0], icons[0], Main_index.class)
                 .addTabItem(titles[1], icons_choosed[1], icons[1], Main_discovery.class)
                 .addTabItem(titles[2], icons[2], null)

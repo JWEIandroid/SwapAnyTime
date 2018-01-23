@@ -66,16 +66,15 @@
 
                 <TextView
                     android:id="@+id/mine_desc"
-                    android:layout_width="200dp"
+                    android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/mine_name"
                     android:layout_marginLeft="25dp"
                     android:layout_marginTop="5dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字"
-                    android:textColor="@color/hui"
-                    android:textSize="10sp" />
+                    android:textSize="18sp"
+                    android:text="这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字" />
             </RelativeLayout>
 
 
