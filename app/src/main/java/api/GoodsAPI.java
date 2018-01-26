@@ -19,7 +19,7 @@ import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 /**
- * Created by Administrator on 2017/12/27.
+ * Created by weijie on 2017/12/27.
  */
 
 public interface GoodsAPI {
@@ -27,7 +27,7 @@ public interface GoodsAPI {
     //查询所有商品
     @POST("goods/result_goods")
     Observable<HttpDefault<List<Goods>>> QueryGoods(
-            @Query("pagenum")int pagenum
+            @Query("pagenum") int pagenum
     );
 
     //查询用户发布的商品
@@ -62,7 +62,7 @@ public interface GoodsAPI {
     @POST("goods/getgoodbyname")
     Observable<HttpDefault<List<Goods>>> SearchGoods(
             @Field("name") String name,
-            @Query("pagenum")int pagenum
+            @Query("pagenum") int pagenum
     );
 
 
@@ -71,9 +71,8 @@ public interface GoodsAPI {
     @POST("goods/searchbytype")
     Observable<HttpDefault<List<Goods>>> SearchGoods_type(
             @Field("type") String type,
-            @Query("pagenum")int num
+            @Query("pagenum") int num
     );
-
 
 
     //删除商品
@@ -117,14 +116,33 @@ public interface GoodsAPI {
     );
 
 
-
     //上传多张商品图片
     @Multipart
     @POST("file/upload2")
     Observable<HttpDefault<List<String>>> uploadPics(
             @Query("id") int goodid,
             @Part MultipartBody.Part file,
-            @Query("type")int type
+            @Query("type") int type
+    );
+
+
+    /**
+     * 用户购买商品(提交三部分：用户信息，商品信息，收货信息)
+     * @param purchaser  购买者
+     * @param id  商品id
+     * @param receiver 收货人
+     * @param adress 收货地址
+     * @param tel 联系电话
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("goods/buy")
+    Observable<HttpDefault<String>> buy(
+            @Query("purchaser") int purchaser,
+            @Query("id") int id,
+            @Field("receiver")String receiver,
+            @Field("adress")String adress,
+            @Field("tel")String tel
             );
 
 }

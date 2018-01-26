@@ -1,6 +1,7 @@
 package com.example.swapanytime;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,10 +13,12 @@ import java.util.List;
 
 import adapter.GoodsDetail_imgAdapter;
 import base.baseActivity;
+import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import entiry.Goods;
+import utils.LogUtils;
 
 /**
  * Created by weijie on 2017/11/28.
@@ -46,6 +49,9 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     private List<String> rv_data;
     private GoodsDetail_imgAdapter goodsDetail_imgAdapter;
     private Goods goods;
+
+    private static final long LOGIN_TIMEOUT = 30;  //登录超时时间
+    private int userid_read = 0;   //读取配置文件的用户id
 
 
     @Override
@@ -92,6 +98,58 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
     }
 
+    /**
+     * 检查是否登录
+     * @return 用户id
+     */
+    public int CheckLoginStatus(){
+
+        //检查是否存在本地数据
+        SharedPreferences sharedPreferences = this.getSharedPreferences("base64", MODE_PRIVATE);
+        String token_read = sharedPreferences.getString("token", null);
+        String userid_data = sharedPreferences.getString("userid", null);
+        if (userid_read == 0 & token_read == null) {
+            showToast("您还未登录", ToastDuration.SHORT);
+            goActivity(LoginActivity.class);
+            return 0;
+        }
+        if (userid_data != null) {
+            userid_read = Integer.parseInt(sharedPreferences.getString("userid", null));
+        }
+        LogUtils.d("weijie", "本地登录信息：" + "token:" + token_read
+                + "\n" + "userid:" + userid_read);
+
+        //检查登录信息是否过期
+        if (checktoken(token_read)) {
+            return userid_read;
+        } else {
+            showToast("用户信息过期，请重新登录", ToastDuration.SHORT);
+            goActivity(LoginActivity.class);
+            return 0;
+        }
+
+
+
+
+    }
+
+    //检查token是否过期
+    private boolean checktoken(String token) {
+
+        long now = System.currentTimeMillis();
+        StringBuilder sb = new StringBuilder(token);
+        long time = Long.parseLong(sb.substring(sb.length() - 13, sb.length()));
+        LogUtils.d("weijie", "token :" + time);
+        long pasttime = (now - time) / (60 * 1000L);
+        LogUtils.d("weijie", "token还有：" + (LOGIN_TIMEOUT - pasttime) + "分钟过期");
+
+        if (pasttime >= LOGIN_TIMEOUT) {
+            LogUtils.d("weijie", "token 过期");
+            return false;
+        }
+
+        return true;
+    }
 
     @Override
     public void onClick(View v) {
@@ -102,6 +160,11 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
                 break;
             case R.id.btn_buy:
                 Intent intent = new Intent(GoodsDetailActivity.this, ConfirmOrderActivity.class);
+
+                userid_read = CheckLoginStatus();
+                if (userid_read!=0){
+                    intent.putExtra("userid",userid_read);
+                }
                 intent.putExtra("good", goods);
                 startActivity(intent);
                 break;

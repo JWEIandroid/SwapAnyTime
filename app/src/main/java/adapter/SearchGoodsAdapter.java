@@ -14,6 +14,8 @@ import com.example.swapanytime.R;
 import java.util.List;
 
 import entiry.Goods;
+import utils.LogUtils;
+import utils.SwapNetUtils;
 
 /**
  * Created by weij on 2018/1/21.
@@ -53,7 +55,9 @@ public class SearchGoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             SearchHolder2View searchHolder2View = new SearchHolder2View(view);
             return searchHolder2View;
         } else if (type == LAYOUT_SEARCH) {
-            return null;
+            View view = LayoutInflater.from(context).inflate(R.layout.adapterview_searchgoods, parent, false);
+            SearchHolder2View searchHolder2View = new SearchHolder2View(view);
+            return searchHolder2View;
         }
         return null;
     }
@@ -65,8 +69,8 @@ public class SearchGoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
         }else if (holder instanceof  SearchHolder2View){
-
-            Glide.with(context).load(list.get(position).getImgurl().get(0)).asBitmap().centerCrop().into(((SearchHolder2View) holder).pic);
+            LogUtils.d("weijie",SwapNetUtils.getBaseURL()+list.get(position).getImgurl().get(0)+"---====");
+            Glide.with(context).load(SwapNetUtils.getBaseURL()+list.get(position).getImgurl().get(0)).asBitmap().centerCrop().into(((SearchHolder2View) holder).pic);
             ((SearchHolder2View) holder).txt_good_name.setText(list.get(position).getName());
             ((SearchHolder2View) holder).txt_good_price.setText("￥ "+list.get(position).getPrice_sale()+"");
         }

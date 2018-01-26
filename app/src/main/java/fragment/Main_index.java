@@ -205,6 +205,8 @@ public class Main_index extends baseFragment {
         searchEt.addTextChangedListener(textWatcher);
         smartRefreshLayout.setOnRefreshListener(refreshListener);
         smartRefreshLayout.setOnLoadmoreListener(loadmoreListener);
+
+        //
     }
 
 

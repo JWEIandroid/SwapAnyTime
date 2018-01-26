@@ -223,7 +223,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         ActionSheet.createBuilder(getActivity(), getActivity().getSupportFragmentManager())
                 .setCancelButtonTitle("取消")
                 .setOtherButtonTitles("拍照", "打开相册")
-                .setCancelableOnTouchOutside(true)
+                .setCancelableOnTouchOutside(true)/**/
                 .setListener(this)
                 .show();
     }
@@ -374,7 +374,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                                 LogUtils.d("weijie", "成功读取用户:" + user_data.getTel());
                                 //更新头像
                                 Glide.with(main_mine)
-                                        .load(user_data.getHeadimg())
+                                        .load(SwapNetUtils.getBaseURL()+user_data.getHeadimg())
                                         .asBitmap()
                                         .error(R.mipmap.pic_error)
                                         .placeholder(R.mipmap.pic_loading)

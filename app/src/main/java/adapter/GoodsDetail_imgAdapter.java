@@ -18,6 +18,7 @@ import cn.finalteam.galleryfinal.model.PhotoInfo;
 import entiry.Goods;
 import ui.CircleImageView;
 import utils.LogUtils;
+import utils.SwapNetUtils;
 
 /**
  * Created by weijie on 2017/11/29.
@@ -131,18 +132,18 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         if (holder instanceof GoodsDetail_imgAdapter.NormalImgHolder) {
 
-            Glide.with(context).load(list.get(position - 1)).fitCenter().into(((NormalImgHolder) holder).imageView);
+            Glide.with(context).load(SwapNetUtils.getBaseURL()+list.get(position - 1)).fitCenter().into(((NormalImgHolder) holder).imageView);
 
         } else if (holder instanceof GoodsDetail_imgAdapter.threeLineImgHolder) {
 
-            Glide.with(context).load(list.get(position - 1)).fitCenter().into(((threeLineImgHolder) holder).imageView);
+            Glide.with(context).load(SwapNetUtils.getBaseURL()+list.get(position - 1)).fitCenter().into(((threeLineImgHolder) holder).imageView);
         } else if (holder instanceof GoodsDetail_imgAdapter.GoodMsgHolder) {
 
             ((GoodMsgHolder) holder).goodsdetail_desc.setText((String)goods.getDescription());
 
         } else if (holder instanceof GoodsDetail_imgAdapter.UserMsgHolder) {
 
-            Glide.with(context).load(goods.getUser().getHeadimg()).asBitmap().fitCenter().into(((UserMsgHolder) holder).head);
+            Glide.with(context).load(SwapNetUtils.getBaseURL()+goods.getUser().getHeadimg()).asBitmap().fitCenter().into(((UserMsgHolder) holder).head);
             ((UserMsgHolder) holder).name.setText(goods.getUser().getName());
 
         } else if (holder instanceof GoodsDetail_imgAdapter.CommentHolder) {

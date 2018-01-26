@@ -9,12 +9,26 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import api.GoodsAPI;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import entiry.Goods;
+import entiry.HttpDefault;
 import entiry.User;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import minterface.FragmentListener;
+import utils.LogUtils;
+import utils.SwapNetUtils;
 
 /**
  * Created by weijie on 2018/1/16.
@@ -62,6 +76,7 @@ public class ConfirmOrderActivity extends baseActivity {
 
 
     private Goods goods = null;
+    private int userid = 0; //已登录的用户id
 
     @Override
     public void initData() {
@@ -74,21 +89,22 @@ public class ConfirmOrderActivity extends baseActivity {
 
         if (getIntent() != null) {
             goods = (Goods) getIntent().getSerializableExtra("good");
+            userid = getIntent().getIntExtra("userid", 0);
         }
 
-        if (goods!=null){
+        if (goods != null) {
 
             User user = goods.getUser();
             txtConfirmName.setText(user.getName());
             txtConfirmAdress.setText(user.getAdress());
             txtConfirmPhone.setText(user.getTel());
-            txtPrice.setText(""+goods.getPrice_sale());
-            txtExpress.setText(""+goods.getExpress());
+            txtPrice.setText("" + goods.getPrice_sale());
+            txtExpress.setText("" + goods.getExpress());
 
-            float price = Float.parseFloat(txtPrice.getText().toString())+
-                    Float.parseFloat( txtExpress.getText().toString());
-            priceall.setText(""+price);
-            Glide.with(this).load(goods.getImgurl().get(0)).asBitmap().centerCrop().into(pic);
+            float price = Float.parseFloat(txtPrice.getText().toString()) +
+                    Float.parseFloat(txtExpress.getText().toString());
+            priceall.setText("" + price);
+            Glide.with(this).load(SwapNetUtils.getBaseURL() + goods.getImgurl().get(0)).asBitmap().centerCrop().into(pic);
         }
 
 
@@ -106,14 +122,50 @@ public class ConfirmOrderActivity extends baseActivity {
 
     /**
      * 提交订单信息
-     *
      */
-    private  boolean PostOrder(){
+    private void PostOrder(final FragmentListener fragmentListener) {
 
+        String name = txtConfirmName.getText().toString();
+        String adress = txtConfirmAdress.getText().toString();
+        String phone =  txtConfirmPhone.getText().toString();
 
+        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(GoodsAPI.class).buy(
+                userid,
+                goods.getId(),
+                txtConfirmName.getText().toString(),
+                txtConfirmAdress.getText().toString(),
+                txtConfirmPhone.getText().toString());
 
-        return true;
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<String>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<String> stringHttpDefault) {
+
+                        LogUtils.d("weijie","buy msg response: "+stringHttpDefault.getMessage());
+                        List<String> list = new ArrayList<String>();
+                        list.add(stringHttpDefault.getMessage());
+                        fragmentListener.updateUI(list);
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                        LogUtils.d("weijie","post buy msg error: "+e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
 
@@ -124,9 +176,17 @@ public class ConfirmOrderActivity extends baseActivity {
                 break;
             case R.id.txt_confirm_order:
 
-                if (PostOrder()){
-                    showSnackBar("支付成功",ToastDuration.SHORT,confirm_order_progressbar);
-                }
+                PostOrder(new FragmentListener() {
+                    @Override
+                    public void updateUI(List<?> list) {
+                        showSnackBar((String) list.get(0), ToastDuration.SHORT, txtConfirmOrder);
+                    }
+
+                    @Override
+                    public void appenddata(List<?> list) {
+
+                    }
+                });
 
                 break;
         }

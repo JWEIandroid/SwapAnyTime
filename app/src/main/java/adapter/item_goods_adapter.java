@@ -24,6 +24,7 @@ import minterface.OnItemClickListener;
 import ui.CircleImageView;
 import utils.CBViewCreator;
 import utils.LogUtils;
+import utils.SwapNetUtils;
 
 /**
  * Created by weijie on 2017/11/21.
@@ -115,7 +116,8 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             Goods good = goods.get(position-1);
             User user = goods.get(position-1).getUser();
 
-            Glide.with(context).load(user.getHeadimg()).asBitmap().centerCrop().into(((NormalHolder) viewHolder).head);
+
+            Glide.with(context).load(SwapNetUtils.getBaseURL()+user.getHeadimg()).asBitmap().centerCrop().into(((NormalHolder) viewHolder).head);
             ((NormalHolder) viewHolder).name.setText(user.getName());
             ((NormalHolder) viewHolder).price.setText("￥ "+good.getPrice_sale());
             ((NormalHolder) viewHolder).desc.setText((String) good.getDescription());

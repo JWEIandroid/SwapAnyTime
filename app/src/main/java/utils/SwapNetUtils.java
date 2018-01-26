@@ -52,6 +52,11 @@ public class SwapNetUtils {
         LogUtils.d("weijie", "ip adress is : " + IP);
     }
 
+
+    public static String getBaseURL(){
+        return BASEURL;
+    }
+
     private static void initIp() {
 
         createFile(ip_config);

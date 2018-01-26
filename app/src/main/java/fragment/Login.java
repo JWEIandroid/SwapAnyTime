@@ -1,5 +1,6 @@
 package fragment;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -307,8 +308,17 @@ public class Login extends baseFragment {
 
                 break;
             case R.id.text_2reg:
-                childLoginarea.setVisibility(View.GONE);
+
+                /**
+                 * 登录框开始动画--消失
+                 * 注册开始动画--显示
+                 */
+//                ObjectAnimator.ofFloat(childRegarea,"alpha",0f,1f).setDuration(2000L).start();
+//                ObjectAnimator.ofFloat(childLoginarea,"alpha",1f,0f).setDuration(2000L).start();
+//                ObjectAnimator.ofFloat(childResetpsdarea,"alpha",1f,0f).setDuration(2000L).start();
+
                 childRegarea.setVisibility(View.VISIBLE);
+                childLoginarea.setVisibility(View.GONE);
                 childResetpsdarea.setVisibility(View.GONE);
                 break;
             case R.id.text_resetpsd:
