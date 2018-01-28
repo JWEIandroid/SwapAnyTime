@@ -28,7 +28,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:layout_marginTop="10dp"
-            android:text="这是一个昵称点点滴滴" />
+            android:text="这是一个昵称" />
 
 
         <TextView

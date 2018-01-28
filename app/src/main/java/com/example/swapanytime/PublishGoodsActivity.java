@@ -238,7 +238,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                 .build();
 
 
-        String user_data = getSharedPreferences("base", MODE_PRIVATE).getString("userid", null);
+        String user_data = getSharedPreferences("base64", MODE_PRIVATE).getString("userid", null);
         int userid = 46;
         if (user_data != null) {
             userid = Integer.parseInt(user_data);
