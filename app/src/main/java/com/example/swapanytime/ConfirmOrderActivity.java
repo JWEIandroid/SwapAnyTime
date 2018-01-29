@@ -90,6 +90,7 @@ public class ConfirmOrderActivity extends baseActivity {
         if (getIntent() != null) {
             goods = (Goods) getIntent().getSerializableExtra("good");
             userid = getIntent().getIntExtra("userid", 0);
+            showToast("当前用户："+userid,ToastDuration.SHORT);
         }
 
         if (goods != null) {
@@ -125,9 +126,6 @@ public class ConfirmOrderActivity extends baseActivity {
      */
     private void PostOrder(final FragmentListener fragmentListener) {
 
-        String name = txtConfirmName.getText().toString();
-        String adress = txtConfirmAdress.getText().toString();
-        String phone =  txtConfirmPhone.getText().toString();
 
         Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(GoodsAPI.class).buy(
                 userid,

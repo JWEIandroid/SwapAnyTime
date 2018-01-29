@@ -28,6 +28,7 @@ public abstract class baseFragment extends Fragment {
     private View rootView;
 
 
+
     /**
      * setUserVisibleHint()在Fragment创建时会先被调用一次，传入isVisibleToUser = false
      * 如果当前Fragment可见，那么setUserVisibleHint()会再次被调用一次，传入isVisibleToUser = true

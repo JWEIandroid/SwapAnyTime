@@ -11,7 +11,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="115dp"
+        android:layout_height="150dp"
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -50,7 +50,7 @@
                     android:layout_marginTop="30dp"
                     android:layout_toLeftOf="@id/ic_forward"
                     android:background="@color/white"
-                    android:src="@mipmap/weijie" />
+                    android:src="@mipmap/ic_launcher" />
 
 
                 <TextView
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
                     android:layout_marginTop="30dp"
-                    android:text="phpjava"
+                    android:text="您还没有登录"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -73,8 +73,8 @@
                     android:layout_marginTop="5dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:textSize="18sp"
-                    android:text="这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字这是一段很长的文字" />
+                    android:text="什么都没有"
+                    android:textSize="18sp" />
             </RelativeLayout>
 
 
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
                     android:gravity="center"
-                    android:text="helloworld"
+                    android:text="Null"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold" />

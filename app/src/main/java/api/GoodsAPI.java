@@ -145,6 +145,20 @@ public interface GoodsAPI {
             @Field("tel")String tel
             );
 
+
+    /**
+     * @param type 0：购买记录  1：卖出记录  2：发布记录 3：收藏记录
+     * @param pagenum 页码
+     * @param userid  用户id
+     * @return 查询记录
+     */
+    @POST("record/getrecords")
+    Observable<HttpDefault<List<Object>>> getRecords(
+            @Query("type")int type,
+            @Query("pagenum")int pagenum,
+            @Query("userid")int userid
+    );
+
 }
 
 

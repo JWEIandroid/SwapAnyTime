@@ -251,6 +251,9 @@ public class Login extends baseFragment {
         newpsdEt.addTextChangedListener(reset_watcher);
         psdConfirmEt.addTextChangedListener(reset_watcher);
 
+
+
+
     }
 
 
@@ -437,6 +440,8 @@ public class Login extends baseFragment {
                 });
 
     }
+
+
 
 
 }

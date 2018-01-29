@@ -123,7 +123,9 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
     private BAR_STATUS bar_status;
 
-    @OnClick({R.id.ic_forward, R.id.mine_head, R.id.mine_name, R.id.mine_desc, R.id.mine_titlebar, R.id.title_name, R.id.collapsingToolbarLayout, R.id.app_bar, R.id.txt_publish_buyreord, R.id.txt_sale_record, R.id.txt_buy_record, R.id.txt_shoucang, R.id.txt_mine_pay, R.id.txt_change_account, R.id.txt_exit})
+    @OnClick({R.id.ic_forward, R.id.mine_head, R.id.mine_name, R.id.mine_desc, R.id.mine_titlebar,
+            R.id.title_name, R.id.collapsingToolbarLayout, R.id.app_bar, R.id.txt_publish_buyreord,
+            R.id.txt_sale_record, R.id.txt_buy_record, R.id.txt_shoucang, R.id.txt_mine_pay, R.id.txt_change_account, R.id.txt_exit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ic_forward:
@@ -145,21 +147,29 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                 break;
             case R.id.txt_publish_buyreord:
                 Intent intent = new Intent(getContext(), mine_sort_Activity.class);
+                intent.putExtra("type",0);
+                intent.putExtra("userid",userid_read);
                 intent.putExtra("title", txtPublishBuyreord.getText().toString());
                 startActivity(intent);
                 break;
             case R.id.txt_sale_record:
                 Intent intent1 = new Intent(getContext(), mine_sort_Activity.class);
+                intent1.putExtra("type",1);
+                intent1.putExtra("userid",userid_read);
                 intent1.putExtra("title", txtSaleRecord.getText().toString());
                 startActivity(intent1);
                 break;
             case R.id.txt_buy_record:
                 Intent intent2 = new Intent(getContext(), mine_sort_Activity.class);
+                intent2.putExtra("type",2);
+                intent2.putExtra("userid",userid_read);
                 intent2.putExtra("title", txtBuyRecord.getText().toString());
                 startActivity(intent2);
                 break;
             case R.id.txt_shoucang:
                 Intent intent3 = new Intent(getContext(), mine_sort_Activity.class);
+                intent3.putExtra("type",3);
+                intent3.putExtra("userid",userid_read);
                 intent3.putExtra("title", txtShoucang.getText().toString());
                 startActivity(intent3);
                 break;
@@ -374,7 +384,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                                 LogUtils.d("weijie", "成功读取用户:" + user_data.getTel());
                                 //更新头像
                                 Glide.with(main_mine)
-                                        .load(SwapNetUtils.getBaseURL()+user_data.getHeadimg())
+                                        .load(SwapNetUtils.getBaseURL() + user_data.getHeadimg())
                                         .asBitmap()
                                         .error(R.mipmap.pic_error)
                                         .placeholder(R.mipmap.pic_loading)
@@ -447,6 +457,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                 });
         return true;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
