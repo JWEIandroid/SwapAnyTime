@@ -2,6 +2,7 @@ package com.example.swapanytime;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,12 +13,14 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapter.RecordApapter;
 import api.GoodsAPI;
 import base.MyApplication;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import entiry.Buyrecord;
 import entiry.ForkRecord;
 import entiry.Goods;
 import entiry.HttpDefault;
@@ -51,8 +54,6 @@ public class mine_sort_Activity extends baseActivity {
     @Bind(R.id.mine_sort_refreshlayout)
     SmartRefreshLayout mineSortRefreshlayout;
 
-    //根据type和userid查询数据
-
 
     private final int OPENTYPE_COLLECTION = 0X1000;
     private final int OPENTYPE_PUBLISH = 0X1001;
@@ -62,25 +63,30 @@ public class mine_sort_Activity extends baseActivity {
     private int pagenum = 1;  //页码
     private int userid = -1;  //用户id
 
-    private List<RecordResponse> list_recordresponse = new ArrayList<>();
+    private List<RecordResponse> list_recordresponse = new ArrayList<>();  //每次请求获取的结果集表
     private List<SaleRecord> list_salerecord = new ArrayList<>(); //查询获取的卖出记录表
-    private List<SaleRecord> list_buyrecord = new ArrayList<>(); //查询获取的购买记录表
-    private List<SaleRecord> list_reportrecord = new ArrayList<>(); //查询获取的发布记录表
-    private List<SaleRecord> list_forkrecord = new ArrayList<>(); //查询获取的收藏记录表
+    private List<Buyrecord> list_buyrecord = new ArrayList<>(); //查询获取的购买记录表
+    private List<ReportRecord> list_reportrecord = new ArrayList<>(); //查询获取的发布记录表
+    private List<ForkRecord> list_forkrecord = new ArrayList<>(); //查询获取的收藏记录表
     private FragmentListener fragmentlistener = null;
+    private Intent intent  = null;
+
+    private RecordApapter recordApapter = null;
+    private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
 
     @Override
     public void initData() {
 
-        Intent intent = getIntent();
+        intent = getIntent();
         if (intent == null) {
             showToast("OPENTYPE IS NULL", ToastDuration.SHORT);
             goActivity(MainActivity.class);
+            return;
         }
+        titlebarTitle.setText(intent.getStringExtra("title"));
         type = intent.getIntExtra("type", -1);
         userid = intent.getIntExtra("userid", -1);
-
         if (type == -1 || userid == -1) {
             showToast("参数错误", ToastDuration.SHORT);
             goActivity(MainActivity.class);
@@ -91,14 +97,6 @@ public class mine_sort_Activity extends baseActivity {
 
     @Override
     public void initView() {
-
-        Intent intent = getIntent();
-        if (intent == null) {
-            showToast("OPENTYPE IS NULL", ToastDuration.SHORT);
-            goActivity(MainActivity.class);
-        }
-        titlebarTitle.setText(intent.getStringExtra("title"));
-
     }
 
     @Override
@@ -109,48 +107,112 @@ public class mine_sort_Activity extends baseActivity {
     @Override
     public void initEvent() {
 
-
-        //请求用户记录信息
+        /**
+         * 请求第一页记录信息
+         * 0：购买记录  1：卖出记录  2：发布记录 3：收藏记录
+         */
         getGoodList(type, 1, userid, new FragmentListener() {
             @Override
             public void updateUI(List<?> list) {
 
                 list_recordresponse = (List<RecordResponse>) list;
+                if (list_recordresponse.size()<1){
+                    showToast("服务器查询不到数据",ToastDuration.SHORT);
+                    return;
+                }
 
                 switch (type) {
                     case 0:
-                        for (RecordResponse recordResponse : list_recordresponse) {
-                            if (recordResponse.getBuyrecord() != null) {
-                                list_buyrecord.add(recordResponse);
-                            }
+                        if (getResultList(type,list_recordresponse)==null){
+                            showToast("没有购买记录",ToastDuration.SHORT);
                         }
-                        if (list_buyrecord.size() < 1) {
-                            showSnackBar("没有购买记录,", ToastDuration.SHORT, mineSortRv);
-                            break;
-                        }
+                        showToast("请求到的记录有"+list_buyrecord.size()+"条",ToastDuration.SHORT);
 
-
+                        recordApapter = new RecordApapter(mine_sort_Activity.this,list_buyrecord,type);
+                        mineSortRv.setLayoutManager(linearLayoutManager);
+                        mineSortRv.setAdapter(recordApapter);
                         break;
                     case 1:
+                        if (getResultList(type,list_recordresponse)==null){
+                            showToast("没有卖出记录",ToastDuration.SHORT);
+                        }
+                        showToast("请求到的记录有"+list_salerecord.size()+"条",ToastDuration.SHORT);
+
+                        recordApapter = new RecordApapter(mine_sort_Activity.this,list_salerecord,type);
+                        mineSortRv.setLayoutManager(linearLayoutManager);
+                        mineSortRv.setAdapter(recordApapter);
                         break;
                     case 2:
+                        if (getResultList(type,list_recordresponse)==null){
+                            showToast("没有发布记录",ToastDuration.SHORT);
+                        }
+                        showToast("请求到的记录有"+list_recordresponse.size()+"条",ToastDuration.SHORT);
+                        recordApapter = new RecordApapter(mine_sort_Activity.this,list_reportrecord,type);
+                        mineSortRv.setLayoutManager(linearLayoutManager);
+                        mineSortRv.setAdapter(recordApapter);
                         break;
                     case 3:
+                        if (getResultList(type,list_recordresponse)==null){
+                            showToast("没有收藏记录",ToastDuration.SHORT);
+                        }
+                        showToast("请求到的记录有"+list_forkrecord.size()+"条",ToastDuration.SHORT);
+
+                        recordApapter = new RecordApapter(mine_sort_Activity.this,list_forkrecord,type);
+                        mineSortRv.setLayoutManager(linearLayoutManager);
+                        mineSortRv.setAdapter(recordApapter);
                         break;
                     default:
+                        showToast("请求类型参数错误",ToastDuration.SHORT);
                 }
             }
 
-
+             //加载更多数据
             @Override
             public void appenddata(List<?> list) {
 
             }
 
         }, 0);
-
     }
 
+    /**
+     * 根据请求类型和结果集返回所要展示的数据
+     * @param type
+     * @param data
+     * @return
+     */
+    private List<?> getResultList(int type,List<RecordResponse> data){
+
+        switch (type){
+            case 0:
+                for (RecordResponse recordResponse:data){
+                    Buyrecord buyrecord = recordResponse.getBuyrecord();
+                    list_buyrecord.add(buyrecord);
+                }
+                return list_buyrecord;
+            case 1:
+                for (RecordResponse recordResponse:data){
+                    SaleRecord saleRecord = recordResponse.getSalerecord();
+                    list_salerecord.add(saleRecord);
+                }
+                return list_salerecord;
+            case 2:
+                for (RecordResponse recordResponse:data){
+                    ReportRecord reportRecord = recordResponse.getReportrecord();
+                    list_reportrecord.add(reportRecord);
+                }
+                return list_reportrecord;
+            case 3:
+                for (RecordResponse recordResponse:data){
+                    ForkRecord forkRecord = recordResponse.getForkRecord();
+                    list_forkrecord.add(forkRecord);
+                }
+                return list_forkrecord;
+            default:
+                return null;
+
+        }
+    }
 
     /**
      * 发送请求获取商品记录表

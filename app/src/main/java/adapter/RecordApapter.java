@@ -17,6 +17,7 @@ import entiry.Buyrecord;
 import entiry.Goods;
 import entiry.SaleRecord;
 import minterface.OnItemClickListener;
+import utils.SwapNetUtils;
 
 /**
  * Created by weijie on 2018/1/29.
@@ -25,12 +26,12 @@ import minterface.OnItemClickListener;
 public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHolder> {
 
     private Context context = null;
-    private List<?> list = null;
+    private List<?> list = null; //记录数据表
     private OnItemClickListener onItemClickListener = null;
     private int type = -1; //加载数据类型  0：购买记录  1：卖出记录  2：发布记录 3：收藏记录
 
 
-    public RecordApapter(Context context,List<?> list,int type) {
+    public RecordApapter(Context context, List<?> list, int type) {
         this.context = context;
         this.list = list;
         this.type = type;
@@ -59,11 +60,12 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
             case 1:
                 SaleRecord saleRecord = (SaleRecord) list.get(position);
                 Glide.with(context)
-                        .load(saleRecord.getGoods().getImgurl().get(0))
+                        .load(SwapNetUtils.getBaseURL()+saleRecord.getGoods().getImgurl().get(0))
                         .asBitmap()
                         .centerCrop()
                         .error(R.mipmap.pic_error)
-                        .placeholder(R.mipmap.pic_loading);
+                        .placeholder(R.mipmap.pic_loading)
+                        .into(holder.record_item_pic);
                 holder.record_item_desc.setText(saleRecord.getGoods().getDescription() + "");
                 holder.record_itemprice_before.setText(saleRecord.getGoods().getPrice_before() + "");
                 holder.record_itemprice_sale.setText(saleRecord.getGoods().getPrice_sale() + "");
