@@ -16,12 +16,44 @@ public class SaleRecord {
      * shouhuomsg : 68
      */
 
-    private int id;
-    private int userid;
-    private int goodsid;
-    private String date;
-    private int user_sale_id;
-    private int shouhuomsg;
+    private int id;    //记录id
+    private int userid;  //卖家Id
+    private int goodsid;  //商品Id
+    private String date;  //订单日期
+    private User user; //卖家
+    private User user_sale; //买家
+    private Shouhuomsg shouhuomsg; //收货信息
+    private int user_sale_id;  //买家Id
+    private int shouhuomsgid;   //对应的收货信息Id
+    private Goods goods;       //商品信息
+
+    public Shouhuomsg getShouhuomsg() {
+        return shouhuomsg;
+    }
+
+    public SaleRecord setShouhuomsg(Shouhuomsg shouhuomsg) {
+        this.shouhuomsg = shouhuomsg;
+        return this;
+    }
+
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public SaleRecord setGoods(Goods goods) {
+        this.goods = goods;
+        return this;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public SaleRecord setUser(User user) {
+        this.user = user;
+        return this;
+    }
+
 
     public int getId() {
         return id;
@@ -63,11 +95,30 @@ public class SaleRecord {
         this.user_sale_id = user_sale_id;
     }
 
-    public int getShouhuomsg() {
+    public User getUser_sale() {
+        return user_sale;
+    }
+
+    public SaleRecord setUser_sale(User user_sale) {
+        this.user_sale = user_sale;
+        return this;
+    }
+
+    public Shouhuomsg getShuohuomsg() {
         return shouhuomsg;
     }
 
-    public void setShouhuomsg(int shouhuomsg) {
-        this.shouhuomsg = shouhuomsg;
+    public SaleRecord setShuohuomsg(Shouhuomsg shuohuomsg) {
+        this.shouhuomsg = shuohuomsg;
+        return this;
+    }
+
+    public int getShouhuomsgid() {
+        return shouhuomsgid;
+    }
+
+    public SaleRecord setShouhuomsgid(int shouhuomsgid) {
+        this.shouhuomsgid = shouhuomsgid;
+        return this;
     }
 }

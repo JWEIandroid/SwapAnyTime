@@ -4,7 +4,7 @@ package entiry;
  * Created by weijie on 2018/1/29.
  */
 
-public class BuyRecord {
+public class Buyrecord {
 
 
     /**

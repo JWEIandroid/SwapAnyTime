@@ -18,8 +18,12 @@ import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import entiry.ForkRecord;
 import entiry.Goods;
 import entiry.HttpDefault;
+import entiry.RecordResponse;
+import entiry.ReportRecord;
+import entiry.SaleRecord;
 import entiry.User;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -54,11 +58,15 @@ public class mine_sort_Activity extends baseActivity {
     private final int OPENTYPE_PUBLISH = 0X1001;
     private final int OPENTYPE_BUY = 0X1002;
     private final int OPENTYPE_SALE = 0X1003;
-    private int type = 0;     //查询类别
+    private int type = -1;     //查询类别
     private int pagenum = 1;  //页码
     private int userid = -1;  //用户id
 
-    private List<Goods> goodsList = new ArrayList<>(); //查询获取的商品表
+    private List<RecordResponse> list_recordresponse = new ArrayList<>();
+    private List<SaleRecord> list_salerecord = new ArrayList<>(); //查询获取的卖出记录表
+    private List<SaleRecord> list_buyrecord = new ArrayList<>(); //查询获取的购买记录表
+    private List<SaleRecord> list_reportrecord = new ArrayList<>(); //查询获取的发布记录表
+    private List<SaleRecord> list_forkrecord = new ArrayList<>(); //查询获取的收藏记录表
     private FragmentListener fragmentlistener = null;
 
 
@@ -101,21 +109,44 @@ public class mine_sort_Activity extends baseActivity {
     @Override
     public void initEvent() {
 
+
+        //请求用户记录信息
         getGoodList(type, 1, userid, new FragmentListener() {
             @Override
             public void updateUI(List<?> list) {
 
-//                goodsList = (List<Goods>) list;
-//                for (Goods goods : Goods) {
-//                    LogUtils.d("weijie", goods.getName());
-//                }
+                list_recordresponse = (List<RecordResponse>) list;
 
+                switch (type) {
+                    case 0:
+                        for (RecordResponse recordResponse : list_recordresponse) {
+                            if (recordResponse.getBuyrecord() != null) {
+                                list_buyrecord.add(recordResponse);
+                            }
+                        }
+                        if (list_buyrecord.size() < 1) {
+                            showSnackBar("没有购买记录,", ToastDuration.SHORT, mineSortRv);
+                            break;
+                        }
+
+
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    default:
+                }
             }
+
 
             @Override
             public void appenddata(List<?> list) {
 
             }
+
         }, 0);
 
     }
@@ -132,17 +163,18 @@ public class mine_sort_Activity extends baseActivity {
      */
     private void getGoodList(int type, int pagenum, int userid, final FragmentListener listener, final int way) {
 
-        Observable<HttpDefault<List<Object>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).getRecords(type, pagenum, userid);
+
+        Observable<HttpDefault<List<RecordResponse>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).getRecords(type, pagenum, userid);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HttpDefault<List<Object>>>() {
+                .subscribe(new Observer<HttpDefault<List<RecordResponse>>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(@NonNull HttpDefault<List<Object>> listHttpDefault) {
+                    public void onNext(@NonNull HttpDefault<List<RecordResponse>> listHttpDefault) {
 
                         if (way == 0) {
                             listener.updateUI(listHttpDefault.getData());
