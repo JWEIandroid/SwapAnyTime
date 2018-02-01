@@ -37,6 +37,7 @@ import adapter.ChoosePhotoListAdapter;
 import adapter.SimpleRecycleViewAdapter;
 import api.GoodsAPI;
 import api.UserAPI;
+import base.MyApplication;
 import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -128,6 +129,8 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
 
     @Override
     public void initData() {
+
+        MyApplication.getInstance().addActivity(PublishGoodsActivity.this);
 
         //显示选择商品图片的rv
         gridlayoutmanager = new GridLayoutManager(this, 4);

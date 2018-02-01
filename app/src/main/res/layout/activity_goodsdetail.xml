@@ -96,10 +96,11 @@
             >
 
             <ImageView
+                android:id="@+id/ic_fork"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_weight="1"
-                android:src="@mipmap/like_notselected"
+                android:src="@mipmap/like_0"
                 android:layout_gravity="center"
                 />
 

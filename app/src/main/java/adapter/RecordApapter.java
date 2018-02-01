@@ -1,12 +1,15 @@
 package adapter;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.swapanytime.R;
@@ -15,15 +18,18 @@ import java.util.List;
 
 import entiry.Buyrecord;
 import entiry.Goods;
+import entiry.ReportRecord;
 import entiry.SaleRecord;
+import minterface.ItemTouchHelperAdapter;
 import minterface.OnItemClickListener;
+import utils.LogUtils;
 import utils.SwapNetUtils;
 
 /**
  * Created by weijie on 2018/1/29.
  */
 
-public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHolder> {
+public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHolder> implements ItemTouchHelperAdapter{
 
     private Context context = null;
     private List<?> list = null; //记录数据表
@@ -44,23 +50,37 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
 
     @Override
     public RecordHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RecordHolder(LayoutInflater.from(context).inflate(R.layout.adapter_record_btn, parent, false));
+        return new RecordHolder(LayoutInflater.from(context).inflate(R.layout.horizonal_item_record, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecordHolder holder, final int position) {
+    public void onBindViewHolder(final RecordHolder holder, final int position) {
 
         switch (type) {
 
             case 0:
-                if (holder instanceof RecordHolder) {
-                    Buyrecord buyrecord = (Buyrecord) list.get(position);
-                }
+                Buyrecord buyrecord = (Buyrecord) list.get(position);
+                Glide.with(context)
+                        .load(SwapNetUtils.getBaseURL() + buyrecord.getGoods().getImgurl().get(0))
+                        .asBitmap()
+                        .centerCrop()
+                        .error(R.mipmap.pic_error)
+                        .placeholder(R.mipmap.pic_loading)
+                        .into(holder.record_item_pic);
+                holder.record_item_desc.setText(buyrecord.getGoods().getDescription() + "");
+                holder.record_itemprice_before.setText(buyrecord.getGoods().getPrice_before() + "");
+                holder.record_itemprice_sale.setText(buyrecord.getGoods().getPrice_sale() + "");
+                holder.record_item_del_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Snackbar.make(holder.record_item_del_btn,"del",Snackbar.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             case 1:
                 SaleRecord saleRecord = (SaleRecord) list.get(position);
                 Glide.with(context)
-                        .load(SwapNetUtils.getBaseURL()+saleRecord.getGoods().getImgurl().get(0))
+                        .load(SwapNetUtils.getBaseURL() + saleRecord.getGoods().getImgurl().get(0))
                         .asBitmap()
                         .centerCrop()
                         .error(R.mipmap.pic_error)
@@ -72,11 +92,28 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
                 holder.record_item_del_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onItemClickListener.onItemClick(v, position);
+                        Snackbar.make(holder.record_item_del_btn,"del",Snackbar.LENGTH_SHORT).show();
                     }
                 });
                 break;
             case 2:
+                ReportRecord reportRecord = (ReportRecord) list.get(position);
+                Glide.with(context)
+                        .load(SwapNetUtils.getBaseURL() + reportRecord.getGoods().getImgurl().get(0))
+                        .asBitmap()
+                        .centerCrop()
+                        .error(R.mipmap.pic_error)
+                        .placeholder(R.mipmap.pic_loading)
+                        .into(holder.record_item_pic);
+                holder.record_item_desc.setText(reportRecord.getGoods().getDescription() + "");
+                holder.record_itemprice_before.setText(reportRecord.getGoods().getPrice_before() + "");
+                holder.record_itemprice_sale.setText(reportRecord.getGoods().getPrice_sale() + "");
+                holder.record_item_del_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Snackbar.make(holder.record_item_del_btn,"del",Snackbar.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             case 3:
                 break;
@@ -94,13 +131,21 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
         return list.size();
     }
 
+    @Override
+    public void onItemDismiss(int position) {
+        list.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public class RecordHolder extends RecyclerView.ViewHolder {
 
-        ImageView record_item_pic;
-        TextView record_itemprice_sale;
-        TextView record_itemprice_before;
-        TextView record_item_desc;
-        TextView record_item_del_btn;
+        public ImageView record_item_pic;
+        public TextView record_itemprice_sale;
+        public TextView record_itemprice_before;
+        public TextView record_item_desc;
+        public TextView record_item_del_btn;
+        public FrameLayout rv;
+        public ImageView img;
 
         public RecordHolder(View itemView) {
             super(itemView);
@@ -109,6 +154,8 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
             record_itemprice_before = (TextView) itemView.findViewById(R.id.horizonal_record_item_price_before);
             record_item_desc = (TextView) itemView.findViewById(R.id.horizonal_record_item_desc);
             record_item_del_btn = (TextView) itemView.findViewById(R.id.horizonal_record_item_del_btn);
+            rv = (FrameLayout) itemView.findViewById(R.id.horizonal_record_item_del_framelayout);
+            img = (ImageView) itemView.findViewById(R.id.horizonal_record_item_del_img);
         }
 
     }

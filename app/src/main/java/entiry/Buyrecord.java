@@ -18,8 +18,43 @@ public class Buyrecord {
     private int id;
     private int userid;
     private int goodsid;
-    private int shouhuomsg;
+    private int shouhuomsgid;
     private String date;
+    private User user_shop;
+    private Goods goods;
+    private Shouhuomsg shouhuomsg;
+
+    public int getShouhuomsgid() {
+        return shouhuomsgid;
+    }
+
+    public Buyrecord setShouhuomsgid(int shouhuomsgid) {
+        this.shouhuomsgid = shouhuomsgid;
+        return this;
+    }
+
+    public User getUser_shop() {
+        return user_shop;
+    }
+
+    public Buyrecord setUser_shop(User user_shop) {
+        this.user_shop = user_shop;
+        return this;
+    }
+
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public Buyrecord setGoods(Goods goods) {
+        this.goods = goods;
+        return this;
+    }
+
+    public Buyrecord setShouhuomsg(Shouhuomsg shouhuomsg) {
+        this.shouhuomsg = shouhuomsg;
+        return this;
+    }
 
     public int getId() {
         return id;
@@ -45,12 +80,8 @@ public class Buyrecord {
         this.goodsid = goodsid;
     }
 
-    public int getShouhuomsg() {
+    public Shouhuomsg getShouhuomsg() {
         return shouhuomsg;
-    }
-
-    public void setShouhuomsg(int shouhuomsg) {
-        this.shouhuomsg = shouhuomsg;
     }
 
     public String getDate() {

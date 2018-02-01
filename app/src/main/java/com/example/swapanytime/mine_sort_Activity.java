@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +36,9 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import minterface.FragmentListener;
+import minterface.ItemTouchHelperAdapter;
+import minterface.OnItemClickListener;
+import minterface.mcallback;
 import utils.LogUtils;
 import utils.SwapNetUtils;
 
@@ -70,6 +74,7 @@ public class mine_sort_Activity extends baseActivity {
     private List<ForkRecord> list_forkrecord = new ArrayList<>(); //查询获取的收藏记录表
     private FragmentListener fragmentlistener = null;
     private Intent intent  = null;
+
 
     private RecordApapter recordApapter = null;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -129,6 +134,9 @@ public class mine_sort_Activity extends baseActivity {
                         showToast("请求到的记录有"+list_buyrecord.size()+"条",ToastDuration.SHORT);
 
                         recordApapter = new RecordApapter(mine_sort_Activity.this,list_buyrecord,type);
+                        ItemTouchHelper.Callback callback0 = new mcallback(recordApapter);
+                        ItemTouchHelper itemTouchHelper0 = new ItemTouchHelper(callback0);
+                        itemTouchHelper0.attachToRecyclerView(mineSortRv);
                         mineSortRv.setLayoutManager(linearLayoutManager);
                         mineSortRv.setAdapter(recordApapter);
                         break;
@@ -139,6 +147,10 @@ public class mine_sort_Activity extends baseActivity {
                         showToast("请求到的记录有"+list_salerecord.size()+"条",ToastDuration.SHORT);
 
                         recordApapter = new RecordApapter(mine_sort_Activity.this,list_salerecord,type);
+                        ItemTouchHelper.Callback callback1 = new mcallback(recordApapter);
+                        ItemTouchHelper itemTouchHelper1 = new ItemTouchHelper(callback1);
+                        itemTouchHelper1.attachToRecyclerView(mineSortRv);
+
                         mineSortRv.setLayoutManager(linearLayoutManager);
                         mineSortRv.setAdapter(recordApapter);
                         break;
@@ -148,6 +160,9 @@ public class mine_sort_Activity extends baseActivity {
                         }
                         showToast("请求到的记录有"+list_recordresponse.size()+"条",ToastDuration.SHORT);
                         recordApapter = new RecordApapter(mine_sort_Activity.this,list_reportrecord,type);
+                        ItemTouchHelper.Callback callback2 = new mcallback(recordApapter);
+                        ItemTouchHelper itemTouchHelper2 = new ItemTouchHelper(callback2);
+                        itemTouchHelper2.attachToRecyclerView(mineSortRv);
                         mineSortRv.setLayoutManager(linearLayoutManager);
                         mineSortRv.setAdapter(recordApapter);
                         break;
@@ -158,6 +173,9 @@ public class mine_sort_Activity extends baseActivity {
                         showToast("请求到的记录有"+list_forkrecord.size()+"条",ToastDuration.SHORT);
 
                         recordApapter = new RecordApapter(mine_sort_Activity.this,list_forkrecord,type);
+                        ItemTouchHelper.Callback callback3 = new mcallback(recordApapter);
+                        ItemTouchHelper itemTouchHelper3 = new ItemTouchHelper(callback3);
+                        itemTouchHelper3.attachToRecyclerView(mineSortRv);
                         mineSortRv.setLayoutManager(linearLayoutManager);
                         mineSortRv.setAdapter(recordApapter);
                         break;

@@ -127,7 +127,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:text="我发布的"
+                android:text="我买到的"
                 android:textSize="18sp"
 
                 />
@@ -153,7 +153,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:text="我买到的"
+                android:text="我发布的"
                 android:textSize="18sp"
 
                 />

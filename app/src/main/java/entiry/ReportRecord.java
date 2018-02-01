@@ -20,6 +20,26 @@ public class ReportRecord {
     private int goodsid;
     private String date;
     private String status;
+    private User user_shop;
+    private Goods goods;
+
+    public User getUser_shop() {
+        return user_shop;
+    }
+
+    public ReportRecord setUser_shop(User user_shop) {
+        this.user_shop = user_shop;
+        return this;
+    }
+
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public ReportRecord setGoods(Goods goods) {
+        this.goods = goods;
+        return this;
+    }
 
     public int getId() {
         return id;

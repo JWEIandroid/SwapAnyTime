@@ -43,8 +43,11 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     RecyclerView goodsdetailImgs;
     @Bind(R.id.btn_buy)
     TextView btnBuy;
+    @Bind(R.id.ic_fork)
+    ImageView ic_fork;
 
 
+    private boolean isFork = false; //商品被收藏
     private List<String> list;
     private List<String> rv_data;
     private GoodsDetail_imgAdapter goodsDetail_imgAdapter;
@@ -94,15 +97,17 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
         icBack.setOnClickListener(this);
         btnBuy.setOnClickListener(this);
+        ic_fork.setOnClickListener(this);
 
 
     }
 
     /**
      * 检查是否登录
+     *
      * @return 用户id
      */
-    public int CheckLoginStatus(){
+    public int CheckLoginStatus() {
 
         //检查是否存在本地数据
         SharedPreferences sharedPreferences = this.getSharedPreferences("base64", MODE_PRIVATE);
@@ -127,8 +132,6 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
             goActivity(LoginActivity.class);
             return 0;
         }
-
-
 
 
     }
@@ -162,11 +165,22 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
                 Intent intent = new Intent(GoodsDetailActivity.this, ConfirmOrderActivity.class);
 
                 userid_read = CheckLoginStatus();
-                if (userid_read!=0){
-                    intent.putExtra("userid",userid_read);
+                if (userid_read != 0) {
+                    intent.putExtra("userid", userid_read);
                 }
                 intent.putExtra("good", goods);
                 startActivity(intent);
+                break;
+            case R.id.ic_fork:
+
+                isFork = !isFork;
+
+                if (isFork) {
+                    ic_fork.setImageResource(R.mipmap.like_1);
+                } else {
+                    ic_fork.setImageResource(R.mipmap.like_0);
+                }
+
                 break;
 
         }
