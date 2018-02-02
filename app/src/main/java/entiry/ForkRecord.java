@@ -19,6 +19,26 @@ public class ForkRecord {
     private int goodsid;
     private String date;
     private String status;
+    private User user ;
+    private Goods goods;
+
+    public User getUser() {
+        return user;
+    }
+
+    public ForkRecord setUser(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public ForkRecord setGoods(Goods goods) {
+        this.goods = goods;
+        return this;
+    }
 
     public int getId() {
         return id;

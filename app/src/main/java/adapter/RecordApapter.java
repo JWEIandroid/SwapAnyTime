@@ -17,6 +17,7 @@ import com.example.swapanytime.R;
 import java.util.List;
 
 import entiry.Buyrecord;
+import entiry.ForkRecord;
 import entiry.Goods;
 import entiry.ReportRecord;
 import entiry.SaleRecord;
@@ -60,6 +61,9 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
 
             case 0:
                 Buyrecord buyrecord = (Buyrecord) list.get(position);
+                if (buyrecord==null){
+                    break;
+                }
                 Glide.with(context)
                         .load(SwapNetUtils.getBaseURL() + buyrecord.getGoods().getImgurl().get(0))
                         .asBitmap()
@@ -79,6 +83,9 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
                 break;
             case 1:
                 SaleRecord saleRecord = (SaleRecord) list.get(position);
+                if (saleRecord==null){
+                    break;
+                }
                 Glide.with(context)
                         .load(SwapNetUtils.getBaseURL() + saleRecord.getGoods().getImgurl().get(0))
                         .asBitmap()
@@ -98,6 +105,9 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
                 break;
             case 2:
                 ReportRecord reportRecord = (ReportRecord) list.get(position);
+                if (reportRecord==null){
+                    break;
+                }
                 Glide.with(context)
                         .load(SwapNetUtils.getBaseURL() + reportRecord.getGoods().getImgurl().get(0))
                         .asBitmap()
@@ -116,6 +126,26 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
                 });
                 break;
             case 3:
+                ForkRecord forkRecord = (ForkRecord) list.get(position);
+                if (forkRecord==null){
+                    break;
+                }
+                Glide.with(context)
+                        .load(SwapNetUtils.getBaseURL() + forkRecord.getGoods().getImgurl().get(0))
+                        .asBitmap()
+                        .centerCrop()
+                        .error(R.mipmap.pic_error)
+                        .placeholder(R.mipmap.pic_loading)
+                        .into(holder.record_item_pic);
+                holder.record_item_desc.setText(forkRecord.getGoods().getDescription() + "");
+                holder.record_itemprice_before.setText(forkRecord.getGoods().getPrice_before() + "");
+                holder.record_itemprice_sale.setText(forkRecord.getGoods().getPrice_sale() + "");
+                holder.record_item_del_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Snackbar.make(holder.record_item_del_btn,"del",Snackbar.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             default:
 

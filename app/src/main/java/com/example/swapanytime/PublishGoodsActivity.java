@@ -435,6 +435,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                     MediaType.parse("multipart/form-data"), description_title);
             LogUtils.d("weijie", "开始上传第：" + i + "张图片...");
             Observable<HttpDefault<List<String>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).uploadPics(goodid, body, 1);
+            sleep(500L);
             observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<HttpDefault<List<String>>>() {
@@ -484,5 +485,15 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
     protected void onDestroy() {
         MGalleryFinalUtils.getInstance(context).clearCache();
         super.onDestroy();
+    }
+
+
+    public void sleep(long time){
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 }
