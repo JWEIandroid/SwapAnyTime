@@ -15,9 +15,8 @@ import android.widget.TextView;
 import com.baoyz.actionsheet.ActionSheet;
 import com.bumptech.glide.Glide;
 import com.example.swapanytime.LoginActivity;
-import com.example.swapanytime.MainActivity;
 import com.example.swapanytime.R;
-import com.example.swapanytime.mine_sort_Activity;
+import com.example.swapanytime.Record_Activity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -146,28 +145,28 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
             case R.id.app_bar:
                 break;
             case R.id.txt_publish_buyreord:
-                Intent intent = new Intent(getContext(), mine_sort_Activity.class);
+                Intent intent = new Intent(getContext(), Record_Activity.class);
                 intent.putExtra("type",0);
                 intent.putExtra("userid",userid_read);
                 intent.putExtra("title", txtPublishBuyreord.getText().toString());
                 startActivity(intent);
                 break;
             case R.id.txt_sale_record:
-                Intent intent1 = new Intent(getContext(), mine_sort_Activity.class);
+                Intent intent1 = new Intent(getContext(), Record_Activity.class);
                 intent1.putExtra("type",1);
                 intent1.putExtra("userid",userid_read);
                 intent1.putExtra("title", txtSaleRecord.getText().toString());
                 startActivity(intent1);
                 break;
             case R.id.txt_buy_record:
-                Intent intent2 = new Intent(getContext(), mine_sort_Activity.class);
+                Intent intent2 = new Intent(getContext(), Record_Activity.class);
                 intent2.putExtra("type",2);
                 intent2.putExtra("userid",userid_read);
                 intent2.putExtra("title", txtBuyRecord.getText().toString());
                 startActivity(intent2);
                 break;
             case R.id.txt_shoucang:
-                Intent intent3 = new Intent(getContext(), mine_sort_Activity.class);
+                Intent intent3 = new Intent(getContext(), Record_Activity.class);
                 intent3.putExtra("type",3);
                 intent3.putExtra("userid",userid_read);
                 intent3.putExtra("title", txtShoucang.getText().toString());

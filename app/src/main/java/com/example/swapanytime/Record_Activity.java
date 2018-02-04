@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,16 +22,13 @@ import api.GoodsAPI;
 import base.MyApplication;
 import base.baseActivity;
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import entiry.Buyrecord;
 import entiry.ForkRecord;
-import entiry.Goods;
 import entiry.HttpDefault;
 import entiry.RecordResponse;
 import entiry.ReportRecord;
 import entiry.SaleRecord;
-import entiry.User;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -40,8 +36,6 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import minterface.FragmentListener;
-import minterface.ItemTouchHelperAdapter;
-import minterface.OnItemClickListener;
 import minterface.mcallback;
 import utils.LogUtils;
 import utils.SwapNetUtils;
@@ -50,7 +44,7 @@ import utils.SwapNetUtils;
  * Created by weijie on 2018/1/23.
  */
 
-public class mine_sort_Activity extends baseActivity {
+public class Record_Activity extends baseActivity {
 
 
     @Bind(R.id.ic_back)
@@ -62,11 +56,10 @@ public class mine_sort_Activity extends baseActivity {
     @Bind(R.id.mine_sort_refreshlayout)
     SmartRefreshLayout mineSortRefreshlayout;
 
-
-    private final int OPENTYPE_COLLECTION = 0X1000;
-    private final int OPENTYPE_PUBLISH = 0X1001;
-    private final int OPENTYPE_BUY = 0X1002;
-    private final int OPENTYPE_SALE = 0X1003;
+    //    private final int OPENTYPE_COLLECTION = 0X1000;
+//    private final int OPENTYPE_PUBLISH = 0X1001;
+//    private final int OPENTYPE_BUY = 0X1002;
+//    private final int OPENTYPE_SALE = 0X1003;
     private int type = -1;     //查询类别
     private int pagenum = 1;  //页码
     private int userid = -1;  //用户id
@@ -81,7 +74,6 @@ public class mine_sort_Activity extends baseActivity {
     private Intent intent = null;
     private RecordApapter recordApapter = null;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
 
     @Override
     public void initData() {
@@ -99,8 +91,6 @@ public class mine_sort_Activity extends baseActivity {
             showToast("参数错误", ToastDuration.SHORT);
             goActivity(MainActivity.class);
         }
-
-
     }
 
     @Override
@@ -117,11 +107,8 @@ public class mine_sort_Activity extends baseActivity {
 
 
         getGoodList(type, pagenum, userid, fragmentListener, 0);
-
         mineSortRefreshlayout.setOnRefreshListener(onRefreshListener);
         mineSortRefreshlayout.setOnLoadmoreListener(onLoadmoreListener);
-
-
     }
 
 
@@ -134,6 +121,10 @@ public class mine_sort_Activity extends baseActivity {
              * 加载更多数据
              */
             getGoodList(type, pagenum, userid, fragmentListener, 1);
+            LogUtils.d("weijie","加载参数:");
+            LogUtils.d("weijie","type:"+type);
+            LogUtils.d("weijie","pagenum:"+pagenum);
+            LogUtils.d("weijie","userid:"+userid);
 
         }
     };
@@ -148,6 +139,10 @@ public class mine_sort_Activity extends baseActivity {
              * 0：购买记录  1：卖出记录  2：发布记录 3：收藏记录
              */
             getGoodList(type, pagenum, userid, fragmentListener, 0);
+            LogUtils.d("weijie","刷新参数:");
+            LogUtils.d("weijie","type:"+type);
+            LogUtils.d("weijie","pagenum:"+pagenum);
+            LogUtils.d("weijie","userid:"+userid);
         }
     };
 
@@ -157,15 +152,17 @@ public class mine_sort_Activity extends baseActivity {
         public void updateUI(List<?> list) {
 
             list_recordresponse = new ArrayList<>();
+            list_temporary_data = new ArrayList<>();
+            list_reportrecord = new ArrayList<>();
             list_forkrecord = new ArrayList<>();
             list_buyrecord = new ArrayList<>();
-            list_temporary_data = new ArrayList<>();
             list_salerecord = new ArrayList<>();
 
             list_recordresponse = (List<RecordResponse>) list;
             list_temporary_data = list_recordresponse;  //保存
             if (list_recordresponse.size() < 1) {
                 showToast("服务器查询不到数据", ToastDuration.SHORT);
+                LogUtils.d("weijie","刷新--首次加载没有数据");
                 mineSortRefreshlayout.finishRefresh(1000);
                 return;
             }
@@ -176,7 +173,7 @@ public class mine_sort_Activity extends baseActivity {
                     }
                     showToast("请求到的记录有" + list_buyrecord.size() + "条", ToastDuration.SHORT);
 
-                    recordApapter = new RecordApapter(mine_sort_Activity.this, list_buyrecord, type);
+                    recordApapter = new RecordApapter(Record_Activity.this, list_buyrecord, type);
                     ItemTouchHelper.Callback callback0 = new mcallback(recordApapter);
                     ItemTouchHelper itemTouchHelper0 = new ItemTouchHelper(callback0);
                     itemTouchHelper0.attachToRecyclerView(mineSortRv);
@@ -190,7 +187,7 @@ public class mine_sort_Activity extends baseActivity {
                     }
                     showToast("请求到的记录有" + list_salerecord.size() + "条", ToastDuration.SHORT);
 
-                    recordApapter = new RecordApapter(mine_sort_Activity.this, list_salerecord, type);
+                    recordApapter = new RecordApapter(Record_Activity.this, list_salerecord, type);
                     ItemTouchHelper.Callback callback1 = new mcallback(recordApapter);
                     ItemTouchHelper itemTouchHelper1 = new ItemTouchHelper(callback1);
                     itemTouchHelper1.attachToRecyclerView(mineSortRv);
@@ -205,7 +202,7 @@ public class mine_sort_Activity extends baseActivity {
                         showToast("没有发布记录", ToastDuration.SHORT);
                     }
                     showToast("请求到的记录有" + list_recordresponse.size() + "条", ToastDuration.SHORT);
-                    recordApapter = new RecordApapter(mine_sort_Activity.this, list_reportrecord, type);
+                    recordApapter = new RecordApapter(Record_Activity.this, list_reportrecord, type);
                     ItemTouchHelper.Callback callback2 = new mcallback(recordApapter);
                     ItemTouchHelper itemTouchHelper2 = new ItemTouchHelper(callback2);
                     itemTouchHelper2.attachToRecyclerView(mineSortRv);
@@ -219,7 +216,7 @@ public class mine_sort_Activity extends baseActivity {
                     }
                     showToast("请求到的记录有" + list_forkrecord.size() + "条", ToastDuration.SHORT);
 
-                    recordApapter = new RecordApapter(mine_sort_Activity.this, list_forkrecord, type);
+                    recordApapter = new RecordApapter(Record_Activity.this, list_forkrecord, type);
                     ItemTouchHelper.Callback callback3 = new mcallback(recordApapter);
                     ItemTouchHelper itemTouchHelper3 = new ItemTouchHelper(callback3);
                     itemTouchHelper3.attachToRecyclerView(mineSortRv);
@@ -229,6 +226,7 @@ public class mine_sort_Activity extends baseActivity {
                     break;
                 default:
                     showToast("请求类型参数错误", ToastDuration.SHORT);
+                    mineSortRefreshlayout.finishRefresh(1000);
             }
         }
 
@@ -236,70 +234,62 @@ public class mine_sort_Activity extends baseActivity {
         public void appenddata(List<?> list) {
 
             if (list_temporary_data == null || list_temporary_data.size() < 1) {
+                showToast("数据出错---Cause By list_temporary_data",ToastDuration.SHORT);
+                mineSortRefreshlayout.finishLoadmore(1000);
                 return;
             }
-            list_recordresponse = new ArrayList<>();
-            list_forkrecord = new ArrayList<>();
-            list_buyrecord = new ArrayList<>();
-            list_salerecord = new ArrayList<>();
 
-            //如果结果为空，不添加
+            //如果没有更多数据，返回
             List<RecordResponse> result = (List<RecordResponse>) list;
             if (result.get(0).getBuyrecord() == null
                     && result.get(0).getForkRecord() == null
                     && result.get(0).getSalerecord() == null
                     && result.get(0).getReportrecord() == null) {
-                LogUtils.d("weijie", "请求结果为空");
+                LogUtils.d("weijie", "没有更多数据");
+                showToast("没有更多数据了",ToastDuration.SHORT);
                 mineSortRefreshlayout.finishLoadmore(1000);
                 return;
             }
-
             int positionstart = list_temporary_data.size();
             list_temporary_data.addAll((List<RecordResponse>) list);
             int itemcount = list_temporary_data.size() - positionstart;
             LogUtils.d("weijie", "插入条数数:" + itemcount);
+
             switch (type) {
                 case 0:
-                    LogUtils.d("weijie", "size:" + list_temporary_data.size());
-                    for (RecordResponse recordResponse : list_temporary_data) {
-                        Buyrecord buyrecord = recordResponse.getBuyrecord();
-                        if (buyrecord != null) {
-                            list_buyrecord.add(buyrecord);
-                        }
+                    for (RecordResponse recordResponse:result){
+                        list_buyrecord.add(recordResponse.getBuyrecord());
                     }
+                    LogUtils.d("weijie", "购买记录总共数目" + list_buyrecord.size());
+                    recordApapter.notifyItemRangeInserted(positionstart + 1, itemcount);
+                    mineSortRefreshlayout.finishLoadmore(1000);
                     break;
                 case 1:
-                    for (RecordResponse recordResponse : list_temporary_data) {
-                        SaleRecord saleRecord = recordResponse.getSalerecord();
-                        if (saleRecord != null) {
-                            list_salerecord.add(saleRecord);
-                        }
+                    for (RecordResponse recordResponse:result){
+                        list_salerecord.add(recordResponse.getSalerecord());
                     }
-                    LogUtils.d("weijie", "加载得到记录数:" + list.size());
+                    LogUtils.d("weijie", "卖出记录总共数目" + list_salerecord.size());
+                    recordApapter.notifyItemRangeInserted(positionstart + 1, itemcount);
+                    mineSortRefreshlayout.finishLoadmore(1000);
                     break;
                 case 2:
-                    for (RecordResponse recordResponse : list_temporary_data) {
-                        ReportRecord reportRecord = recordResponse.getReportrecord();
-                        if (reportRecord != null) {
-                            list_reportrecord.add(reportRecord);
-                        }
+                    for (RecordResponse recordResponse:result){
+                        list_reportrecord.add(recordResponse.getReportrecord());
                     }
-                    LogUtils.d("weijie", "加载得到记录数:" + list.size());
+                    LogUtils.d("weijie", "发布记录总共数目:" + list_reportrecord.size());
+                    recordApapter.notifyItemRangeInserted(positionstart + 1, itemcount);
+                    mineSortRefreshlayout.finishLoadmore(1000);
                     break;
                 case 3:
-                    for (RecordResponse recordResponse : list_temporary_data) {
-                        ForkRecord forkRecord = recordResponse.getForkRecord();
-                        if (forkRecord != null) {
-                            list_forkrecord.add(forkRecord);
-                        }
+                    for (RecordResponse recordResponse:result){
+                        list_forkrecord.add(recordResponse.getForkRecord());
                     }
-                    LogUtils.d("weijie", "加载得到记录数:" + list.size());
+                    LogUtils.d("weijie", "收藏记录总共数目:" + list_forkrecord.size());
+                    recordApapter.notifyItemRangeInserted(positionstart + 1, itemcount);
+                    mineSortRefreshlayout.finishLoadmore(1000);
                     break;
                 default:
             }
-//            recordApapter.notifyItemRangeInserted(positionstart + 1, itemcount);
-            recordApapter.notifyItemRangeInserted(positionstart, itemcount);
-            mineSortRefreshlayout.finishLoadmore(1000);
         }
     };
 
@@ -394,12 +384,12 @@ public class mine_sort_Activity extends baseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyApplication.getInstance().addActivity(mine_sort_Activity.this);
+        MyApplication.getInstance().addActivity(Record_Activity.this);
     }
 
     @Override
     protected void onDestroy() {
-        MyApplication.getInstance().finishActivity(mine_sort_Activity.this);
+        MyApplication.getInstance().finishActivity(Record_Activity.this);
         super.onDestroy();
     }
 

@@ -62,7 +62,7 @@
         <activity
             android:name=".MsgBoardActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".mine_sort_Activity"
+        <activity android:name=".Record_Activity"
             android:launchMode="singleTask"/>
     </application>
 
