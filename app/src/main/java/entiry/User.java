@@ -49,7 +49,7 @@ public class User implements Serializable{
 
 
 
-    private User(Builder builder) {
+    public User(Builder builder) {
         setName(builder.name);
         setId(builder.id);
         setPassword(builder.password);
@@ -63,6 +63,9 @@ public class User implements Serializable{
         setUpdate_time(builder.update_time);
     }
 
+    public User() {
+
+    }
 
 
     public int getId() {

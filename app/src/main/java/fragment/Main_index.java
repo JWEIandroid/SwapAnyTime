@@ -33,11 +33,13 @@ import java.util.List;
 
 import adapter.item_goods_adapter;
 import api.GoodsAPI;
+import api.MessageApi;
 import api.UserAPI;
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import entiry.Comment;
 import entiry.Goods;
 import entiry.HttpDefault;
 import entiry.User;
@@ -80,6 +82,7 @@ public class Main_index extends baseFragment {
     private List<Goods> good_list;
     //一条商品信息的全部图片
     private ArrayList<String> imglist;
+
 
     private Context context;
     private static int pagenum = 1;
@@ -160,7 +163,6 @@ public class Main_index extends baseFragment {
 
     }
 
-
     /**
      * 点击事件
      *
@@ -234,6 +236,8 @@ public class Main_index extends baseFragment {
     };
 
 
+
+    //请求商品信息回调
     private FragmentListener fragmentListener = new FragmentListener() {
 
         private List<Goods> savedata_list;

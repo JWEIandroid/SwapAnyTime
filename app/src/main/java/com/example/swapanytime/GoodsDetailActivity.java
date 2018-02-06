@@ -3,6 +3,7 @@ package com.example.swapanytime;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,13 +13,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.GoodsDetail_imgAdapter;
+import api.MessageApi;
 import base.baseActivity;
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import entiry.Comment;
 import entiry.Goods;
+import entiry.HttpDefault;
+import entiry.User;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import minterface.FragmentListener;
 import utils.LogUtils;
+import utils.SwapNetUtils;
 
 /**
  * Created by weijie on 2017/11/28.
@@ -48,7 +61,7 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
 
     private boolean isFork = false; //商品被收藏
-    private List<String> list;
+    private List<String> img_data;
     private List<String> rv_data;
     private GoodsDetail_imgAdapter goodsDetail_imgAdapter;
     private Goods goods;
@@ -56,6 +69,8 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     private static final long LOGIN_TIMEOUT = 30;  //登录超时时间
     private int userid_read = 0;   //读取配置文件的用户id
 
+
+    private List<Comment> comments_data = new ArrayList<>(); //评论表
 
     @Override
     public void initData() {
@@ -70,13 +85,12 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
                 goodsdetailPriceBf.setText("￥ " + goods.getPrice_before());
                 goodsdetailPriceAt.setText("￥ " + goods.getPrice_sale());
                 goodsdetailAdress.setText(goods.getUser().getAdress());
-                list = goods.getImgurl();
+                img_data = goods.getImgurl();
             }
-
         }
 
-        goodsDetail_imgAdapter = new GoodsDetail_imgAdapter(goods, list, GoodsDetailActivity.this);
-        goodsdetailImgs.setAdapter(goodsDetail_imgAdapter);
+        LogUtils.d("weijie","请求商品id"+goods.getId());
+        getComment(goods.getId());
 
     }
 
@@ -101,6 +115,61 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
 
     }
+
+    /**
+     * 请求商品的全部评论
+     *
+     * @param goodsid
+     */
+    private void getComment(int goodsid) {
+        Observable<HttpDefault<List<Comment>>> observable = SwapNetUtils.createAPI(MessageApi.class).SelectAllCommment(goodsid);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<List<Comment>>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<List<Comment>> commentHttpDefault) {
+                        LogUtils.d("weijie", "发起评论请求：" + commentHttpDefault.getError_code());
+                        LogUtils.d("weijie", "发起评论请求：" + commentHttpDefault.getMessage());
+                        requestCommentListener.updateUI(commentHttpDefault.getData());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        LogUtils.d("weijie", "发起评论请求：" + e.getMessage());
+                        requestCommentListener.updateUI(null);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //请求评论回调
+    FragmentListener requestCommentListener = new FragmentListener() {
+        @Override
+        public void updateUI(List<?> list) {
+
+            comments_data = (List<Comment>) list;
+//            if (comments_data == null || comments_data.size() < 1){
+//                return;
+//            }
+            goodsDetail_imgAdapter = new GoodsDetail_imgAdapter(goods, img_data, comments_data, GoodsDetailActivity.this);
+            goodsdetailImgs.setAdapter(goodsDetail_imgAdapter);
+
+        }
+
+        @Override
+        public void appenddata(List<?> list) {
+
+        }
+    };
 
     /**
      * 检查是否登录

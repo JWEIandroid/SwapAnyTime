@@ -55,15 +55,12 @@ public interface MessageApi {
     /**
      * 查询一个商品的全部评论
      *
-     * @param userid
-     * @param date
+     * @param goodsid
      * @return
      */
-    @FormUrlEncoded
-    @POST("commment/select")
+    @POST("comment/getcommmentByGoodsId")
     Observable<HttpDefault<List<Comment>>> SelectAllCommment(
-            @Query("userid") int userid,
-            @Field("date") String date
+            @Query("goodsid") int goodsid
     );
 
 
@@ -78,7 +75,7 @@ public interface MessageApi {
      */
     @FormUrlEncoded
     @POST("message/getallmessagewith2id")
-    Observable<HttpDefault<List<MessageBoard>>> SelectAllCommment(
+    Observable<HttpDefault<List<MessageBoard>>> SelectAllMessage(
             @Query("userid") int userid,
             @Query("receiverid") int receiverid
     );
