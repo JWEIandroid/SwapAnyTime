@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:padding="5dp"
     >
 
     <LinearLayout
@@ -33,7 +34,7 @@
             android:id="@+id/comment_user_head"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_margin="10dp"
+            android:layout_margin="15dp"
             android:src="@mipmap/coolman" />
 
         <TextView

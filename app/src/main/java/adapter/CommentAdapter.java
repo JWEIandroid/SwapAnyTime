@@ -14,6 +14,7 @@ import com.example.swapanytime.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -56,18 +57,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
             if (comments == null || comments.size() < 1) {
                 return;
             }
+
+            if (comments.get(0).getUser() == null && comments.size() <= 1) {
+                holder.comment_no_erea.setVisibility(View.VISIBLE);
+                holder.comment_erea.setVisibility(View.GONE);
+                return;
+            }
             holder.comment_erea.setVisibility(View.VISIBLE);
             holder.comment_no_erea.setVisibility(View.GONE);
             Glide.with(context).load(SwapNetUtils.getBaseURL() + comments.get(position).getUser().getHeadimg())
                     .asBitmap().centerCrop().error(R.mipmap.pic_error).placeholder(R.mipmap.pic_loading).into(((CommentHolder) holder).comment_user_img);
             ((CommentHolder) holder).comment_user_name.setText(comments.get(position).getUser().getName());
             ((CommentHolder) holder).comment_content.setText(comments.get(position).getContent());
-
-//                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date(comments.get(position).getDate()));
             Long time_data = Long.parseLong(comments.get(position).getDate());
             String date = getDayFromDate(time_data);
-//                String date = getDayFromDate(comments.get(position).getDate());
             ((CommentHolder) holder).comment_date.setText(date);
             ((CommentHolder) holder).comment_num.setText(comments.get(position).getLike() + "");
         }
@@ -92,24 +95,24 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date_get);
             year = calendar.get(Calendar.YEAR);
-            month = calendar.get(Calendar.MONTH)+1;
+            month = calendar.get(Calendar.MONTH) + 1;
             day_get = calendar.get(Calendar.DAY_OF_MONTH);
             hour = calendar.get(Calendar.HOUR_OF_DAY);
             min = calendar.get(Calendar.MINUTE);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if (hour<10){
-            if (min<10){
-                return year + "/" + month+ "/" + day_get+"  0"+hour+":0"+min;
+        if (hour < 10) {
+            if (min < 10) {
+                return year + "/" + month + "/" + day_get + "  0" + hour + ":0" + min;
             }
-            return year + "/" + month+ "/" + day_get+"  0"+hour+":"+min;
+            return year + "/" + month + "/" + day_get + "  0" + hour + ":" + min;
         }
 
-        if (min<10){
-            return year + "/" + month+ "/" + day_get+"  "+hour+":0"+min;
+        if (min < 10) {
+            return year + "/" + month + "/" + day_get + "  " + hour + ":0" + min;
         }
-        return year + "/" + month+ "/" + day_get+"  "+hour+":"+min;
+        return year + "/" + month + "/" + day_get + "  " + hour + ":" + min;
     }
 
     @Override

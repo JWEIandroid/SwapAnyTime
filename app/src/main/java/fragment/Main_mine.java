@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.baoyz.actionsheet.ActionSheet;
 import com.bumptech.glide.Glide;
+import com.example.swapanytime.BillActivity;
 import com.example.swapanytime.LoginActivity;
 import com.example.swapanytime.R;
 import com.example.swapanytime.Record_Activity;
@@ -173,6 +174,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                 startActivity(intent3);
                 break;
             case R.id.txt_mine_pay:
+                goToActivity(BillActivity.class);
                 break;
             case R.id.txt_change_account:
                 goToActivity(LoginActivity.class);

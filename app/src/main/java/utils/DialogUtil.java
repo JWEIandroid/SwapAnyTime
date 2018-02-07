@@ -1,5 +1,6 @@
 package utils;
 
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.Gravity;
@@ -25,6 +26,9 @@ public class DialogUtil {
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         dialogWindow.setAttributes(lp);
     }
+
+
+
     /**
      * 底部弹出窗(宽度满屏)
      *
@@ -52,6 +56,7 @@ public class DialogUtil {
 
         return dialog;
     }
+
 
 
 

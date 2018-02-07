@@ -1,17 +1,23 @@
 package adapter;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.swapanytime.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +25,9 @@ import java.util.List;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import entiry.Comment;
 import entiry.Goods;
+import entiry.User;
 import ui.CircleImageView;
+import utils.DialogUtil;
 import utils.LogUtils;
 import utils.SwapNetUtils;
 
@@ -33,11 +41,13 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private List<String> list;
     private Context context;
     private List<Comment> comments;
+    private CommentAdapter commentAdapter = null;
 
     //开始显示三行格式图片的位置
     private int middle = 0;
 
     private Goods goods;
+    private Dialog dialog = null; //底部评论Dialog
 
 
     private static final int TYPE_GOOD_TITLE = 1000;
@@ -135,6 +145,7 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
+
         if (holder instanceof GoodsDetail_imgAdapter.NormalImgHolder) {
 
             Glide.with(context).load(SwapNetUtils.getBaseURL() + list.get(position - 1)).fitCenter().into(((NormalImgHolder) holder).imageView);
@@ -154,13 +165,71 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else if (holder instanceof GoodsDetail_imgAdapter.CommentHolder) {
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-            CommentAdapter commentAdapter = new CommentAdapter(context, comments);
+            commentAdapter = new CommentAdapter(context, comments);
             ((CommentHolder) holder).comment_rv.setLayoutManager(linearLayoutManager);
             ((CommentHolder) holder).comment_rv.setAdapter(commentAdapter);
+
+//            //打开评论界面
+            ((CommentHolder) holder).btn_comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //打开底部评论框
+                    ShowBottomCommentDialog();
+                }
+            });
 
         }
 
 
+    }
+
+
+    //打开底部评论框
+    private void ShowBottomCommentDialog() {
+
+         this.dialog = DialogUtil.showBottomDialog(R.layout.layout_comment_erea, R.style.ActionButtomDialogStyle, context, new DialogUtil.IDialogInitListener() {
+            @Override
+            public void initDialogView(final View view) {
+                TextView btn_send = (TextView) view.findViewById(R.id.btn_sendcomment);
+                final EditText comment_et = (EditText) view.findViewById(R.id.comment_et);
+                btn_send.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (TextUtils.isEmpty(comment_et.getText().toString())) {
+                            Snackbar.make(view, "评论不能为空", Snackbar.LENGTH_SHORT).show();
+                            return;
+                        }else{
+
+                            User user =new User.Builder()
+                                    .name("草尼玛")
+                                    .headimg("https://www.baidu.com/s?rsv_idx=1&wd=github&ie=utf-8&rsv_cq=recycleview+%E5%B5%8C%E5%A5%97recycleview&rsv_dl=0_right_recommends_merge_28335&euri=3366456")
+                                    .build();
+                            Comment comment = new Comment.Builder()
+                                    .goodsid(116)
+                                    .receiverid(46)
+                                    .userid(46)
+                                    .user(user)
+                                    .date(System.currentTimeMillis()+"")
+                                    .content(comment_et.getText().toString())
+                                    .like(100)
+                                    .build();
+
+                            //// TODO: 2018/2/7   更新数据库
+                            //如果更新数据库成功，插入新数据更新UI,去掉第一条伪数据
+                            int positionstart = comments.size();
+                            comments.add(comment);
+                            commentAdapter.notifyItemInserted(positionstart);
+                            if (comments.get(0).getUser()==null){
+                                comments.remove(0);
+                                commentAdapter.notifyItemRemoved(0);
+                            }
+                        }
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+        dialog.show();
     }
 
 
@@ -210,10 +279,12 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public class CommentHolder extends RecyclerView.ViewHolder {
 
         private RecyclerView comment_rv;
+        private TextView btn_comment;
 
         public CommentHolder(View itemView) {
             super(itemView);
             comment_rv = (RecyclerView) itemView.findViewById(R.id.goodsdetail_comment);
+            btn_comment = (TextView) itemView.findViewById(R.id.btn_comment);
         }
     }
 

@@ -406,8 +406,6 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                 left.setAdapter(simpleRecycleViewAdapter1);
                 right.setLayoutManager(linearLayout2);
                 right.setAdapter(simpleRecycleViewAdapter2);
-
-
             }
         });
 

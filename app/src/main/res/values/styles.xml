@@ -35,8 +35,15 @@
         <item name="android:windowNoTitle">true</item>
         <!-- 半透明 -->
         <item name="android:windowIsTranslucent">false</item>
+        <!-- Dialog进入及退出动画 -->
+        <item name="android:windowAnimationStyle">@style/ActionBottomDialogAnimation</item>
+
     </style>
 
+    <style name="ActionBottomDialogAnimation">
+        <item name="@android:windowEnterAnimation">@anim/editext_enter</item>  //进入时的动画
+        <item name="@android:windowExitAnimation">@anim/edittext_exit</item>    //退出时的动画
+    </style>
 
 
 </resources>

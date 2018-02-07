@@ -62,8 +62,12 @@
         <activity
             android:name=".MsgBoardActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".Record_Activity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".Record_Activity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".BillActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

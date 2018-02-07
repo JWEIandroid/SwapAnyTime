@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/divider"
+    >
+
+    <EditText
+        android:id="@+id/comment_et"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_weight="8"
+        android:background="@drawable/edittext_search_shape"
+        android:hint="输入评论..."
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="20dp"
+        android:layout_margin="5dp"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:textCursorDrawable="@drawable/cursorcolor"
+        />
+
+    <TextView
+        android:id="@+id/btn_sendcomment"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_enabled_shape"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="发 送"
+        android:layout_gravity="center_vertical"
+        />
+
+
+</LinearLayout>

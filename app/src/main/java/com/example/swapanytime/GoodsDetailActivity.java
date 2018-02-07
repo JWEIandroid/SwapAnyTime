@@ -157,10 +157,13 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
         public void updateUI(List<?> list) {
 
             comments_data = (List<Comment>) list;
-//            if (comments_data == null || comments_data.size() < 1){
-//                return;
-//            }
-            goodsDetail_imgAdapter = new GoodsDetail_imgAdapter(goods, img_data, comments_data, GoodsDetailActivity.this);
+            if (comments_data == null || comments_data.size() < 1){
+                Comment comment = new Comment.Builder().build();
+                comments_data.add(comment);
+            }
+            if (goodsDetail_imgAdapter == null){
+                goodsDetail_imgAdapter = new GoodsDetail_imgAdapter(goods, img_data, comments_data, GoodsDetailActivity.this);
+            }
             goodsdetailImgs.setAdapter(goodsDetail_imgAdapter);
 
         }
