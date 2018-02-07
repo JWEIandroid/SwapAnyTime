@@ -1,5 +1,6 @@
 package com.example.swapanytime;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -41,16 +42,21 @@ public class BillActivity extends baseActivity {
         chart_data = new ArrayList<>();
         sliceValueList = new ArrayList<SliceValue>();
         for (int i = 0; i < 6; ++i) {
-            SliceValue sliceValue = new SliceValue((float) Math.random() * 30 + 15, ChartUtils.pickColor());
-            sliceValueList.add(sliceValue);
+//            SliceValue sliceValue = new SliceValue((float) Math.random() * 30 + 15, ChartUtils.pickColor());
+            SliceValue sliceValue3 = new SliceValue(10,ChartUtils.pickColor());
+            sliceValueList.add(sliceValue3);
+            sliceValue3.setLabel("area i");
         }
         pieChartData = new PieChartData(sliceValueList);
-        pieChartData.setCenterText1("Helloworld");
+        pieChartData.setCenterText1("支出");
         pieChartData.setHasLabels(true);
         pieChartData.setHasLabelsOnlyForSelected(true);
         pieChartData.setHasLabelsOutside(true);
         pieChartData.setHasCenterCircle(true);
+        pieChartData.setSlicesSpacing(24);
+        chart.setValueSelectionEnabled(true);
 
+        chart.setPieChartData(pieChartData);
         chart.setPieChartData(pieChartData);
 
 
