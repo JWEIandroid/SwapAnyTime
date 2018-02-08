@@ -85,7 +85,7 @@ public class MainActivity extends baseActivity implements BottomTabBar.OnTabChan
                 .addTabItem(titles[3], icons_choosed[2], icons[3], Main_message.class)
                 .addTabItem(titles[4], icons_choosed[3], icons[4], Main_mine.class);
 
-        //中间按钮添加动画
+               //中间按钮添加动画
         ObjectAnimator.ofFloat(btnAddGoods,"rotation",0f,360f,0f).setDuration(3000).start();
 
 

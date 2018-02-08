@@ -22,10 +22,20 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import api.MessageApi;
+import base.MyApplication;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import entiry.Comment;
 import entiry.Goods;
+import entiry.HttpDefault;
 import entiry.User;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import minterface.LoginListener;
 import ui.CircleImageView;
 import utils.DialogUtil;
 import utils.LogUtils;
@@ -63,6 +73,7 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         middle = list.size() / 2;
         this.goods = goods;
         this.comments = comments;
+
     }
 
 
@@ -187,7 +198,7 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     //打开底部评论框
     private void ShowBottomCommentDialog() {
 
-         this.dialog = DialogUtil.showBottomDialog(R.layout.layout_comment_erea, R.style.ActionButtomDialogStyle, context, new DialogUtil.IDialogInitListener() {
+        this.dialog = DialogUtil.showBottomDialog(R.layout.layout_comment_erea, R.style.ActionButtomDialogStyle, context, new DialogUtil.IDialogInitListener() {
             @Override
             public void initDialogView(final View view) {
                 TextView btn_send = (TextView) view.findViewById(R.id.btn_sendcomment);
@@ -198,31 +209,39 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         if (TextUtils.isEmpty(comment_et.getText().toString())) {
                             Snackbar.make(view, "评论不能为空", Snackbar.LENGTH_SHORT).show();
                             return;
-                        }else{
+                        } else {
 
-                            User user =new User.Builder()
-                                    .name("草尼玛")
-                                    .headimg("https://www.baidu.com/s?rsv_idx=1&wd=github&ie=utf-8&rsv_cq=recycleview+%E5%B5%8C%E5%A5%97recycleview&rsv_dl=0_right_recommends_merge_28335&euri=3366456")
-                                    .build();
+//                            User user = new User.Builder()
+//                                    .name("草尼玛")
+//                                    .headimg("https://www.baidu.com/s?rsv_idx=1&wd=github&ie=utf-8&rsv_cq=recycleview+%E5%B5%8C%E5%A5%97recycleview&rsv_dl=0_right_recommends_merge_28335&euri=3366456")
+//                                    .build();
+//                            Comment comment = new Comment.Builder()
+//                                    .goodsid(116)
+//                                    .receiverid(46)
+//                                    .userid(46)
+//                                    .user(user)
+//                                    .date(System.currentTimeMillis() + "")
+//                                    .content(comment_et.getText().toString())
+//                                    .like(100)
+//                                    .build();
                             Comment comment = new Comment.Builder()
-                                    .goodsid(116)
-                                    .receiverid(46)
-                                    .userid(46)
-                                    .user(user)
-                                    .date(System.currentTimeMillis()+"")
+                                    .userid(goods.getUser().getId())
+                                    .goodsid(goods.getId())
+                                    .receiverid(goods.getUser().getId())
                                     .content(comment_et.getText().toString())
-                                    .like(100)
+                                    .date(System.currentTimeMillis()+"")
+                                    .user(goods.getUser())
+                                    .like(0)
                                     .build();
-
-                            //// TODO: 2018/2/7   更新数据库
+                            insertComment(comment);
                             //如果更新数据库成功，插入新数据更新UI,去掉第一条伪数据
-                            int positionstart = comments.size();
-                            comments.add(comment);
-                            commentAdapter.notifyItemInserted(positionstart);
-                            if (comments.get(0).getUser()==null){
-                                comments.remove(0);
-                                commentAdapter.notifyItemRemoved(0);
-                            }
+//                            int positionstart = comments.size();
+//                            comments.add(comment);
+//                            commentAdapter.notifyItemInserted(positionstart);
+//                            if (comments.get(0).getUser() == null) {
+//                                comments.remove(0);
+//                                commentAdapter.notifyItemRemoved(0);
+//                            }
                         }
                         dialog.dismiss();
                     }
@@ -230,6 +249,59 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
         });
         dialog.show();
+    }
+
+
+    /**
+     * 插入一条评论
+     *
+     * @param comment
+     */
+    private void insertComment(final Comment comment) {
+        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(MessageApi.class).insertOneCommment(
+                comment.getUserid(),
+                comment.getReceiverid(),
+                comment.getGoodsid(),
+                comment.getContent());
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<String>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<String> stringHttpDefault) {
+
+                        if (stringHttpDefault.getError_code() == 0) {
+                            int positionstart = comments.size();
+                            comments.add(comment);
+                            commentAdapter.notifyItemInserted(positionstart);
+                            if (comments.get(0).getUser() == null) {
+                                comments.remove(0);
+                                commentAdapter.notifyItemRemoved(0);
+                            }
+
+                        } else if (stringHttpDefault.getError_code() == -1) {
+                            LogUtils.d("weijie","插入出错："+stringHttpDefault.getMessage());
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                        LogUtils.d("weijie","插入评论失败："+e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
     }
 
 

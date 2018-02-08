@@ -3,6 +3,8 @@ package fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +37,7 @@ import adapter.item_goods_adapter;
 import api.GoodsAPI;
 import api.MessageApi;
 import api.UserAPI;
+import base.MyApplication;
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,6 +53,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import minterface.FragmentListener;
+import minterface.LoginListener;
 import minterface.OnItemClickListener;
 import utils.ContentUtils;
 import utils.LogUtils;
@@ -89,9 +93,29 @@ public class Main_index extends baseFragment {
 
     private final String imgurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3208352253,560928408&fm=173&s=6F302AC24A7220942AA16C090300C092&w=218&h=146&img.JPEG";
     private final String headurl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=480915072,3609081711&fm=173&s=A4D031C41416BA741EE1658903007081&w=218&h=146&img.JPEG";
-
     private item_goods_adapter imgAdapter = null;
     private LinearLayoutManager Linlayoutmanager = new LinearLayoutManager(this.getContext());
+
+    private final int MESSAGE_TYPE_LOGIN = 0X000;
+    private final int MESSAGE_TYPE_NOT_LOGIN = 0X001;
+
+    private User user = null; //已经登录的用户信息
+
+    private Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_TYPE_LOGIN:
+                    user = (User) msg.obj;
+                    break;
+                case MESSAGE_TYPE_NOT_LOGIN:
+                    goToActivity(LoginActivity.class);
+                    break;
+            }
+            return true;
+        }
+    });
+
 
     @Override
     protected int getContentView() {
@@ -117,6 +141,25 @@ public class Main_index extends baseFragment {
         imglist = new ArrayList<String>();
 
         getGoodsmessage(fragmentListener, pagenum, 1);
+
+        MyApplication.getInstance().checkIsLogin(new LoginListener() {
+            @Override
+            public void login(int userid) {
+
+                Message message = new Message();
+                message.what = MESSAGE_TYPE_LOGIN;
+                message.obj = user;
+                handler.sendMessage(message);
+            }
+
+            @Override
+            public void not_login(String message) {
+                Message message1 = new Message();
+                message1.what = MESSAGE_TYPE_NOT_LOGIN;
+                message1.obj = message;
+                handler.sendMessage(message1);
+            }
+        },this.getContext());
 
 
     }
@@ -234,7 +277,6 @@ public class Main_index extends baseFragment {
             }
         }
     };
-
 
 
     //请求商品信息回调

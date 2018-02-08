@@ -126,11 +126,12 @@ public interface GoodsAPI {
 
     /**
      * 用户购买商品(提交三部分：用户信息，商品信息，收货信息)
-     * @param purchaser  购买者
-     * @param id  商品id
-     * @param receiver 收货人
-     * @param adress 收货地址
-     * @param tel 联系电话
+     *
+     * @param purchaser 购买者
+     * @param id        商品id
+     * @param receiver  收货人
+     * @param adress    收货地址
+     * @param tel       联系电话
      * @return
      */
     @FormUrlEncoded
@@ -138,24 +139,59 @@ public interface GoodsAPI {
     Observable<HttpDefault<String>> buy(
             @Query("purchaser") int purchaser,
             @Query("id") int id,
-            @Field("receiver")String receiver,
-            @Field("adress")String adress,
-            @Field("tel")String tel
-            );
+            @Field("receiver") String receiver,
+            @Field("adress") String adress,
+            @Field("tel") String tel
+    );
 
 
     /**
-     * @param type 0：购买记录  1：卖出记录  2：发布记录 3：收藏记录
+     * @param type    0：购买记录  1：卖出记录  2：发布记录 3：收藏记录
      * @param pagenum 页码
      * @param userid  用户id
      * @return 查询记录
      */
     @POST("record/getrecords")
-     Observable<HttpDefault<List<RecordResponse>>> getRecords(
-            @Query("type")int type,
-            @Query("pagenum")int pagenum,
+    Observable<HttpDefault<List<RecordResponse>>> getRecords(
+            @Query("type") int type,
+            @Query("pagenum") int pagenum,
+            @Query("userid") int userid
+    );
+
+    /**
+     * 查看某商品是否被某用户收藏
+     *
+     * @return "1"被收藏，"0"没有被收藏
+     */
+    @POST("goods/checkGoodsForked")
+    Observable<HttpDefault<String>> CheckForked(
+            @Query("goodsid") int goodsid,
+            @Query("userid") int userid
+    );
+
+
+    /**
+     * 取消收藏
+     *
+     * @return
+     */
+    @POST("goods/cancelFroked")
+    Observable<HttpDefault<String>> cancelForked(
+            @Query("goodsid")int goodsid,
             @Query("userid")int userid
     );
+
+    /**
+     * 新增收藏
+     *
+     * @return
+     */
+    @POST("goods/saveChecked")
+    Observable<HttpDefault<String>> saveChecked(
+            @Query("goodsid")int goodsid,
+            @Query("userid")int userid
+    );
+
 
 }
 

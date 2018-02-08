@@ -3,16 +3,20 @@ package com.example.swapanytime;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 import adapter.GoodsDetail_imgAdapter;
+import api.GoodsAPI;
 import api.MessageApi;
 import base.baseActivity;
 import base.baseFragment;
@@ -68,9 +72,33 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
     private static final long LOGIN_TIMEOUT = 30;  //登录超时时间
     private int userid_read = 0;   //读取配置文件的用户id
-
-
     private List<Comment> comments_data = new ArrayList<>(); //评论表
+
+//    android.os.Handler handler = new android.os.Handler(new android.os.Handler.Callback() {
+//        @Override
+//        public boolean handleMessage(Message msg) {
+//            switch (msg.what) {
+//                case 0:
+//                    LogUtils.d("weijie", "收到信息0");
+//                    isFork = true;
+//                    break;
+//                case 1:
+//                    LogUtils.d("weijie", "收到信息1");
+//                    isFork = false;
+//                    break;
+//                case 3:
+//                    LogUtils.d("weijie", "收到信息3");
+//                    isFork = false;
+//                    break;
+//                case 4:
+//                    LogUtils.d("weijie", "收到信息4");
+//                    isFork = true;
+//                    break;
+//            }
+//            return true;
+//        }
+//    });
+
 
     @Override
     public void initData() {
@@ -89,9 +117,9 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
             }
         }
 
-        LogUtils.d("weijie","请求商品id"+goods.getId());
+        LogUtils.d("weijie", "请求商品id" + goods.getId());
         getComment(goods.getId());
-
+        checkForked(goods.getId(), goods.getUser().getId());
     }
 
     @Override
@@ -157,11 +185,11 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
         public void updateUI(List<?> list) {
 
             comments_data = (List<Comment>) list;
-            if (comments_data == null || comments_data.size() < 1){
+            if (comments_data == null || comments_data.size() < 1) {
                 Comment comment = new Comment.Builder().build();
                 comments_data.add(comment);
             }
-            if (goodsDetail_imgAdapter == null){
+            if (goodsDetail_imgAdapter == null) {
                 goodsDetail_imgAdapter = new GoodsDetail_imgAdapter(goods, img_data, comments_data, GoodsDetailActivity.this);
             }
             goodsdetailImgs.setAdapter(goodsDetail_imgAdapter);
@@ -173,6 +201,140 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
         }
     };
+
+    /**
+     * 查看某商品是否被某用户收藏
+     *
+     * @param goodsid
+     * @param userid
+     */
+    private void checkForked(final int goodsid, int userid) {
+
+        Observable<HttpDefault<String>> observable = SwapNetUtils.createAPI(GoodsAPI.class).CheckForked(goodsid, userid);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<String>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<String> stringHttpDefault) {
+
+                        if (stringHttpDefault.getError_code() == 0) {
+                            ic_fork.setImageResource(R.mipmap.like_1);
+//                            Message msg = new Message();
+//                            msg.what = 0;
+//                            handler.sendMessage(msg);
+                            isFork = true;
+
+                        } else if (stringHttpDefault.getError_code() == -1) {
+                            ic_fork.setImageResource(R.mipmap.like_0);
+//                            Message msg = new Message();
+//                            msg.what = 1;
+//                            handler.sendMessage(msg);
+                            isFork = false;
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        LogUtils.d("weijie", "查询是否被收藏出错:" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
+
+    /**
+     * 用户取消收藏或者收藏商品
+     *
+     * @param goodsid
+     * @param userid
+     * @param type    0表示取消，1表示收藏
+     */
+    private void ControlLike(int goodsid, int userid, final int type) {
+
+        Observable<HttpDefault<String>> observable = null;
+
+        isFork = false;
+
+        if (type == 0) {
+            observable = SwapNetUtils.createAPI(GoodsAPI.class).cancelForked(goodsid, userid);
+        } else if (type == 1) {
+            observable = SwapNetUtils.createAPI(GoodsAPI.class).saveChecked(goodsid, userid);
+        } else {
+            return;
+        }
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<String>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<String> stringHttpDefault) {
+
+                        if (type == 0) {
+
+                            switch (stringHttpDefault.getError_code()) {
+                                case 0:
+
+//                                    Message msg = new Message();
+//                                    msg.what = 3;
+//                                    handler.sendMessage(msg);
+                                    isFork = false;
+                                    ic_fork.setImageResource(R.mipmap.like_0);
+                                    LogUtils.d("weijie", "取消收藏");
+                                    break;
+                                case -1:
+                                default:
+                                    isFork = true;
+                                    break;
+                            }
+
+                        } else if (type == 1) {
+
+                            switch (stringHttpDefault.getError_code()) {
+                                case 0:
+//                                    Message msg = new Message();
+//                                    msg.what = 4;
+//                                    handler.sendMessage(msg);
+                                    isFork = true;
+                                    ic_fork.setImageResource(R.mipmap.like_1);
+                                    LogUtils.d("weijie", "成功收藏");
+                                    break;
+                                case -1:
+                                case -2:
+                                default:
+                                    isFork = false;
+                                    break;
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        LogUtils.d("weijie", "ContrloLike Error：" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
+
 
     /**
      * 检查是否登录
@@ -208,7 +370,12 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
     }
 
-    //检查token是否过期
+    /**
+     * 检查token是否过期
+     *
+     * @param token
+     * @return
+     */
     private boolean checktoken(String token) {
 
         long now = System.currentTimeMillis();
@@ -245,12 +412,12 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
                 break;
             case R.id.ic_fork:
 
-                isFork = !isFork;
-
                 if (isFork) {
-                    ic_fork.setImageResource(R.mipmap.like_1);
+                    ControlLike(goods.getId(), goods.getUser().getId(), 0);
+//                    ic_fork.setImageResource(R.mipmap.like_1);
                 } else {
-                    ic_fork.setImageResource(R.mipmap.like_0);
+                    ControlLike(goods.getId(), goods.getUser().getId(), 1);
+//                    ic_fork.setImageResource(R.mipmap.like_0);
                 }
 
                 break;
