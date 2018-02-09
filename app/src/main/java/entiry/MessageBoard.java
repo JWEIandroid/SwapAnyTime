@@ -1,10 +1,13 @@
 package entiry;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by weijie on 2018/2/5.
  */
 
-public class MessageBoard {
+public class MessageBoard implements Parcelable {
 
 
     private int id;
@@ -98,4 +101,49 @@ public class MessageBoard {
         Receiver = receiver;
         return this;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeInt(this.userid);
+        dest.writeInt(this.receiverid);
+        dest.writeInt(this.type);
+        dest.writeString(this.content);
+        dest.writeString(this.date);
+        dest.writeSerializable(this.user);
+        dest.writeSerializable(this.Receiver);
+        dest.writeInt(this.isLeft);
+    }
+
+    public MessageBoard() {
+    }
+
+    protected MessageBoard(Parcel in) {
+        this.id = in.readInt();
+        this.userid = in.readInt();
+        this.receiverid = in.readInt();
+        this.type = in.readInt();
+        this.content = in.readString();
+        this.date = in.readString();
+        this.user = (User) in.readSerializable();
+        this.Receiver = (User) in.readSerializable();
+        this.isLeft = in.readInt();
+    }
+
+    public static final Parcelable.Creator<MessageBoard> CREATOR = new Parcelable.Creator<MessageBoard>() {
+        @Override
+        public MessageBoard createFromParcel(Parcel source) {
+            return new MessageBoard(source);
+        }
+
+        @Override
+        public MessageBoard[] newArray(int size) {
+            return new MessageBoard[size];
+        }
+    };
 }

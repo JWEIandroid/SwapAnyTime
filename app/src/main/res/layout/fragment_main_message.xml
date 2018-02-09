@@ -37,14 +37,13 @@
             android:layout_height="wrap_content">
 
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/item_head"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="20dp"
-                android:src="@mipmap/coolman"
-                app:civ_border_color="@color/hui"
-                app:civ_border_width="1dp" />
+                android:padding="5dp"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -73,13 +72,13 @@
             android:layout_height="wrap_content">
 
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+            <ImageView
+                android:id="@+id/item_comment"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_margin="20dp"
-                android:src="@mipmap/coolman"
-                app:civ_border_color="@color/hui"
-                app:civ_border_width="1dp" />
+                android:padding="5dp"
+                />
 
             <TextView
                 android:layout_width="wrap_content"

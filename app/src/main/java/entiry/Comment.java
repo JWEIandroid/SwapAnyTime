@@ -1,5 +1,8 @@
 package entiry;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -8,7 +11,7 @@ import java.util.List;
  * Created by weijie on 2018/2/5.
  */
 
-public class Comment {
+public class Comment implements Parcelable {
 
     @SerializedName("id")
     private int id;
@@ -22,6 +25,17 @@ public class Comment {
     private User user;
     private Goods goods;
     private User receiver;
+    //显示位置,0表示左边，1表示右边
+    private int isLeft;
+
+    public int getIsLeft() {
+        return isLeft;
+    }
+
+    public Comment setIsLeft(int isLeft) {
+        this.isLeft = isLeft;
+        return this;
+    }
 
     private Comment(Builder builder) {
         setId(builder.id);
@@ -212,5 +226,53 @@ public class Comment {
             return new Comment(this);
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeInt(this.userid);
+        dest.writeInt(this.receiverid);
+        dest.writeInt(this.goodsid);
+        dest.writeInt(this.type);
+        dest.writeString(this.content);
+        dest.writeString(this.date);
+        dest.writeInt(this.like);
+        dest.writeParcelable(this.user, flags);
+        dest.writeSerializable(this.goods);
+        dest.writeParcelable(this.receiver, flags);
+        dest.writeInt(this.isLeft);
+    }
+
+    protected Comment(Parcel in) {
+        this.id = in.readInt();
+        this.userid = in.readInt();
+        this.receiverid = in.readInt();
+        this.goodsid = in.readInt();
+        this.type = in.readInt();
+        this.content = in.readString();
+        this.date = in.readString();
+        this.like = in.readInt();
+        this.user = in.readParcelable(User.class.getClassLoader());
+        this.goods = (Goods) in.readSerializable();
+        this.receiver = in.readParcelable(User.class.getClassLoader());
+        this.isLeft = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Comment> CREATOR = new Parcelable.Creator<Comment>() {
+        @Override
+        public Comment createFromParcel(Parcel source) {
+            return new Comment(source);
+        }
+
+        @Override
+        public Comment[] newArray(int size) {
+            return new Comment[size];
+        }
+    };
 }
 

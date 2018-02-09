@@ -68,6 +68,9 @@
         <activity
             android:name=".BillActivity"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".ShowLinkManMessasgeActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

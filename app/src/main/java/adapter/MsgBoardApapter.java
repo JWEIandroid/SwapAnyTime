@@ -13,6 +13,8 @@ import com.example.swapanytime.R;
 
 import java.util.List;
 
+import entiry.Comment;
+import entiry.MessageBoard;
 import entiry.Msg;
 import ui.CircleImageView;
 import utils.LogUtils;
@@ -28,33 +30,41 @@ public class MsgBoardApapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private List<Msg> list;
 
+    private List<MessageBoard> messageBoardList = null;
+    private List<Comment> commentList = null;
+    private int SHOW_TYPE_COMMENT = 0X1000;
+    private int SHOW_TYPE_MESSAGEBOARD = 0X1001;
+
     private static final int TYPE_LEFT = 10000;
     private static final int TYPE_RIGHT = 10001;
 
-
-    public MsgBoardApapter(Context context, List<Msg> list) {
+    public MsgBoardApapter(Context context, List<Msg> list, List<MessageBoard> messageBoardList, List<Comment> commentList) {
         this.context = context;
         this.list = list;
-
-
-        for (Msg msg:list){
-            LogUtils.d("weijie","Adapter list:\n"+msg.getIsLeft());
-        }
+        this.messageBoardList = messageBoardList;
+        this.commentList = commentList;
     }
 
     @Override
     public int getItemViewType(int position) {
 
-        int a = list.get(position).getIsLeft();
+        int isleft = -1;
 
-        switch (a) {
+        if (commentList != null) {
+            isleft = commentList.get(position).getIsLeft();
+        } else if (messageBoardList != null) {
+            isleft = messageBoardList.get(position).getIsLeft();
+        } else {
+            isleft = list.get(position).getIsLeft();
+        }
+        switch (isleft) {
 
             case 0:
                 return TYPE_LEFT;
             case 1:
                 return TYPE_RIGHT;
         }
-        return 0x1000;
+        return 0x1002;
     }
 
     @Override
@@ -80,11 +90,30 @@ public class MsgBoardApapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof LeftUserHolder) {
-            Glide.with(context).load(R.mipmap.coolman).asBitmap().centerCrop().into(((LeftUserHolder) holder).leftHead);
-            ((LeftUserHolder) holder).content_lf.setText(list.get(position).getContent());
+
+            if (commentList != null) {
+                Glide.with(context).load(R.mipmap.coolman).asBitmap().centerCrop().into(((LeftUserHolder) holder).leftHead);
+                ((LeftUserHolder) holder).content_lf.setText(commentList.get(position).getContent());
+            } else if (messageBoardList != null) {
+                Glide.with(context).load(R.mipmap.coolman).asBitmap().centerCrop().into(((LeftUserHolder) holder).leftHead);
+                ((LeftUserHolder) holder).content_lf.setText(messageBoardList.get(position).getContent());
+            } else {
+                Glide.with(context).load(R.mipmap.coolman).asBitmap().centerCrop().into(((LeftUserHolder) holder).leftHead);
+                ((LeftUserHolder) holder).content_lf.setText(list.get(position).getContent());
+            }
+
         } else if (holder instanceof RightUserHolder) {
-            Glide.with(context).load(R.mipmap.banner1).asBitmap().centerCrop().into(((RightUserHolder) holder).rightHead);
-            ((RightUserHolder) holder).content_rh.setText(list.get(position).getContent());
+
+            if (commentList != null) {
+                Glide.with(context).load(R.mipmap.banner1).asBitmap().centerCrop().into(((RightUserHolder) holder).rightHead);
+                ((RightUserHolder) holder).content_rh.setText(commentList.get(position).getContent());
+            } else if (messageBoardList != null) {
+                Glide.with(context).load(R.mipmap.banner1).asBitmap().centerCrop().into(((RightUserHolder) holder).rightHead);
+                ((RightUserHolder) holder).content_rh.setText(messageBoardList.get(position).getContent());
+            } else {
+                Glide.with(context).load(R.mipmap.banner1).asBitmap().centerCrop().into(((RightUserHolder) holder).rightHead);
+                ((RightUserHolder) holder).content_rh.setText(list.get(position).getContent());
+            }
         }
 
     }
@@ -92,7 +121,14 @@ public class MsgBoardApapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return list.size();
+
+        if (messageBoardList != null) {
+            return messageBoardList.size();
+        } else if (commentList != null) {
+            return commentList.size();
+        } else {
+            return list.size();
+        }
     }
 
     public class LeftUserHolder extends RecyclerView.ViewHolder {

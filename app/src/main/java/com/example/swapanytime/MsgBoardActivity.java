@@ -75,7 +75,7 @@ public class MsgBoardActivity extends baseActivity {
     @Override
     public void initEvent() {
 
-        MsgBoardApapter msgBoardApapter = new MsgBoardApapter(MsgBoardActivity.this,msgdata);
+        MsgBoardApapter msgBoardApapter = new MsgBoardApapter(MsgBoardActivity.this,msgdata,null,null);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MsgBoardActivity.this,LinearLayoutManager.VERTICAL,false);
         msgBoardRv.setLayoutManager(linearLayoutManager);
         msgBoardRv.setAdapter(msgBoardApapter);

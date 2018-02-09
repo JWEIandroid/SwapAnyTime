@@ -1,14 +1,17 @@
 package entiry;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 /**
- * Created by Administrator on 2017/12/29.
+ * Created by weij on 2017/12/29.
  */
 
-public class User implements Serializable{
+public class User implements Parcelable {
 
 
     /**
@@ -24,27 +27,16 @@ public class User implements Serializable{
      * update_time : 1514539624825
      */
 
-    @SerializedName("name")
     private String name;
-    @SerializedName("id")
     private int id;
-    @SerializedName("password")
     private String password;
-    @SerializedName("tel")
     private String tel;
-    @SerializedName("description")
     private String description;
-    @SerializedName("sex")
     private String sex;
-    @SerializedName("headimg")
     private String headimg;
-    @SerializedName("token")
     private String token;
-    @SerializedName("adress")
     private String adress;
-    @SerializedName("create_time")
-    private Object create_time;
-    @SerializedName("updaie_time")
+    private String create_time;
     private String update_time;
 
 
@@ -136,7 +128,7 @@ public class User implements Serializable{
         return create_time;
     }
 
-    public void setCreate_time(Object create_time) {
+    public void setCreate_time(String create_time) {
         this.create_time = create_time;
     }
 
@@ -168,7 +160,7 @@ public class User implements Serializable{
         private String headimg;
         private String token;
         private String adress;
-        private Object create_time;
+        private String create_time;
         private String update_time;
 
         public Builder() {
@@ -219,7 +211,7 @@ public class User implements Serializable{
             return this;
         }
 
-        public Builder create_time(Object val) {
+        public Builder create_time(String val) {
             create_time = val;
             return this;
         }
@@ -235,8 +227,50 @@ public class User implements Serializable{
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeInt(this.id);
+        dest.writeString(this.password);
+        dest.writeString(this.tel);
+        dest.writeString(this.description);
+        dest.writeString(this.sex);
+        dest.writeString(this.headimg);
+        dest.writeString(this.token);
+        dest.writeString(this.adress);
+        dest.writeString(this.create_time);
+        dest.writeString(this.update_time);
+    }
 
+    protected User(Parcel in) {
+        this.name = in.readString();
+        this.id = in.readInt();
+        this.password = in.readString();
+        this.tel = in.readString();
+        this.description = in.readString();
+        this.sex = in.readString();
+        this.headimg = in.readString();
+        this.token = in.readString();
+        this.adress = in.readString();
+        this.create_time = in.readString();
+        this.update_time = in.readString();
+    }
 
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }
 /**/

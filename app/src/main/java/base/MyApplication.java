@@ -121,6 +121,7 @@ public class MyApplication extends Application {
     }
 
 
+    //登录超时时间
     private static final long LOGIN_TIMEOUT = 30;
     //从本地数据读取的token id headimg;
     private static String token_read = null;
@@ -136,22 +137,17 @@ public class MyApplication extends Application {
         if (userid_read == 0 & token_read == null) {
             loginListener.not_login("你还没有登录");
             return false;
-//            showToast("您还未登录", baseFragment.ToastDuration.SHORT);
-//            goToActivity(LoginActivity.class);
         }
         if (userid_data != null) {
             userid_read = Integer.parseInt(sharedPreferences.getString("userid", null));
         }
         LogUtils.d("weijie", "本地登录信息：" + "token:" + token_read
                 + "\n" + "userid:" + userid_read);
-
         //检查登录信息是否过期
         if (checktoken(token_read)) {
             loginListener.login(userid_read);
             return true;
         } else {
-//            showToast("用户信息过期，请重新登录", baseFragment.ToastDuration.SHORT);
-//            goToActivity(LoginActivity.class);
             return false;
         }
 
