@@ -127,8 +127,20 @@ public class MyApplication extends Application {
     private static String token_read = null;
     private static int userid_read = 0;
 
+    //已经登录的用户ID
+    private int userid_login = -1;
+
+
+    public int getLoginUserid(Context context1) {
+
+        checkIsLogin(null,context1);
+        return userid_login;
+    }
+
     //检查登陆状态
-    public boolean checkIsLogin(LoginListener loginListener,Context context) {
+    public boolean checkIsLogin(LoginListener loginListener, Context context) {
+
+        userid_login = -1;
 
         //检查是否存在本地数据
         SharedPreferences sharedPreferences = context.getSharedPreferences("base64", MODE_PRIVATE);
@@ -145,9 +157,12 @@ public class MyApplication extends Application {
                 + "\n" + "userid:" + userid_read);
         //检查登录信息是否过期
         if (checktoken(token_read)) {
-            loginListener.login(userid_read);
+//            loginListener.login(userid_read);
+            userid_login = userid_read;
             return true;
         } else {
+            // TODO: 2018/2/10 后面删掉
+            userid_login = userid_read;
             return false;
         }
 

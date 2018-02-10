@@ -1,5 +1,6 @@
 package com.example.swapanytime;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,8 @@ import base.baseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import entiry.Comment;
+import entiry.MessageBoard;
 import entiry.Msg;
 
 /**
@@ -31,14 +34,18 @@ public class MsgBoardActivity extends baseActivity {
     @Bind(R.id.msg_board_rv)
     RecyclerView msgBoardRv;
 
-    private List<Msg> msgdata;
+    private List<Msg> msgdata = null;
+    private Intent intent = null;
+    private List<MessageBoard> messageBoardList = null;
+    private List<Comment> commentList = null;
+    private MsgBoardApapter msgBoardApapter = null;
 
 
     @Override
     public void initData() {
 
+        //模拟数据
         msgdata = new ArrayList<>();
-
         for (int i = 0; i < 20; i++) {
             if (i % 2 == 0) {
                 Msg msg = new Msg.Builder().type(0)
@@ -55,8 +62,11 @@ public class MsgBoardActivity extends baseActivity {
                         .build();
                 msgdata.add(msg);
             }
-
         }
+
+        intent = getIntent();
+        messageBoardList = intent.getParcelableArrayListExtra("messageboard");
+
 
     }
 
@@ -75,8 +85,14 @@ public class MsgBoardActivity extends baseActivity {
     @Override
     public void initEvent() {
 
-        MsgBoardApapter msgBoardApapter = new MsgBoardApapter(MsgBoardActivity.this,msgdata,null,null);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MsgBoardActivity.this,LinearLayoutManager.VERTICAL,false);
+        if (messageBoardList != null && messageBoardList.size() > 1) {
+            msgBoardApapter = new MsgBoardApapter(MsgBoardActivity.this, msgdata, messageBoardList, null);
+        } else if (commentList != null && commentList.size() > 1) {
+            msgBoardApapter = new MsgBoardApapter(MsgBoardActivity.this, msgdata, messageBoardList, null);
+        } else {
+            msgBoardApapter = new MsgBoardApapter(MsgBoardActivity.this, msgdata, null, null);
+        }
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MsgBoardActivity.this, LinearLayoutManager.VERTICAL, false);
         msgBoardRv.setLayoutManager(linearLayoutManager);
         msgBoardRv.setAdapter(msgBoardApapter);
 

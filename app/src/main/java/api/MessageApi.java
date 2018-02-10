@@ -73,7 +73,6 @@ public interface MessageApi {
      * @param receiverid
      * @return
      */
-    @FormUrlEncoded
     @POST("message/getallmessagewith2id")
     Observable<HttpDefault<List<MessageBoard>>> SelectAllMessage(
             @Query("userid") int userid,
@@ -102,7 +101,7 @@ public interface MessageApi {
             @Query("userid") int userid,
             @Query("receiverid") int receiverid,
             @Query("goodsid") int goodsid,
-            @Query("content") String content
+            @Field("content") String content
     );
 
 

@@ -88,7 +88,7 @@ public class ConfirmOrderActivity extends baseActivity {
     public void initView() {
 
         if (getIntent() != null) {
-            goods = (Goods) getIntent().getSerializableExtra("good");
+            goods = (Goods) getIntent().getParcelableExtra("good");
             userid = getIntent().getIntExtra("userid", 0);
             showToast("当前用户："+userid,ToastDuration.SHORT);
         }

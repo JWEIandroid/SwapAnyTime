@@ -28,15 +28,6 @@ public class Comment implements Parcelable {
     //显示位置,0表示左边，1表示右边
     private int isLeft;
 
-    public int getIsLeft() {
-        return isLeft;
-    }
-
-    public Comment setIsLeft(int isLeft) {
-        this.isLeft = isLeft;
-        return this;
-    }
-
     private Comment(Builder builder) {
         setId(builder.id);
         setUserid(builder.userid);
@@ -49,8 +40,8 @@ public class Comment implements Parcelable {
         setUser(builder.user);
         setGoods(builder.goods);
         setReceiver(builder.receiver);
+        setIsLeft(builder.isLeft);
     }
-
 
     public int getId() {
         return id;
@@ -151,6 +142,16 @@ public class Comment implements Parcelable {
         return this;
     }
 
+    public int getIsLeft() {
+        return isLeft;
+    }
+
+    public Comment setIsLeft(int isLeft) {
+        this.isLeft = isLeft;
+        return this;
+    }
+
+
     public static final class Builder {
         private int id;
         private int userid;
@@ -163,6 +164,7 @@ public class Comment implements Parcelable {
         private User user;
         private Goods goods;
         private User receiver;
+        private int isLeft;
 
         public Builder() {
         }
@@ -222,10 +224,16 @@ public class Comment implements Parcelable {
             return this;
         }
 
+        public Builder isLeft(int val) {
+            isLeft = val;
+            return this;
+        }
+
         public Comment build() {
             return new Comment(this);
         }
     }
+
 
     @Override
     public int describeContents() {
@@ -243,7 +251,7 @@ public class Comment implements Parcelable {
         dest.writeString(this.date);
         dest.writeInt(this.like);
         dest.writeParcelable(this.user, flags);
-        dest.writeSerializable(this.goods);
+        dest.writeParcelable(this.goods, flags);
         dest.writeParcelable(this.receiver, flags);
         dest.writeInt(this.isLeft);
     }
@@ -258,12 +266,12 @@ public class Comment implements Parcelable {
         this.date = in.readString();
         this.like = in.readInt();
         this.user = in.readParcelable(User.class.getClassLoader());
-        this.goods = (Goods) in.readSerializable();
+        this.goods = in.readParcelable(Goods.class.getClassLoader());
         this.receiver = in.readParcelable(User.class.getClassLoader());
         this.isLeft = in.readInt();
     }
 
-    public static final Parcelable.Creator<Comment> CREATOR = new Parcelable.Creator<Comment>() {
+    public static final Creator<Comment> CREATOR = new Creator<Comment>() {
         @Override
         public Comment createFromParcel(Parcel source) {
             return new Comment(source);

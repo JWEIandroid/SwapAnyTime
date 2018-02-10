@@ -107,7 +107,7 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
         rv_data.add("");
 
         if (getIntent() != null) {
-            goods = (Goods) getIntent().getSerializableExtra("goodsmsg");
+            goods = (Goods) getIntent().getParcelableExtra("goodsmsg");
             if (goods != null) {
                 goodsdetailName.setText(goods.getName());
                 goodsdetailPriceBf.setText("￥ " + goods.getPrice_before());

@@ -21,13 +21,16 @@ public class MessageBoard implements Parcelable {
     //显示位置,0表示左边，1表示右边
     private int isLeft;
 
-    public int getIsLeft() {
-        return isLeft;
-    }
-
-    public MessageBoard setIsLeft(int isLeft) {
-        this.isLeft = isLeft;
-        return this;
+    private MessageBoard(Builder builder) {
+        setId(builder.id);
+        setUserid(builder.userid);
+        setReceiverid(builder.receiverid);
+        setType(builder.type);
+        setContent(builder.content);
+        setDate(builder.date);
+        setUser(builder.user);
+        setReceiver(builder.Receiver);
+        setIsLeft(builder.isLeft);
     }
 
     public int getId() {
@@ -102,6 +105,79 @@ public class MessageBoard implements Parcelable {
         return this;
     }
 
+    public int getIsLeft() {
+        return isLeft;
+    }
+
+    public MessageBoard setIsLeft(int isLeft) {
+        this.isLeft = isLeft;
+        return this;
+    }
+
+    public static final class Builder {
+        private int id;
+        private int userid;
+        private int receiverid;
+        private int type;
+        private String content;
+        private String date;
+        private User user;
+        private User Receiver;
+        private int isLeft;
+
+        public Builder() {
+        }
+
+        public Builder id(int val) {
+            id = val;
+            return this;
+        }
+
+        public Builder userid(int val) {
+            userid = val;
+            return this;
+        }
+
+        public Builder receiverid(int val) {
+            receiverid = val;
+            return this;
+        }
+
+        public Builder type(int val) {
+            type = val;
+            return this;
+        }
+
+        public Builder content(String val) {
+            content = val;
+            return this;
+        }
+
+        public Builder date(String val) {
+            date = val;
+            return this;
+        }
+
+        public Builder user(User val) {
+            user = val;
+            return this;
+        }
+
+        public Builder Receiver(User val) {
+            Receiver = val;
+            return this;
+        }
+
+        public Builder isLeft(int val) {
+            isLeft = val;
+            return this;
+        }
+
+        public MessageBoard build() {
+            return new MessageBoard(this);
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -115,12 +191,9 @@ public class MessageBoard implements Parcelable {
         dest.writeInt(this.type);
         dest.writeString(this.content);
         dest.writeString(this.date);
-        dest.writeSerializable(this.user);
-        dest.writeSerializable(this.Receiver);
+        dest.writeParcelable(this.user, flags);
+        dest.writeParcelable(this.Receiver, flags);
         dest.writeInt(this.isLeft);
-    }
-
-    public MessageBoard() {
     }
 
     protected MessageBoard(Parcel in) {
@@ -130,8 +203,8 @@ public class MessageBoard implements Parcelable {
         this.type = in.readInt();
         this.content = in.readString();
         this.date = in.readString();
-        this.user = (User) in.readSerializable();
-        this.Receiver = (User) in.readSerializable();
+        this.user = in.readParcelable(User.class.getClassLoader());
+        this.Receiver = in.readParcelable(User.class.getClassLoader());
         this.isLeft = in.readInt();
     }
 
@@ -146,4 +219,6 @@ public class MessageBoard implements Parcelable {
             return new MessageBoard[size];
         }
     };
+
 }
+

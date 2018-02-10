@@ -1,5 +1,8 @@
 package entiry;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +11,7 @@ import java.util.List;
  * Created by weijie on 2017/11/21.
  */
 
-public class Goods implements Serializable{
+public class Goods implements Parcelable {
 
 
     /**
@@ -29,7 +32,7 @@ public class Goods implements Serializable{
     private float price_before;
     private float price_sale;
     private String status;
-    private Object description;
+    private String description;
     private int express;
     private ArrayList<String> imgurl;
     private User user;
@@ -55,7 +58,7 @@ public class Goods implements Serializable{
         private float price_before;
         private float price_sale;
         private String status;
-        private Object description;
+        private String description;
         private int express;
         private User user;
         private ArrayList<String> imgurl;
@@ -93,7 +96,7 @@ public class Goods implements Serializable{
             return this;
         }
 
-        public Builder description(Object val) {
+        public Builder description(String val) {
             description = val;
             return this;
         }
@@ -171,7 +174,7 @@ public class Goods implements Serializable{
         return description;
     }
 
-    public void setDescription(Object description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -199,6 +202,51 @@ public class Goods implements Serializable{
     public void setImgurl(ArrayList<String> imgurl) {
         this.imgurl = imgurl;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.type);
+        dest.writeFloat(this.price_before);
+        dest.writeFloat(this.price_sale);
+        dest.writeString(this.status);
+        dest.writeString(this.description);
+        dest.writeInt(this.express);
+        dest.writeStringList(this.imgurl);
+        dest.writeParcelable(this.user, flags);
+    }
+
+    protected Goods(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.type = in.readString();
+        this.price_before = in.readFloat();
+        this.price_sale = in.readFloat();
+        this.status = in.readString();
+        this.description = in.readString();
+        this.express = in.readInt();
+        this.imgurl = in.createStringArrayList();
+        this.user = in.readParcelable(User.class.getClassLoader());
+    }
+
+    public static final Creator<Goods> CREATOR = new Creator<Goods>() {
+        @Override
+        public Goods createFromParcel(Parcel source) {
+            return new Goods(source);
+        }
+
+        @Override
+        public Goods[] newArray(int size) {
+            return new Goods[size];
+        }
+    };
 }
 
 

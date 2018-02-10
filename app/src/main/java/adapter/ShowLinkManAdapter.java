@@ -16,6 +16,9 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import entiry.User;
+import minterface.OnItemClickListener;
+import utils.LogUtils;
+import utils.SwapNetUtils;
 
 /**
  * Created by weij on 2018/2/9.
@@ -33,6 +36,13 @@ public class ShowLinkManAdapter extends RecyclerView.Adapter<ShowLinkManAdapter.
     }
 
 
+    private OnItemClickListener onItemClickListener = null;
+
+    public ShowLinkManAdapter addOnItemOnclickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+        return this;
+    }
+
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
@@ -48,17 +58,24 @@ public class ShowLinkManAdapter extends RecyclerView.Adapter<ShowLinkManAdapter.
     }
 
     @Override
-    public void onBindViewHolder(LinkManHolder holder, int position) {
+    public void onBindViewHolder(LinkManHolder holder, final int position) {
 
-        if (holder instanceof  LinkManHolder){
+        if (holder instanceof LinkManHolder) {
             holder.linkman_name.setText(list.get(position).getName());
-            Glide.with(context).load(list.get(position).getHeadimg())
+            Glide.with(context).load(SwapNetUtils.getBaseURL() + list.get(position).getHeadimg())
                     .asBitmap()
                     .centerCrop()
                     .error(R.mipmap.pic_error)
                     .placeholder(R.mipmap.pic_loading)
                     .into(holder.linkman_headimg);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onItemClick(v, position);
+            }
+        });
 
     }
 
