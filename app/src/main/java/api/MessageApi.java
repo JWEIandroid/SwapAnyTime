@@ -96,7 +96,7 @@ public interface MessageApi {
      * @return
      */
     @FormUrlEncoded
-    @POST("message/insertOneMessageRecord")
+    @POST("message/insertonemessage")
     Observable<HttpDefault<String>> insertOneMessage(
             @Query("userid") int userid,
             @Query("receiverid") int receiverid,

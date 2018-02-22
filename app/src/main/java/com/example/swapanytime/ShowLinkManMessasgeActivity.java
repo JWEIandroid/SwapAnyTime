@@ -49,8 +49,8 @@ public class ShowLinkManMessasgeActivity extends baseActivity {
 
     private ShowLinkManAdapter showLinkManAdapter = null;
     private Intent intent = null;
-    private List<User> user_data = null;
-    private int userid_login = -1;
+    private List<User> user_data = null; //给当前用户留言或者评论的全部用户信息
+    private int userid_login = -1; //当前用户ID
 
     @Override
     public void initData() {
@@ -75,11 +75,9 @@ public class ShowLinkManMessasgeActivity extends baseActivity {
                     return;
                 }
                 RequestMessage(user_data.get(position).getId(),userid_login);
-                LogUtils.d("weijie", "item click");
             }
         });
         rvShowlinkman.setAdapter(showLinkManAdapter);
-
 
     }
 
@@ -90,7 +88,7 @@ public class ShowLinkManMessasgeActivity extends baseActivity {
 
     }
 
-    private void RequestMessage(final int userid, int receiverid) {
+    private void RequestMessage(final int userid, final int receiverid) {
 
         Observable<HttpDefault<List<MessageBoard>>> observable = SwapNetUtils.createAPI(MessageApi.class).SelectAllMessage(userid, receiverid);
         observable.subscribeOn(Schedulers.io())
@@ -105,7 +103,7 @@ public class ShowLinkManMessasgeActivity extends baseActivity {
                     public void onNext(@NonNull HttpDefault<List<MessageBoard>> messageBoards) {
 
                         for (MessageBoard messageBoard : messageBoards.getData()) {
-                            if (messageBoard.getUser().getId() == userid) {
+                            if (messageBoard.getUserid() == userid) {
                                 messageBoard.setIsLeft(0);
                             } else {
                                 messageBoard.setIsLeft(1);
@@ -113,6 +111,8 @@ public class ShowLinkManMessasgeActivity extends baseActivity {
                         }
 
                         Intent intent = new Intent(ShowLinkManMessasgeActivity.this, MsgBoardActivity.class);
+                        intent.putExtra("receiverid",receiverid);
+                        intent.putExtra("userid",userid);
                         intent.putParcelableArrayListExtra("messageboard", (ArrayList<? extends Parcelable>) messageBoards.getData());
                         startActivity(intent);
 

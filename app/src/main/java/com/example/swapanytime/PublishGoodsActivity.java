@@ -125,6 +125,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
     private GridLayoutManager gridlayoutmanager = null;
     private Context context = null;
     private Dialog dialog = null;
+    private int userid = -1;
 
 
     @Override
@@ -242,7 +243,6 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
 
 
         String user_data = getSharedPreferences("base64", MODE_PRIVATE).getString("userid", null);
-        int userid = 46;
         if (user_data != null) {
             userid = Integer.parseInt(user_data);
         }

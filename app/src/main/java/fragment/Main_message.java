@@ -157,7 +157,7 @@ public class Main_message extends baseFragment {
 
                         userList = listHttpDefault.getData();
 
-                        if (listHttpDefault.getError_code() == 0 && listHttpDefault.getData().size() > 1){
+                        if (listHttpDefault.getError_code() == 0 && listHttpDefault.getData().size() >= 1){
                             Intent intent = new Intent(getContext(), ShowLinkManMessasgeActivity.class);
                             intent.putParcelableArrayListExtra("user", (ArrayList<? extends Parcelable>) userList);
                             startActivity(intent);

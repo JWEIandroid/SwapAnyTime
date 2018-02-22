@@ -41,7 +41,6 @@
         <!--android:name="com.example.swapanytime.MainActivity"-->
         <!--android:launchMode="singleTask" />-->
 
-        <activity android:name="com.example.swapanytime.TakePhotoTest" />
         <activity
             android:name=".ShowTypeActivity"
             android:launchMode="singleTask" />

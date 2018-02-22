@@ -58,7 +58,7 @@ public class BillActivity extends baseActivity {
 
     }
 
-
+//展示支出表
     private void showChartPay() {
 
         chart.setVisibility(View.VISIBLE);
@@ -94,7 +94,7 @@ public class BillActivity extends baseActivity {
         ObjectAnimator.ofFloat(chart, "rotation", 0f, 180f, 0f).setDuration(1000).start();
     }
 
-
+//展示收入表
     public void showChartIncome() {
 
         chart.setVisibility(View.GONE);
@@ -173,12 +173,10 @@ public class BillActivity extends baseActivity {
                 if (SHOW_TYPE == 0) {
                     SHOW_TYPE = 1;
                     showChartIncome();
-                    LogUtils.d("weijie","show chart income");
                     break;
                 }
                 SHOW_TYPE = 0;
                 showChartPay();
-                LogUtils.d("weijie","show chart pay");
                 break;
         }
     }

@@ -2,11 +2,9 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/goods_detailimg_item"
     android:layout_width="match_parent"
-    android:layout_height="353dp"
+    android:layout_height="400dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
-    android:padding="4dp"
-    android:scaleType="centerCrop"
     />

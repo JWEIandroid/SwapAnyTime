@@ -18,6 +18,7 @@ import entiry.MessageBoard;
 import entiry.Msg;
 import ui.CircleImageView;
 import utils.LogUtils;
+import utils.SwapNetUtils;
 
 
 /**
@@ -92,26 +93,44 @@ public class MsgBoardApapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof LeftUserHolder) {
 
             if (commentList != null) {
-                Glide.with(context).load(R.mipmap.coolman).asBitmap().centerCrop().into(((LeftUserHolder) holder).leftHead);
+                Glide.with(context).load(SwapNetUtils.getBaseURL() + commentList.get(position).getUser().getHeadimg())
+                        .asBitmap()
+                        .centerCrop()
+                        .into(((LeftUserHolder) holder).leftHead);
                 ((LeftUserHolder) holder).content_lf.setText(commentList.get(position).getContent());
             } else if (messageBoardList != null) {
-                Glide.with(context).load(R.mipmap.coolman).asBitmap().centerCrop().into(((LeftUserHolder) holder).leftHead);
+                Glide.with(context).load(SwapNetUtils.getBaseURL() + commentList.get(position).getUser().getHeadimg())
+                        .asBitmap()
+                        .centerCrop()
+                        .into(((LeftUserHolder) holder).leftHead);
                 ((LeftUserHolder) holder).content_lf.setText(messageBoardList.get(position).getContent());
             } else {
-                Glide.with(context).load(R.mipmap.coolman).asBitmap().centerCrop().into(((LeftUserHolder) holder).leftHead);
+                Glide.with(context).load(SwapNetUtils.getBaseURL() + commentList.get(position).getUser().getHeadimg())
+                        .asBitmap()
+                        .centerCrop()
+                        .into(((LeftUserHolder) holder).leftHead);
                 ((LeftUserHolder) holder).content_lf.setText(list.get(position).getContent());
             }
 
         } else if (holder instanceof RightUserHolder) {
 
             if (commentList != null) {
-                Glide.with(context).load(R.mipmap.banner1).asBitmap().centerCrop().into(((RightUserHolder) holder).rightHead);
+                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getUser().getHeadimg())
+                        .asBitmap()
+                        .centerCrop()
+                        .into(((RightUserHolder) holder).rightHead);
                 ((RightUserHolder) holder).content_rh.setText(commentList.get(position).getContent());
             } else if (messageBoardList != null) {
-                Glide.with(context).load(R.mipmap.banner1).asBitmap().centerCrop().into(((RightUserHolder) holder).rightHead);
+                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getUser().getHeadimg())
+                        .asBitmap()
+                        .centerCrop()
+                        .into(((RightUserHolder) holder).rightHead);
                 ((RightUserHolder) holder).content_rh.setText(messageBoardList.get(position).getContent());
             } else {
-                Glide.with(context).load(R.mipmap.banner1).asBitmap().centerCrop().into(((RightUserHolder) holder).rightHead);
+                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getUser().getHeadimg())
+                        .asBitmap()
+                        .centerCrop()
+                        .into(((RightUserHolder) holder).rightHead);
                 ((RightUserHolder) holder).content_rh.setText(list.get(position).getContent());
             }
         }
