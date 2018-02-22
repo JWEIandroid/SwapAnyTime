@@ -28,6 +28,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import entiry.Comment;
 import entiry.HttpDefault;
 import entiry.User;
 import io.reactivex.Observable;
@@ -132,10 +133,11 @@ public class Main_message extends baseFragment {
 //                intent.putParcelableArrayListExtra("user", (ArrayList<? extends Parcelable>) user_data);
 //                startActivity(intent);
 //                goToActivity(ShowLinkManMessasgeActivity.class);
-                  RequestMessage(userid_login);
+                RequestMessage(userid_login);
                 break;
             case R.id.comment:
-                goToActivity(MsgBoardActivity.class);
+                RequestComment(userid_login);
+//                goToActivity(MsgBoardActivity.class);
                 break;
         }
     }
@@ -157,12 +159,12 @@ public class Main_message extends baseFragment {
 
                         userList = listHttpDefault.getData();
 
-                        if (listHttpDefault.getError_code() == 0 && listHttpDefault.getData().size() >= 1){
+                        if (listHttpDefault.getError_code() == 0 && listHttpDefault.getData().size() >= 1) {
                             Intent intent = new Intent(getContext(), ShowLinkManMessasgeActivity.class);
                             intent.putParcelableArrayListExtra("user", (ArrayList<? extends Parcelable>) userList);
                             startActivity(intent);
                         }
-                        Toast.makeText(getContext(),listHttpDefault.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), listHttpDefault.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -179,5 +181,73 @@ public class Main_message extends baseFragment {
 
     }
 
+
+    private void RequestComment(int receiverid) {
+
+        Observable<HttpDefault<List<Integer>>> observable = SwapNetUtils.createAPI(MessageApi.class).SelectGoodsIdByReceiverId(receiverid);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<List<Integer>>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<List<Integer>> listHttpDefault) {
+
+                        if (listHttpDefault.getData().size() > 0) {
+
+                            for (int goodsid : listHttpDefault.getData()) {
+                                requestCommentData(goodsid);
+                            }
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        showSnackBar(e.getMessage(), ToastDuration.SHORT.SHORT);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void requestCommentData(int goodsid) {
+
+        Observable<HttpDefault<List<Comment>>> observable = SwapNetUtils.createAPI(MessageApi.class).SelectAllCommment(goodsid);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<List<Comment>>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<List<Comment>> listHttpDefault) {
+
+
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        showSnackBar(e.getMessage(),ToastDuration.SHORT);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
+    }
 
 }

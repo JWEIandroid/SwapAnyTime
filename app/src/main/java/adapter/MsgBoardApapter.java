@@ -33,7 +33,9 @@ public class MsgBoardApapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private List<MessageBoard> messageBoardList = null;
     private List<Comment> commentList = null;
+
     private int SHOW_TYPE_COMMENT = 0X1000;
+
     private int SHOW_TYPE_MESSAGEBOARD = 0X1001;
 
     private static final int TYPE_LEFT = 10000;
@@ -44,6 +46,7 @@ public class MsgBoardApapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.list = list;
         this.messageBoardList = messageBoardList;
         this.commentList = commentList;
+        LogUtils.d("weijie","run");
     }
 
     @Override
@@ -99,7 +102,7 @@ public class MsgBoardApapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .into(((LeftUserHolder) holder).leftHead);
                 ((LeftUserHolder) holder).content_lf.setText(commentList.get(position).getContent());
             } else if (messageBoardList != null) {
-                Glide.with(context).load(SwapNetUtils.getBaseURL() + commentList.get(position).getUser().getHeadimg())
+                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getUser().getHeadimg())
                         .asBitmap()
                         .centerCrop()
                         .into(((LeftUserHolder) holder).leftHead);
@@ -115,19 +118,19 @@ public class MsgBoardApapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (holder instanceof RightUserHolder) {
 
             if (commentList != null) {
-                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getUser().getHeadimg())
+                Glide.with(context).load(SwapNetUtils.getBaseURL() + commentList.get(position).getReceiver().getHeadimg())
                         .asBitmap()
                         .centerCrop()
                         .into(((RightUserHolder) holder).rightHead);
                 ((RightUserHolder) holder).content_rh.setText(commentList.get(position).getContent());
             } else if (messageBoardList != null) {
-                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getUser().getHeadimg())
+                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getReceiver().getHeadimg())
                         .asBitmap()
                         .centerCrop()
                         .into(((RightUserHolder) holder).rightHead);
                 ((RightUserHolder) holder).content_rh.setText(messageBoardList.get(position).getContent());
             } else {
-                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getUser().getHeadimg())
+                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getReceiver().getHeadimg())
                         .asBitmap()
                         .centerCrop()
                         .into(((RightUserHolder) holder).rightHead);

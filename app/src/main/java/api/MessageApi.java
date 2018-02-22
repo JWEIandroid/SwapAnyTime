@@ -37,6 +37,7 @@ public interface MessageApi {
             @Field("content") String content
     );
 
+
     /**
      * 删除一条评论
      *
@@ -51,6 +52,16 @@ public interface MessageApi {
             @Field("date") String date
     );
 
+
+    /**
+     * 根据用户Id查询 收到评论的商品Id
+     * @param receiverid
+     * @return
+     */
+    @POST("comment/selectGoodsIdByReceiverId")
+    Observable<HttpDefault<List<Integer>>> SelectGoodsIdByReceiverId(
+            @Query("receiverid") int receiverid
+    );
 
     /**
      * 查询一个商品的全部评论

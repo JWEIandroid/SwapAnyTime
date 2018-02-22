@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -52,7 +53,7 @@ public class MsgBoardActivity extends baseActivity {
     @Bind(R.id.btn_sendmsg)
     TextView btnSendmsg;
 
-    private List<Msg> msgdata = null;
+    private List<Msg> msgdata = new ArrayList<>();
     private Intent intent = null;
     private List<MessageBoard> messageBoardList = null;
     private List<Comment> commentList = null;
@@ -72,7 +73,12 @@ public class MsgBoardActivity extends baseActivity {
         userid = intent.getIntExtra("receiverid", -1);
         messageBoardList = intent.getParcelableArrayListExtra("messageboard");
 
-        if (receiverid == -1 && userid == -1 && messageBoardList == null && messageBoardList.size() <= 0) {
+        if (messageBoardList.size() > 0) {
+            user = messageBoardList.get(0).getUser();
+            receiver = messageBoardList.get(0).getReceiver();
+        }
+
+        if (receiverid == -1 || userid == -1 || messageBoardList == null || messageBoardList.size() <= 0) {
             //模拟数据
             msgdata = new ArrayList<>();
             for (int i = 0; i < 20; i++) {
@@ -111,9 +117,9 @@ public class MsgBoardActivity extends baseActivity {
     @Override
     public void initEvent() {
 
-        if (messageBoardList != null && messageBoardList.size() > 1) {
+        if (messageBoardList != null && messageBoardList.size() >= 1) {
             msgBoardApapter = new MsgBoardApapter(MsgBoardActivity.this, msgdata, messageBoardList, null);
-        } else if (commentList != null && commentList.size() > 1) {
+        } else if (commentList != null && commentList.size() >= 1) {
             msgBoardApapter = new MsgBoardApapter(MsgBoardActivity.this, msgdata, null, commentList);
         } else {
             msgBoardApapter = new MsgBoardApapter(MsgBoardActivity.this, msgdata, null, null);
@@ -135,7 +141,12 @@ public class MsgBoardActivity extends baseActivity {
             case R.id.msg_board_rv:
                 break;
             case R.id.btn_sendmsg:
-                sendMsg(msgEt.getText().toString());
+
+                if (TextUtils.isEmpty(msgEt.getText().toString())) {
+                    showSnackBar("内容不能为空",ToastDuration.SHORT, btnSendmsg);
+                }else{
+                    sendMsg(msgEt.getText().toString());
+                }
                 break;
         }
     }
@@ -144,7 +155,7 @@ public class MsgBoardActivity extends baseActivity {
     private void sendMsg(String content) {
 
 
-        if (messageBoardList != null && messageBoardList.size() > 1) {
+        if (messageBoardList != null && messageBoardList.size() >= 1) {
 
             MessageBoard messageboard = new MessageBoard.Builder()
                     .content(content)
@@ -152,14 +163,14 @@ public class MsgBoardActivity extends baseActivity {
                     .isLeft(1)
                     .userid(userid)
                     .receiverid(receiverid)
-//                    .user(user)
-//                    .Receiver(receiver)
+                    .user(user)
+                    .Receiver(receiver)
                     .build();
             int positionstart = messageBoardList.size();
             messageBoardList.add(messageboard);
             msgBoardApapter.notifyItemInserted(positionstart);
             reportMsg(1, null, messageboard);
-        } else if (commentList != null && commentList.size() > 1) {
+        } else if (commentList != null && commentList.size() >= 1) {
 
             Comment commment = new Comment.Builder()
                     .content(msgEt.getText().toString())

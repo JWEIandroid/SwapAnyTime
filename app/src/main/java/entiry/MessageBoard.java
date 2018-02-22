@@ -17,7 +17,7 @@ public class MessageBoard implements Parcelable {
     private String content;
     private String date;
     private User user;
-    private User Receiver;
+    private User receiver;
     //显示位置,0表示左边，1表示右边
     private int isLeft;
 
@@ -97,11 +97,11 @@ public class MessageBoard implements Parcelable {
     }
 
     public User getReceiver() {
-        return Receiver;
+        return receiver;
     }
 
     public MessageBoard setReceiver(User receiver) {
-        Receiver = receiver;
+        this.receiver = receiver;
         return this;
     }
 
@@ -192,7 +192,7 @@ public class MessageBoard implements Parcelable {
         dest.writeString(this.content);
         dest.writeString(this.date);
         dest.writeParcelable(this.user, flags);
-        dest.writeParcelable(this.Receiver, flags);
+        dest.writeParcelable(this.receiver, flags);
         dest.writeInt(this.isLeft);
     }
 
@@ -204,7 +204,7 @@ public class MessageBoard implements Parcelable {
         this.content = in.readString();
         this.date = in.readString();
         this.user = in.readParcelable(User.class.getClassLoader());
-        this.Receiver = in.readParcelable(User.class.getClassLoader());
+        this.receiver = in.readParcelable(User.class.getClassLoader());
         this.isLeft = in.readInt();
     }
 
