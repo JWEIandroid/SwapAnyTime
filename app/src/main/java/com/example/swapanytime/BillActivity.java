@@ -4,6 +4,10 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,17 +16,28 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import api.GoodsAPI;
+import base.MyApplication;
 import base.baseActivity;
+import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import entiry.Bill;
+import entiry.HttpDefault;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.PieChartView;
 import utils.LogUtils;
+import utils.SwapNetUtils;
 
 /**
  * Created by weij on 2018/2/7.
@@ -47,38 +62,52 @@ public class BillActivity extends baseActivity {
     private List<SliceValue> sliceValueList = null;  //没有数据时展示的数据
     private Intent intent = null;
     private List<Bill> billList = null;  // 要展示的数据
-    private int SHOW_TYPE = 0;  //目前展示的类型  0：支出  1：收入
+    private int SHOW_TYPE = 0;  //饼状图展示的类型  0：支出  1：收入
+    private List<Bill> temporary_list = null;
 
     // TODO: 2018/2/8   接受两个bill数据的list
+
+    private Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0x1000:
+                    temporary_list = (List<Bill>) msg.obj;
+                    break;
+            }
+            return false;
+        }
+    });
 
     @Override
     public void initData() {
 
         showChartPay();
+        RequestBill(1, MyApplication.getInstance().getLoginUserid(BillActivity.this));
 
     }
 
-//展示支出表
+    //展示支出表
     private void showChartPay() {
 
         chart.setVisibility(View.VISIBLE);
         chart_income.setVisibility(View.GONE);
 
         intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle == null || bundle.getSerializable("billist") == null) {
+        billList = intent.getParcelableArrayListExtra("billist");
+//        Bundle bundle = intent.getExtras();
+        if (billList == null || billList.size() <= 0) {
             billList = new ArrayList<>();
             billList.add(new Bill().setType("null").setPercent(30));
-        } else {
-            billList = (List<Bill>) bundle.getSerializable("billist");
         }
+
 
         chart_data = new ArrayList<>();
         sliceValueList = new ArrayList<>();
         for (int i = 0; i < billList.size(); ++i) {
             SliceValue sliceValue = new SliceValue(billList.get(i).getPercent(), ChartUtils.pickColor());
             sliceValueList.add(sliceValue);
-            sliceValue.setLabel(billList.get(i).getType() + "\n(" + billList.get(i).getPercent() + "元)");
+            sliceValue.setLabel(billList.get(i).getType() + "\r" + "(" + billList.get(i).getPercent() + "%)");
         }
         pieChartData = new PieChartData(sliceValueList);
         pieChartData.setCenterText1("支出");
@@ -94,27 +123,26 @@ public class BillActivity extends baseActivity {
         ObjectAnimator.ofFloat(chart, "rotation", 0f, 180f, 0f).setDuration(1000).start();
     }
 
-//展示收入表
+    //展示收入表
     public void showChartIncome() {
 
         chart.setVisibility(View.GONE);
         chart_income.setVisibility(View.VISIBLE);
 
-        intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle == null || bundle.getSerializable("billist_income") == null) {
+//        intent = getIntent();
+//        Bundle bundle = intent.getExtras();
+        if (temporary_list == null || temporary_list.size() <= 0) {
             billList = new ArrayList<>();
             billList.add(new Bill().setType("null").setPercent(100));
-        } else {
-            billList = (List<Bill>) bundle.getSerializable("billist_income");
         }
 
+        billList = temporary_list;
         chart_data = new ArrayList<>();
         sliceValueList = new ArrayList<SliceValue>();
         for (int i = 0; i < billList.size(); ++i) {
             SliceValue sliceValue = new SliceValue(billList.get(i).getPercent(), ChartUtils.pickColor());
             sliceValueList.add(sliceValue);
-            sliceValue.setLabel(billList.get(i).getType() + "\n(" + billList.get(i).getPercent() + "元)");
+            sliceValue.setLabel(billList.get(i).getType() + "\n(" + billList.get(i).getPercent() + "%)");
         }
         pieChartData = new PieChartData(sliceValueList);
         pieChartData.setCenterText1("收入");
@@ -142,6 +170,41 @@ public class BillActivity extends baseActivity {
         ObjectAnimator.ofFloat(chart_income, "rotation", 0f, -180f, 0f).setDuration(1000).start();
 
 
+    }
+
+    //请求用户账单
+    private void RequestBill(int requesttype, int userid) {
+
+        Observable<HttpDefault<List<Bill>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).getBill(requesttype, userid);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<List<Bill>>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<List<Bill>> listHttpDefault) {
+
+                        Message message = new Message();
+                        message.obj = listHttpDefault.getData();
+                        message.what = 0x1000;
+                        handler.sendMessage(message);
+
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Snackbar.make(change_chart, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override

@@ -1,10 +1,13 @@
 package entiry;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by weijie on 2018/2/8.
  */
 
-public class Bill {
+public class Bill implements Parcelable {
 
     private int id;
     private String type;
@@ -37,4 +40,38 @@ public class Bill {
         this.percent = percent;
         return this;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.type);
+        dest.writeFloat(this.percent);
+    }
+
+    public Bill() {
+    }
+
+    protected Bill(Parcel in) {
+        this.id = in.readInt();
+        this.type = in.readString();
+        this.percent = in.readFloat();
+    }
+
+    public static final Parcelable.Creator<Bill> CREATOR = new Parcelable.Creator<Bill>() {
+        @Override
+        public Bill createFromParcel(Parcel source) {
+            return new Bill(source);
+        }
+
+        @Override
+        public Bill[] newArray(int size) {
+            return new Bill[size];
+        }
+    };
 }

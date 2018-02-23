@@ -3,6 +3,7 @@ package api;
 import java.util.ArrayList;
 import java.util.List;
 
+import entiry.Bill;
 import entiry.Goods;
 import entiry.HttpDefault;
 import entiry.RecordResponse;
@@ -189,6 +190,19 @@ public interface GoodsAPI {
     @POST("goods/saveChecked")
     Observable<HttpDefault<String>> saveChecked(
             @Query("goodsid")int goodsid,
+            @Query("userid")int userid
+    );
+
+
+    /**
+     * 查看账单
+     * @param querytype  查询类别：  0：支出  1：收入
+     * @param userid
+     * @return
+     */
+    @POST("record/bill")
+    Observable<HttpDefault<List<Bill>>> getBill(
+            @Query("querytype")int querytype,
             @Query("userid")int userid
     );
 
