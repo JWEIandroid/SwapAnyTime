@@ -103,15 +103,20 @@ public class BillActivity extends baseActivity {
 
 
         chart_data = new ArrayList<>();
+
         sliceValueList = new ArrayList<>();
         for (int i = 0; i < billList.size(); ++i) {
             SliceValue sliceValue = new SliceValue(billList.get(i).getPercent(), ChartUtils.pickColor());
             sliceValueList.add(sliceValue);
             sliceValue.setLabel(billList.get(i).getType() + "\r" + "(" + billList.get(i).getPercent() + "%)");
         }
+        int count = 0;
+        for (Bill bill : billList) {
+            count += bill.getCount();
+        }
         pieChartData = new PieChartData(sliceValueList);
         pieChartData.setCenterText1("支出");
-        pieChartData.setCenterText2("共消费  8888888元");
+        pieChartData.setCenterText2("共消费 "+count+"元");
         pieChartData.setHasLabels(true);
         pieChartData.setHasLabelsOnlyForSelected(true);
         pieChartData.setHasLabelsOutside(false);
@@ -144,9 +149,13 @@ public class BillActivity extends baseActivity {
             sliceValueList.add(sliceValue);
             sliceValue.setLabel(billList.get(i).getType() + "\n(" + billList.get(i).getPercent() + "%)");
         }
+        int count = 0;
+        for (Bill bill : billList) {
+            count += bill.getCount();
+        }
         pieChartData = new PieChartData(sliceValueList);
         pieChartData.setCenterText1("收入");
-        pieChartData.setCenterText2("共收入  123456");
+        pieChartData.setCenterText2("共收入  "+count+"元");
         pieChartData.setHasLabels(true);
         pieChartData.setHasLabelsOnlyForSelected(true);
         pieChartData.setHasLabelsOutside(false);

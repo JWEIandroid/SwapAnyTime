@@ -12,6 +12,15 @@ public class Bill implements Parcelable {
     private int id;
     private String type;
     private float percent;
+    private float count;
+
+    public float getCount() {
+        return count;
+    }
+
+    public void setCount(float count) {
+        this.count = count;
+    }
 
 
     public int getId() {
@@ -52,6 +61,7 @@ public class Bill implements Parcelable {
         dest.writeInt(this.id);
         dest.writeString(this.type);
         dest.writeFloat(this.percent);
+        dest.writeFloat(this.count);
     }
 
     public Bill() {
@@ -61,9 +71,10 @@ public class Bill implements Parcelable {
         this.id = in.readInt();
         this.type = in.readString();
         this.percent = in.readFloat();
+        this.count = in.readFloat();
     }
 
-    public static final Parcelable.Creator<Bill> CREATOR = new Parcelable.Creator<Bill>() {
+    public static final Creator<Bill> CREATOR = new Creator<Bill>() {
         @Override
         public Bill createFromParcel(Parcel source) {
             return new Bill(source);
