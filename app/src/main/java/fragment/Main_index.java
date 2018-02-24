@@ -116,6 +116,11 @@ public class Main_index extends baseFragment {
         }
     });
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        smartRefreshLayout.autoRefresh(1000);
+    }
 
     @Override
     protected int getContentView() {

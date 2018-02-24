@@ -14,6 +14,7 @@ import com.example.swapanytime.R;
 import java.util.List;
 
 import entiry.Goods;
+import minterface.OnItemClickListener;
 import utils.LogUtils;
 import utils.SwapNetUtils;
 
@@ -26,6 +27,7 @@ public class SearchGoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<Goods> list;
     private Context context;
     private int type;
+    private OnItemClickListener onItemClickListener;
 
     public static final int LAYOUT_TYPE = 1000;
     public static final int LAYOUT_SEARCH = 1001;
@@ -37,10 +39,15 @@ public class SearchGoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.type = type;
     }
 
+    public SearchGoodsAdapter addInitItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+        return this;
+    }
+
 
     @Override
     public int getItemViewType(int position) {
-        if (type==LAYOUT_TYPE){
+        if (type == LAYOUT_TYPE) {
             return LAYOUT_TYPE;
         }
         return LAYOUT_SEARCH;
@@ -63,16 +70,23 @@ public class SearchGoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
-        if (holder instanceof SearchHolder1View){
+        if (holder instanceof SearchHolder1View) {
 
 
-        }else if (holder instanceof  SearchHolder2View){
-            LogUtils.d("weijie",SwapNetUtils.getBaseURL()+list.get(position).getImgurl().get(0)+"---====");
-            Glide.with(context).load(SwapNetUtils.getBaseURL()+list.get(position).getImgurl().get(0)).asBitmap().centerCrop().into(((SearchHolder2View) holder).pic);
+        } else if (holder instanceof SearchHolder2View) {
+            LogUtils.d("weijie", SwapNetUtils.getBaseURL() + list.get(position).getImgurl().get(0) + "---====");
+            Glide.with(context).load(SwapNetUtils.getBaseURL() + list.get(position).getImgurl().get(0)).asBitmap().centerCrop().into(((SearchHolder2View) holder).pic);
             ((SearchHolder2View) holder).txt_good_name.setText(list.get(position).getName());
-            ((SearchHolder2View) holder).txt_good_price.setText("￥ "+list.get(position).getPrice_sale()+"");
+            ((SearchHolder2View) holder).txt_good_price.setText("￥ " + list.get(position).getPrice_sale() + "");
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(holder.itemView,position);
+                }
+            });
         }
 
     }

@@ -146,9 +146,12 @@ public class ConfirmOrderActivity extends baseActivity {
                     public void onNext(@NonNull HttpDefault<String> stringHttpDefault) {
 
                         LogUtils.d("weijie","buy msg response: "+stringHttpDefault.getMessage());
-                        List<String> list = new ArrayList<String>();
-                        list.add(stringHttpDefault.getMessage());
-                        fragmentListener.updateUI(list);
+                        showSnackBar(stringHttpDefault.getMessage(), ToastDuration.SHORT, txtConfirmOrder);
+                        if (stringHttpDefault.getError_code() == 0){
+                            List<String> list = new ArrayList<String>();
+                            list.add(stringHttpDefault.getMessage());
+                            fragmentListener.updateUI(list);
+                        }
 
                     }
 
@@ -177,7 +180,7 @@ public class ConfirmOrderActivity extends baseActivity {
                 PostOrder(new FragmentListener() {
                     @Override
                     public void updateUI(List<?> list) {
-                        showSnackBar((String) list.get(0), ToastDuration.SHORT, txtConfirmOrder);
+                        goActivity(MainActivity.class);
                     }
 
                     @Override

@@ -157,12 +157,12 @@ public class MyApplication extends Application {
                 + "\n" + "userid:" + userid_read);
         //检查登录信息是否过期
         if (checktoken(token_read)) {
-//            loginListener.login(userid_read);
+            //如果Token没有过期，读取本地文件的用户ID
             userid_login = userid_read;
             return true;
         } else {
-            // TODO: 2018/2/10 后面删掉
-            userid_login = userid_read;
+            //token过期
+            userid_login = -1;
             return false;
         }
 

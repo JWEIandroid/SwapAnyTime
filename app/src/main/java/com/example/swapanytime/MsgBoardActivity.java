@@ -81,23 +81,24 @@ public class MsgBoardActivity extends baseActivity {
         if (receiverid == -1 || userid == -1 || messageBoardList == null || messageBoardList.size() <= 0) {
             //模拟数据
             msgdata = new ArrayList<>();
-            for (int i = 0; i < 20; i++) {
-                if (i % 2 == 0) {
-                    Msg msg = new Msg.Builder().type(0)
-                            .content("我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思\n" +
-                                    "我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思\n" +
-                                    "我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思" + i)
-                            .isLeft(1)
-                            .build();
-                    msgdata.add(msg);
-                } else {
-                    Msg msg = new Msg.Builder().type(0)
-                            .content("傻逼你好啊你好啊你好啊你啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊" + i)
-                            .isLeft(0)
-                            .build();
-                    msgdata.add(msg);
-                }
-            }
+            messageBoardList = new ArrayList<>();
+//            for (int i = 0; i < 2; i++) {
+//                if (i % 2 == 0) {
+//                    Msg msg = new Msg.Builder().type(0)
+//                            .content("我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思\n" +
+//                                    "我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思\n" +
+//                                    "我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思" + i)
+//                            .isLeft(1)
+//                            .build();
+//                    msgdata.add(msg);
+//                } else {
+//                    Msg msg = new Msg.Builder().type(0)
+//                            .content("傻逼你好啊你好啊你好啊你啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊" + i)
+//                            .isLeft(0)
+//                            .build();
+//                    msgdata.add(msg);
+//                }
+//            }
         }
 
     }
@@ -117,9 +118,9 @@ public class MsgBoardActivity extends baseActivity {
     @Override
     public void initEvent() {
 
-        if (messageBoardList != null && messageBoardList.size() >= 1) {
+        if (messageBoardList != null && messageBoardList.size() >= 0) {
             msgBoardApapter = new MsgBoardApapter(MsgBoardActivity.this, msgdata, messageBoardList, null);
-        } else if (commentList != null && commentList.size() >= 1) {
+        } else if (commentList != null && commentList.size() >= 0) {
             msgBoardApapter = new MsgBoardApapter(MsgBoardActivity.this, msgdata, null, commentList);
         } else {
             msgBoardApapter = new MsgBoardApapter(MsgBoardActivity.this, msgdata, null, null);
@@ -143,8 +144,8 @@ public class MsgBoardActivity extends baseActivity {
             case R.id.btn_sendmsg:
 
                 if (TextUtils.isEmpty(msgEt.getText().toString())) {
-                    showSnackBar("内容不能为空",ToastDuration.SHORT, btnSendmsg);
-                }else{
+                    showSnackBar("内容不能为空", ToastDuration.SHORT, btnSendmsg);
+                } else {
                     sendMsg(msgEt.getText().toString());
                 }
                 break;

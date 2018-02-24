@@ -35,7 +35,6 @@ public class MsgBoardApapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<Comment> commentList = null;
 
     private int SHOW_TYPE_COMMENT = 0X1000;
-
     private int SHOW_TYPE_MESSAGEBOARD = 0X1001;
 
     private static final int TYPE_LEFT = 10000;

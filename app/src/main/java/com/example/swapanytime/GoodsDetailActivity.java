@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
+import android.os.Parcelable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +19,7 @@ import java.util.logging.Handler;
 import adapter.GoodsDetail_imgAdapter;
 import api.GoodsAPI;
 import api.MessageApi;
+import base.MyApplication;
 import base.baseActivity;
 import base.baseFragment;
 import butterknife.Bind;
@@ -26,6 +28,7 @@ import butterknife.OnClick;
 import entiry.Comment;
 import entiry.Goods;
 import entiry.HttpDefault;
+import entiry.MessageBoard;
 import entiry.User;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -60,6 +63,8 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     RecyclerView goodsdetailImgs;
     @Bind(R.id.btn_buy)
     TextView btnBuy;
+    @Bind(R.id.btn_contract_shopper)
+    TextView btn_contract_shopper;
     @Bind(R.id.ic_fork)
     ImageView ic_fork;
 
@@ -74,30 +79,9 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     private int userid_read = 0;   //读取配置文件的用户id
     private List<Comment> comments_data = new ArrayList<>(); //评论表
 
-//    android.os.Handler handler = new android.os.Handler(new android.os.Handler.Callback() {
-//        @Override
-//        public boolean handleMessage(Message msg) {
-//            switch (msg.what) {
-//                case 0:
-//                    LogUtils.d("weijie", "收到信息0");
-//                    isFork = true;
-//                    break;
-//                case 1:
-//                    LogUtils.d("weijie", "收到信息1");
-//                    isFork = false;
-//                    break;
-//                case 3:
-//                    LogUtils.d("weijie", "收到信息3");
-//                    isFork = false;
-//                    break;
-//                case 4:
-//                    LogUtils.d("weijie", "收到信息4");
-//                    isFork = true;
-//                    break;
-//            }
-//            return true;
-//        }
-//    });
+    private static int userid = -1;
+    private static int shopperid = -1;
+    private static List<MessageBoard> messageBoards = null;
 
 
     @Override
@@ -105,6 +89,8 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
         rv_data = new ArrayList<>();
         rv_data.add("");
+
+        userid = MyApplication.getInstance().getLoginUserid(GoodsDetailActivity.this);
 
         if (getIntent() != null) {
             goods = (Goods) getIntent().getParcelableExtra("goodsmsg");
@@ -114,6 +100,8 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
                 goodsdetailPriceAt.setText("￥ " + goods.getPrice_sale());
                 goodsdetailAdress.setText(goods.getUser().getAdress());
                 img_data = goods.getImgurl();
+
+                shopperid = goods.getUser().getId();
             }
         }
 
@@ -140,6 +128,7 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
         icBack.setOnClickListener(this);
         btnBuy.setOnClickListener(this);
         ic_fork.setOnClickListener(this);
+        btn_contract_shopper.setOnClickListener(this);
 
 
     }
@@ -402,7 +391,6 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
                 break;
             case R.id.btn_buy:
                 Intent intent = new Intent(GoodsDetailActivity.this, ConfirmOrderActivity.class);
-
                 userid_read = CheckLoginStatus();
                 if (userid_read != 0) {
                     intent.putExtra("userid", userid_read);
@@ -414,15 +402,60 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
                 if (isFork) {
                     ControlLike(goods.getId(), goods.getUser().getId(), 0);
-//                    ic_fork.setImageResource(R.mipmap.like_1);
                 } else {
                     ControlLike(goods.getId(), goods.getUser().getId(), 1);
-//                    ic_fork.setImageResource(R.mipmap.like_0);
                 }
-
+                break;
+            case R.id.btn_contract_shopper:
+                RequestMessage(userid,shopperid);
                 break;
 
         }
+    }
+
+
+    private void RequestMessage(final int userid, final int receiverid) {
+
+        Observable<HttpDefault<List<MessageBoard>>> observable = SwapNetUtils.createAPI(MessageApi.class).SelectAllMessage(userid, receiverid);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<List<MessageBoard>>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<List<MessageBoard>> messageBoards) {
+
+                        for (MessageBoard messageBoard : messageBoards.getData()) {
+                            if (messageBoard.getUserid() == userid) {
+                                messageBoard.setIsLeft(0);
+                            } else {
+                                messageBoard.setIsLeft(1);
+                            }
+                        }
+
+                        Intent intent = new Intent(GoodsDetailActivity.this, MsgBoardActivity.class);
+                        intent.putExtra("receiverid",receiverid);
+                        intent.putExtra("userid",userid);
+                        intent.putParcelableArrayListExtra("messageboard", (ArrayList<? extends Parcelable>) messageBoards.getData());
+                        startActivity(intent);
+
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.swapanytime;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +35,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import minterface.FragmentListener;
+import minterface.OnItemClickListener;
 import utils.LogUtils;
 import utils.SwapNetUtils;
 
@@ -165,6 +167,7 @@ public class SearchActivity extends baseActivity {
             searchGoodsAdapter = new SearchGoodsAdapter(goods_data, SearchActivity.this, SearchGoodsAdapter.LAYOUT_TYPE);
             refreshlayoutMain.finishRefresh(1000);
             searchGoodsAdapter.notifyDataSetChanged();
+            searchGoodsAdapter.addInitItemClickListener(onItemClickListener);
             rvSearch.setLayoutManager(gridLayoutManager);
             rvSearch.setAdapter(searchGoodsAdapter);
 
@@ -242,6 +245,15 @@ public class SearchActivity extends baseActivity {
                 });
 
     }
+
+    private OnItemClickListener onItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            Intent intent = new Intent(SearchActivity.this, GoodsDetailActivity.class);
+            intent.putExtra("goodsmsg", goods_data.get(position));
+            startActivity(intent);
+        }
+    };
 
 
     @OnClick({R.id.btn_search, R.id.rv_search})

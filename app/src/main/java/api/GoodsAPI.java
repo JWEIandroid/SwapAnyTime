@@ -29,6 +29,14 @@ public interface GoodsAPI {
             @Query("pagenum") int pagenum
     );
 
+    //查询热门商品
+    @POST("goods/discover_goods")
+    Observable<HttpDefault<List<Goods>>> QueryHotGoods(
+            @Query("pagenum") int pagenum
+    );
+
+
+
     //查询用户发布的商品
     @POST("goods/getwithUserid")
     Observable<HttpDefault<List<Goods>>> getGoodwithUserId(
