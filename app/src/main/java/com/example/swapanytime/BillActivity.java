@@ -65,7 +65,6 @@ public class BillActivity extends baseActivity {
     private int SHOW_TYPE = 0;  //饼状图展示的类型  0：支出  1：收入
     private List<Bill> temporary_list = null;
 
-    // TODO: 2018/2/8   接受两个bill数据的list
 
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -106,7 +105,12 @@ public class BillActivity extends baseActivity {
 
         sliceValueList = new ArrayList<>();
         for (int i = 0; i < billList.size(); ++i) {
-            SliceValue sliceValue = new SliceValue(billList.get(i).getPercent(), ChartUtils.pickColor());
+            SliceValue sliceValue = null;
+            if (billList.get(i).getPercent() < 5) {
+                sliceValue = new SliceValue(billList.get(i).getPercent() * 80+15, ChartUtils.pickColor());
+            } else {
+                sliceValue = new SliceValue(billList.get(i).getPercent()*30+15, ChartUtils.pickColor());
+            }
             sliceValueList.add(sliceValue);
             sliceValue.setLabel(billList.get(i).getType() + "\r" + "(" + billList.get(i).getPercent() + "%)");
         }
@@ -116,12 +120,12 @@ public class BillActivity extends baseActivity {
         }
         pieChartData = new PieChartData(sliceValueList);
         pieChartData.setCenterText1("支出");
-        pieChartData.setCenterText2("共消费 "+count+"元");
+        pieChartData.setCenterText2("共消费 " + count + "元");
         pieChartData.setHasLabels(true);
         pieChartData.setHasLabelsOnlyForSelected(true);
         pieChartData.setHasLabelsOutside(false);
         pieChartData.setHasCenterCircle(true);
-        pieChartData.setSlicesSpacing(24);
+        pieChartData.setSlicesSpacing(10);
         chart.setCircleFillRatio(0.9f);
         chart.setValueSelectionEnabled(true);
         chart.setPieChartData(pieChartData);
@@ -145,7 +149,12 @@ public class BillActivity extends baseActivity {
         chart_data = new ArrayList<>();
         sliceValueList = new ArrayList<SliceValue>();
         for (int i = 0; i < billList.size(); ++i) {
-            SliceValue sliceValue = new SliceValue(billList.get(i).getPercent(), ChartUtils.pickColor());
+            SliceValue sliceValue = null;
+            if (billList.get(i).getPercent() < 5) {
+                sliceValue = new SliceValue(billList.get(i).getPercent() * 80+15, ChartUtils.pickColor());
+            } else {
+                sliceValue = new SliceValue(billList.get(i).getPercent()*30+15, ChartUtils.pickColor());
+            }
             sliceValueList.add(sliceValue);
             sliceValue.setLabel(billList.get(i).getType() + "\n(" + billList.get(i).getPercent() + "%)");
         }
@@ -155,12 +164,12 @@ public class BillActivity extends baseActivity {
         }
         pieChartData = new PieChartData(sliceValueList);
         pieChartData.setCenterText1("收入");
-        pieChartData.setCenterText2("共收入  "+count+"元");
+        pieChartData.setCenterText2("共收入  " + count + "元");
         pieChartData.setHasLabels(true);
         pieChartData.setHasLabelsOnlyForSelected(true);
         pieChartData.setHasLabelsOutside(false);
         pieChartData.setHasCenterCircle(true);
-        pieChartData.setSlicesSpacing(24);
+        pieChartData.setSlicesSpacing(10);
         chart_income.setCircleFillRatio(0.9f);
         chart_income.setValueSelectionEnabled(true);
         chart_income.setPieChartData(pieChartData);

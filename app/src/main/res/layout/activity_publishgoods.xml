@@ -16,51 +16,48 @@
 
             <include layout="@layout/titlebar" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical"
-                >
+                android:background="@color/white">
 
-                <ImageView
-                    android:id="@+id/publish_ic_camera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_gravity="center"
-                    android:src="@mipmap/camera_150"
-                    />
+                <!--<ImageView-->
+                    <!--android:id="@+id/publish_ic_camera"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentLeft="true"-->
+                    <!--android:layout_alignParentTop="true"-->
+                    <!--android:layout_margin="10dp"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:src="@mipmap/camera_150" />-->
 
-                <TextView
-                    android:id="@+id/publish_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="5dp"
-                    android:text="添加图片"
-                    android:textColor="@color/font_normal"
-                    />
+                <!--<TextView-->
+                    <!--android:id="@+id/publish_txt"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentLeft="true"-->
+                    <!--android:layout_below="@id/publish_ic_camera"-->
+                    <!--android:layout_marginLeft="20dp"-->
+                    <!--android:layout_marginBottom="5dp"-->
+                    <!--android:text="添加图片"-->
+                    <!--android:textColor="@color/font_normal" />-->
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/publish_goods_imgs"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
                     />
 
-            </LinearLayout>
+            </RelativeLayout>
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="3dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="vertical"
-                >
+                android:padding="3dp">
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/goodsnameEt"
@@ -89,8 +86,7 @@
                     android:layout_marginRight="8dp"
                     android:max="100"
                     android:progress="0"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
 
             </LinearLayout>
@@ -99,9 +95,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:background="@color/white"
                 android:layout_weight="7"
-                >
+                android:background="@color/white">
 
                 <LinearLayout
                     android:id="@+id/price_lin"
@@ -124,8 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="￥"
-                        />
+                        android:text="￥" />
 
                     <EditText
                         android:id="@+id/price_et"
@@ -135,12 +129,10 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
                         android:background="@null"
-                        android:maxLines="1"
                         android:hint="0.00"
                         android:inputType="number"
-                        />
+                        android:maxLines="1" />
                 </LinearLayout>
-
 
 
                 <LinearLayout
@@ -166,8 +158,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="￥"
-                        />
+                        android:text="￥" />
+
                     <EditText
                         android:id="@+id/pricebf_et"
                         android:layout_width="120dp"
@@ -176,9 +168,9 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
                         android:background="@null"
-                        android:maxLines="1"
-                        android:inputType="number"
                         android:hint="0.00"
+                        android:inputType="number"
+                        android:maxLines="1"
 
                         />
                 </LinearLayout>
@@ -206,8 +198,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="￥"
-                        />
+                        android:text="￥" />
 
                     <EditText
                         android:id="@+id/yunfei_et"
@@ -218,11 +209,10 @@
                         android:layout_marginTop="10dp"
                         android:layout_toRightOf="@id/yunfei"
                         android:background="@null"
-                        android:maxLines="1"
+                        android:hint="0.00"
                         android:inputType="number"
-                        android:hint="0.00" />
+                        android:maxLines="1" />
                 </LinearLayout>
-
 
 
             </RelativeLayout>
@@ -231,11 +221,10 @@
                 android:id="@+id/type_lin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="3dp"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal"
                 android:background="@color/white"
-                >
+                android:orientation="horizontal"
+                android:padding="3dp">
 
                 <TextView
                     android:id="@+id/type"
@@ -253,10 +242,9 @@
                     android:id="@+id/ic_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/icon_right64_gray"
-                    />
+                    android:layout_weight="1"
+                    android:src="@mipmap/icon_right64_gray" />
 
             </LinearLayout>
 
@@ -267,8 +255,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
-                android:padding="10dp"
-                >
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/btn_publish"

@@ -1,5 +1,6 @@
 package fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import ui.CircleImageView;
+import utils.DialogUtil;
 import utils.LogUtils;
 import utils.MGalleryFinalUtils;
 import utils.SwapNetUtils;
@@ -97,6 +99,8 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     TextView txtChangeAccount;
     @Bind(R.id.txt_exit)
     TextView txtExit;
+    @Bind(R.id.txt_persondata)
+    TextView txt_persondata;
 
     //登陆状态
     private boolean islogin = false;
@@ -129,7 +133,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     private BAR_STATUS bar_status;
 
     @OnClick({R.id.ic_forward, R.id.mine_head, R.id.mine_name, R.id.mine_desc, R.id.mine_titlebar,
-            R.id.title_name, R.id.collapsingToolbarLayout, R.id.app_bar, R.id.txt_publish_buyreord,
+            R.id.txt_persondata, R.id.title_name, R.id.collapsingToolbarLayout, R.id.app_bar, R.id.txt_publish_buyreord,
             R.id.txt_sale_record, R.id.txt_buy_record, R.id.txt_shoucang, R.id.txt_mine_pay, R.id.txt_change_account, R.id.txt_exit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -149,6 +153,9 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
             case R.id.collapsingToolbarLayout:
                 break;
             case R.id.app_bar:
+                break;
+            case R.id.txt_persondata:
+                showPersonDataDialog();
                 break;
             case R.id.txt_publish_buyreord:
                 Intent intent = new Intent(getContext(), Record_Activity.class);
@@ -235,7 +242,6 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     @Override
     protected void initEvent() {
 
-
         //监听标题栏
         appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -267,6 +273,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         if (checkIsLogin()) {
             readLocaldata(token_read, userid_read);
         }
+
     }
 
 
@@ -500,6 +507,26 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         return true;
     }
 
+
+
+    /**
+     * 弹出修改个人信息窗口
+     */
+    private void showPersonDataDialog() {
+
+        Dialog dialog = DialogUtil.showBottomDialog(R.layout.view_personaldata,
+                R.style.ActionButtomDialogStyle,
+                getContext(),
+                new DialogUtil.IDialogInitListener() {
+                    @Override
+                    public void initDialogView(View view) {
+
+                    }
+                });
+        dialog.show();
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

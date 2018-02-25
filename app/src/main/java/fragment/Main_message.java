@@ -1,5 +1,6 @@
 package fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -37,6 +38,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import utils.DialogUtil;
 import utils.LogUtils;
 import utils.SwapNetUtils;
 
@@ -233,12 +235,11 @@ public class Main_message extends baseFragment {
                     public void onNext(@NonNull HttpDefault<List<Comment>> listHttpDefault) {
 
 
-
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        showSnackBar(e.getMessage(),ToastDuration.SHORT);
+                        showSnackBar(e.getMessage(), ToastDuration.SHORT);
                     }
 
                     @Override
@@ -249,5 +250,6 @@ public class Main_message extends baseFragment {
 
 
     }
+
 
 }

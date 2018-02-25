@@ -75,10 +75,6 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
     ImageView icBack;
     @Bind(R.id.titlebar_title)
     TextView titlebarTitle;
-    @Bind(R.id.publish_ic_camera)
-    ImageView publishIcCamera;
-    @Bind(R.id.publish_txt)
-    TextView publishTxt;
     @Bind(R.id.publish_goods_imgs)
     RecyclerView publishGoodsImgs;
     @Bind(R.id.price)
@@ -118,7 +114,8 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
     private List<String> data_left;
     private List<String> data_left_show;
     private List<String> data_right;
-    private List<PhotoInfo> photo_list = null;
+    private List<PhotoInfo> photo_list = null; //最终展示的列表
+    private List<PhotoInfo> photo_list_temporary = null; //最终展示的列表
     private static MGalleryFinalUtils instance = null;
     private ChoosePhotoListAdapter choosephotolistadapter = null;
     private LinearLayoutManager linearlayoutmanager = null;
@@ -126,6 +123,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
     private Context context = null;
     private Dialog dialog = null;
     private int userid = -1;
+    private DisplayImageOptions options = null;
 
 
     @Override
@@ -162,6 +160,16 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
             }
         }
 
+        photo_list = new ArrayList<>();
+        options = initGalleryfinalActionConfig();
+        choosephotolistadapter = new ChoosePhotoListAdapter(PublishGoodsActivity.this, photo_list, options);
+        choosephotolistadapter.addCameraListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                showActionsheet();
+            }
+        });
+        publishGoodsImgs.setAdapter(choosephotolistadapter);
 
     }
 
@@ -204,7 +212,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
 
     }
 
-    @OnClick({R.id.ic_back, R.id.type_lin, R.id.btn_publish, R.id.publish_ic_camera})
+    @OnClick({R.id.ic_back, R.id.type_lin, R.id.btn_publish})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ic_back:
@@ -218,9 +226,6 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                 PostGoods();
                 showProgressbar(0);
                 goActivity(MainActivity.class);
-                break;
-            case R.id.publish_ic_camera:
-                showActionsheet();
                 break;
         }
     }
@@ -320,13 +325,18 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                 instance.openCamera(new GalleryfinalActionListener() {
                     @Override
                     public void success(List<PhotoInfo> list) {
-                        publishIcCamera.setVisibility(View.GONE);
-                        publishTxt.setVisibility(View.GONE);
+//                        publishIcCamera.setVisibility(View.GONE);
+//                        publishTxt.setVisibility(View.GONE);
+                        if (list == null) {
+                            showSnackBar("没有选中图片..", ToastDuration.SHORT, btnPublish);
+                            return;
+                        }
+                        photo_list_temporary = list;
+                        int positionstart = photo_list_temporary.size();
+                        photo_list.addAll(photo_list_temporary);
+                        int count = photo_list.size() - photo_list_temporary.size();
                         publishGoodsImgs.setVisibility(View.VISIBLE);
-                        DisplayImageOptions options = initGalleryfinalActionConfig();
-                        choosephotolistadapter = new ChoosePhotoListAdapter(context, list, options);
-                        photo_list = list;
-                        publishGoodsImgs.setAdapter(choosephotolistadapter);
+                        choosephotolistadapter.notifyItemChanged(positionstart + 1, count);
                     }
 
                     @Override
@@ -341,13 +351,27 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                 instance.openAlbumMore(new GalleryfinalActionListener() {
                     @Override
                     public void success(List<PhotoInfo> list) {
-                        publishIcCamera.setVisibility(View.GONE);
-                        publishTxt.setVisibility(View.GONE);
+//                        publishIcCamera.setVisibility(View.GONE);
+//                        publishTxt.setVisibility(View.GONE);
+//                        publishGoodsImgs.setVisibility(View.VISIBLE);
+//                        DisplayImageOptions options = initGalleryfinalActionConfig();
+//                        choosephotolistadapter = new ChoosePhotoListAdapter(context, list, options);
+//                        publishGoodsImgs.setAdapter(choosephotolistadapter);
+//                        photo_list = list;
+                        if (list == null) {
+                            showSnackBar("没有选中图片..", ToastDuration.SHORT, btnPublish);
+                            return;
+                        }
+                        photo_list_temporary = list;
+                        int positionstart = photo_list_temporary.size();
+                        photo_list.addAll(photo_list_temporary);
+                        int count = photo_list.size() - photo_list_temporary.size();
                         publishGoodsImgs.setVisibility(View.VISIBLE);
-                        DisplayImageOptions options = initGalleryfinalActionConfig();
-                        choosephotolistadapter = new ChoosePhotoListAdapter(context, list, options);
-                        publishGoodsImgs.setAdapter(choosephotolistadapter);
-                        photo_list = list;
+//                        options = initGalleryfinalActionConfig();
+//                        if (choosephotolistadapter==null){
+//                            choosephotolistadapter = new ChoosePhotoListAdapter(context, list, options);
+//                        }
+                        choosephotolistadapter.notifyItemChanged(positionstart + 1, count);
                     }
 
                     @Override
@@ -364,7 +388,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
 
     //初始化GalleryFinal动作前的配置
     private DisplayImageOptions initGalleryfinalActionConfig() {
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
+        options = new DisplayImageOptions.Builder()
                 .showImageOnFail(R.drawable.ic_gf_default_photo)
                 .showImageForEmptyUri(R.drawable.ic_gf_default_photo)
                 .showImageOnLoading(R.drawable.ic_gf_default_photo).build();
@@ -465,7 +489,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
 
     private void showProgressbar(int way) {
 
-        if (login_progressbar.getVisibility() == View.VISIBLE){
+        if (login_progressbar.getVisibility() == View.VISIBLE) {
             login_progressbar.setVisibility(View.GONE);
         }
 
@@ -486,7 +510,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
     }
 
 
-    public void sleep(long time){
+    public void sleep(long time) {
         try {
             Thread.sleep(time);
         } catch (InterruptedException e) {

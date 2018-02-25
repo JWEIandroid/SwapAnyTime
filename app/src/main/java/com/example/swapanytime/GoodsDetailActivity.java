@@ -430,15 +430,15 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
                         for (MessageBoard messageBoard : messageBoards.getData()) {
                             if (messageBoard.getUserid() == userid) {
-                                messageBoard.setIsLeft(0);
-                            } else {
                                 messageBoard.setIsLeft(1);
+                            } else {
+                                messageBoard.setIsLeft(0);
                             }
                         }
 
                         Intent intent = new Intent(GoodsDetailActivity.this, MsgBoardActivity.class);
-                        intent.putExtra("receiverid",receiverid);
-                        intent.putExtra("userid",userid);
+                        intent.putExtra("receiverid",userid);
+                        intent.putExtra("userid",receiverid);
                         intent.putParcelableArrayListExtra("messageboard", (ArrayList<? extends Parcelable>) messageBoards.getData());
                         startActivity(intent);
 
