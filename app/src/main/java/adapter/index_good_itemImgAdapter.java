@@ -51,7 +51,7 @@ public class index_good_itemImgAdapter extends RecyclerView.Adapter<index_good_i
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        Glide.with(context).load(SwapNetUtils.getBaseURL()+mlist.get(position)).fitCenter().into(holder.imageView);
+        Glide.with(context).load(SwapNetUtils.getBaseURL()+mlist.get(position)).centerCrop().into(holder.imageView);
 
     }
 

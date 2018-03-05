@@ -168,6 +168,7 @@ public class Record_Activity extends baseActivity {
             }
             switch (type) {
                 case 0:
+
                     if (getResultList(type, list_recordresponse) == null) {
                         showToast("没有购买记录", ToastDuration.SHORT);
                     }

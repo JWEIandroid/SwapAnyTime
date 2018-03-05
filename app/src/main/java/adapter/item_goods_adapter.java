@@ -56,8 +56,8 @@ public class item_goods_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         bannder_imglist = new ArrayList<>();
         bannder_imglist.add(R.mipmap.banner1);
         bannder_imglist.add(R.mipmap.banner2);
-        bannder_imglist.add(R.mipmap.banner1);
-        bannder_imglist.add(R.mipmap.banner2);
+        bannder_imglist.add(R.mipmap.banner3);
+        bannder_imglist.add(R.mipmap.banner4);
     }
 
     @Override

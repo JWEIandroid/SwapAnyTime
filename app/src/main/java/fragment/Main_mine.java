@@ -214,7 +214,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                     @Override
                     public void onNext(@NonNull HttpDefault<List<Bill>> listHttpDefault) {
 
-                        Intent intent = new Intent(getContext(),BillActivity.class);
+                        Intent intent = new Intent(getContext(), BillActivity.class);
                         intent.putParcelableArrayListExtra("billist", (ArrayList<? extends Parcelable>) listHttpDefault.getData());
                         startActivity(intent);
 
@@ -222,7 +222,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        showSnackBar(e.getMessage(),ToastDuration.SHORT);
+                        showSnackBar(e.getMessage(), ToastDuration.SHORT);
                     }
 
                     @Override
@@ -269,13 +269,20 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
             }
         });
 
-
-        if (checkIsLogin()) {
-            readLocaldata(token_read, userid_read);
-        }
+//
+//        if (checkIsLogin()) {
+//            readLocaldata(token_read, userid_read);
+//        }
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (checkIsLogin()) {
+            readLocaldata(token_read, userid_read);
+        }
+    }
 
     private void showActionsheet() {
 
@@ -447,6 +454,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                                     mineDesc.setText(user_data.getDescription());
                                 }
                             }
+                            WriteUserData(user_data);
                         }
 
                         @Override
@@ -508,6 +516,32 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     }
 
 
+    /**
+     * 把用户数据写进本地
+     *
+     * @return
+     */
+    private boolean WriteUserData(User user) {
+
+        if ((user == null) || (user.getId() <= 0)) {
+            showSnackBar("写入本地用户数据出错", ToastDuration.SHORT);
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("base64", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username", "");
+            editor.putString("headimg", "file/download/?filename=normal.png&type=0");
+            return false;
+        } else {
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("base64", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username", user.getName());
+            editor.putString("headimg", user.getHeadimg());
+            editor.putString("adress", user.getAdress());
+            editor.putString("tel", user.getTel());
+            editor.commit();
+            return true;
+        }
+
+    }
 
     /**
      * 弹出修改个人信息窗口

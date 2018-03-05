@@ -148,6 +148,7 @@ public class SwapNetUtils {
                     cache = new Cache(cacheFile, 1024 * 1024 * 20);
                     mOkHttpClient = new OkHttpClient.Builder()
                             .cache(cache)
+                            .retryOnConnectionFailure(true)
 //                            .addNetworkInterceptor(new CacheInterceptor())
                             .retryOnConnectionFailure(true)
                             .connectTimeout(30, TimeUnit.SECONDS)

@@ -8,7 +8,9 @@ import android.content.SharedPreferences;
 import com.example.swapanytime.LoginActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
@@ -121,20 +123,45 @@ public class MyApplication extends Application {
     }
 
 
-    //登录超时时间
+    //登录超时时间  单位：分钟
     private static final long LOGIN_TIMEOUT = 30;
     //从本地数据读取的token id headimg;
     private static String token_read = null;
     private static int userid_read = 0;
-
-    //已经登录的用户ID
-    private int userid_login = -1;
+    private static String user_name_read = null; //已经登录的用户的名字
+    private static String user_adress_read = null; //已经登录的用户的地址
+    private static String user_tel_read = null; //已经登录的用户的电话
+    private static String user_headimg_read = null; //已经登录的用户的头像地址
+    private int userid_login = -1;     //已经登录的用户ID
 
 
     public int getLoginUserid(Context context1) {
 
-        checkIsLogin(null,context1);
+        checkIsLogin(null, context1);
         return userid_login;
+    }
+
+    public Map<String, String> getLoginedUserData(Context context1) {
+        checkIsLogin(null, context1);
+        Map<String, String> result = new HashMap<>();
+        if (user_name_read == null) {
+            user_name_read = "error";
+        }
+        if (user_headimg_read == null) {
+            user_headimg_read = "file/download/?filename=nodata.png&type=0";
+        }
+        if (user_adress_read == null) {
+            user_adress_read = "error";
+        }
+        if (user_tel_read == null) {
+            user_tel_read = " tel error";
+        }
+        result.put("username", user_name_read);
+        result.put("headimg", user_headimg_read);
+        result.put("adress", user_headimg_read);
+        result.put("tel", user_headimg_read);
+        return result;
+
     }
 
     //检查登陆状态
@@ -146,6 +173,10 @@ public class MyApplication extends Application {
         SharedPreferences sharedPreferences = context.getSharedPreferences("base64", MODE_PRIVATE);
         token_read = sharedPreferences.getString("token", null);
         String userid_data = sharedPreferences.getString("userid", null);
+        String user_name = sharedPreferences.getString("username", null);
+        String user_headimg = sharedPreferences.getString("headimg", null);
+        String user_adress = sharedPreferences.getString("adress", null);
+        String user_tel = sharedPreferences.getString("tel", null);
         if (userid_read == 0 & token_read == null) {
             loginListener.not_login("你还没有登录");
             return false;
@@ -153,12 +184,27 @@ public class MyApplication extends Application {
         if (userid_data != null) {
             userid_read = Integer.parseInt(sharedPreferences.getString("userid", null));
         }
+
         LogUtils.d("weijie", "本地登录信息：" + "token:" + token_read
                 + "\n" + "userid:" + userid_read);
         //检查登录信息是否过期
         if (checktoken(token_read)) {
             //如果Token没有过期，读取本地文件的用户ID
             userid_login = userid_read;
+
+            if (user_name != null) {
+                user_name_read = user_name;
+            }
+            if (user_headimg != null) {
+                user_headimg_read = user_headimg;
+            }
+            if (user_adress != null) {
+                user_adress_read = user_adress;
+            }
+            if (user_tel != null) {
+                user_tel_read = user_tel;
+            }
+
             return true;
         } else {
             //token过期
@@ -206,6 +252,10 @@ public class MyApplication extends Application {
         System.exit(0);
     }
 
+
+    /**
+     * 退出应用
+     */
     public void finishActivities() {
         for (Activity activity : activities) {
             if (activity != null) {

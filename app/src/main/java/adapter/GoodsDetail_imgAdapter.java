@@ -21,6 +21,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import api.MessageApi;
 import base.MyApplication;
@@ -52,6 +53,7 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private Context context;
     private List<Comment> comments;
     private CommentAdapter commentAdapter = null;
+    private int User_Id = -1;
 
     //开始显示三行格式图片的位置
     private int middle = 0;
@@ -73,6 +75,7 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         middle = list.size() / 2;
         this.goods = goods;
         this.comments = comments;
+        User_Id = MyApplication.getInstance().getLoginUserid(context);
 
     }
 
@@ -159,11 +162,11 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         if (holder instanceof GoodsDetail_imgAdapter.NormalImgHolder) {
 
-            Glide.with(context).load(SwapNetUtils.getBaseURL() + list.get(position - 1)).fitCenter().into(((NormalImgHolder) holder).imageView);
+            Glide.with(context).load(SwapNetUtils.getBaseURL() + list.get(position - 1)).centerCrop().into(((NormalImgHolder) holder).imageView);
 
         } else if (holder instanceof GoodsDetail_imgAdapter.threeLineImgHolder) {
 
-            Glide.with(context).load(SwapNetUtils.getBaseURL() + list.get(position - 1)).fitCenter().into(((threeLineImgHolder) holder).imageView);
+            Glide.with(context).load(SwapNetUtils.getBaseURL() + list.get(position - 1)).centerCrop().into(((threeLineImgHolder) holder).imageView);
         } else if (holder instanceof GoodsDetail_imgAdapter.GoodMsgHolder) {
 
             ((GoodMsgHolder) holder).goodsdetail_desc.setText((String) goods.getDescription());
@@ -224,13 +227,20 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 //                                    .content(comment_et.getText().toString())
 //                                    .like(100)
 //                                    .build();
+                            Map user_data = MyApplication.getInstance().getLoginedUserData(context);
+                            User user = new User.Builder().name((String) user_data.get("username"))
+                                    .adress((String) user_data.get("adress"))
+                                    .headimg((String) user_data.get("headimg"))
+                                    .tel((String) user_data.get("tel"))
+                                    .build();
                             Comment comment = new Comment.Builder()
-                                    .userid(goods.getUser().getId())
+                                    .userid(User_Id)
                                     .goodsid(goods.getId())
                                     .receiverid(goods.getUser().getId())
                                     .content(comment_et.getText().toString())
-                                    .date(System.currentTimeMillis()+"")
-                                    .user(goods.getUser())
+                                    .date(System.currentTimeMillis() + "")
+//                                    .user(goods.getUser())
+                                    .user(user)
                                     .like(0)
                                     .build();
                             insertComment(comment);
@@ -284,7 +294,7 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                             }
 
                         } else if (stringHttpDefault.getError_code() == -1) {
-                            LogUtils.d("weijie","插入出错："+stringHttpDefault.getMessage());
+                            LogUtils.d("weijie", "插入出错：" + stringHttpDefault.getMessage());
                         }
 
                     }
@@ -292,7 +302,7 @@ public class GoodsDetail_imgAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     @Override
                     public void onError(@NonNull Throwable e) {
 
-                        LogUtils.d("weijie","插入评论失败："+e.getMessage());
+                        LogUtils.d("weijie", "插入评论失败：" + e.getMessage());
 
                     }
 

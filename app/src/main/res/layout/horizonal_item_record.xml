@@ -14,7 +14,7 @@
             android:layout_height="100dp"
             android:layout_margin="15dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/coolman" />
+            android:src="@mipmap/nodata" />
 
         <TextView
             android:id="@+id/horizonal_record_item_desc"
@@ -25,7 +25,7 @@
             android:ellipsize="end"
             android:gravity="left"
             android:maxLines="4"
-            android:text="动画I啊回到家啊还是大姐啥几点回家啊是的大j到家啊还是大姐啥几点回家啊是的大jdh" />
+            android:text="木有数据" />
 
         <TextView
             android:id="@+id/horizonal_record_item_price_sale"
@@ -34,7 +34,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="35dp"
             android:layout_toRightOf="@id/horizonal_record_item_pic"
-            android:text="￥100"
+            android:text=""
             android:textColor="@color/colorAccent"
             android:textSize="20sp" />
 
@@ -46,7 +46,9 @@
             android:layout_marginBottom="38dp"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/horizonal_record_item_price_sale"
-            android:text="原价:" />
+            android:text="原价:"
+            android:visibility="gone"
+            />
 
         <TextView
             android:id="@+id/horizonal_record_item_price_before"
@@ -55,7 +57,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="38dp"
             android:layout_toRightOf="@id/txt_price_before"
-            android:text="￥100" />
+            android:text="" />
 
         <ImageView
             android:layout_width="match_parent"

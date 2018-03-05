@@ -26,7 +26,11 @@ import com.example.swapanytime.R;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import api.UserAPI;
 import base.baseFragment;
@@ -360,11 +364,13 @@ public class Login extends baseFragment {
                             config.add(user.getToken());
                             config.add(user.getId() + "");
                             WriteUserConfig(config);
+                            WriteUserData(user);
 
                             showToast(userHttpDefault.getMessage(), ToastDuration.SHORT);
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             intent.putExtra("islogin", true);
                             startActivity(intent);
+
                         }
                     }
 
@@ -398,6 +404,32 @@ public class Login extends baseFragment {
         }
 
 
+    }
+
+    /**
+     * 把用户数据写进本地
+     *
+     * @return
+     */
+    private boolean WriteUserData(User user) {
+
+        if ((user == null) || (user.getId() <= 0)) {
+            showSnackBar("写入本地用户数据出错", ToastDuration.SHORT);
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("base64", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username", "");
+            editor.putString("headimg", "file/download/?filename=normal.png&type=0");
+            return false;
+        } else {
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("base64", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username", user.getName());
+            editor.putString("headimg", user.getHeadimg());
+            editor.putString("adress", user.getAdress());
+            editor.putString("tel", user.getTel());
+            editor.commit();
+            return true;
+        }
     }
 
 

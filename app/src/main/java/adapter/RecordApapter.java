@@ -64,6 +64,7 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
                 if (buyrecord==null){
                     break;
                 }
+                holder.txt_price_before.setVisibility(View.VISIBLE);
                 Glide.with(context)
                         .load(SwapNetUtils.getBaseURL() + buyrecord.getGoods().getImgurl().get(0))
                         .asBitmap()
@@ -86,6 +87,7 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
                 if (saleRecord==null){
                     break;
                 }
+                holder.txt_price_before.setVisibility(View.VISIBLE);
                 Glide.with(context)
                         .load(SwapNetUtils.getBaseURL() + saleRecord.getGoods().getImgurl().get(0))
                         .asBitmap()
@@ -108,6 +110,7 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
                 if (reportRecord==null){
                     break;
                 }
+                holder.txt_price_before.setVisibility(View.VISIBLE);
                 Glide.with(context)
                         .load(SwapNetUtils.getBaseURL() + reportRecord.getGoods().getImgurl().get(0))
                         .asBitmap()
@@ -130,6 +133,7 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
                 if (forkRecord==null){
                     break;
                 }
+                holder.txt_price_before.setVisibility(View.VISIBLE);
                 Glide.with(context)
                         .load(SwapNetUtils.getBaseURL() + forkRecord.getGoods().getImgurl().get(0))
                         .asBitmap()
@@ -148,6 +152,7 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
                 });
                 break;
             default:
+                break;
 
 
         }
@@ -174,6 +179,7 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
         public TextView record_itemprice_before;
         public TextView record_item_desc;
         public TextView record_item_del_btn;
+        public TextView txt_price_before;
         public FrameLayout rv;
         public ImageView img;
 
@@ -186,6 +192,7 @@ public class RecordApapter extends RecyclerView.Adapter<RecordApapter.RecordHold
             record_item_del_btn = (TextView) itemView.findViewById(R.id.horizonal_record_item_del_btn);
             rv = (FrameLayout) itemView.findViewById(R.id.horizonal_record_item_del_framelayout);
             img = (ImageView) itemView.findViewById(R.id.horizonal_record_item_del_img);
+            txt_price_before = (TextView) itemView.findViewById(R.id.txt_price_before);
         }
 
     }
