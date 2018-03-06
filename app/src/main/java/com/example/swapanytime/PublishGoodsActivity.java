@@ -11,6 +11,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -235,6 +236,15 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
      * @return 提交用户填写的商品信息
      */
     private void PostGoods() {
+
+        if (TextUtils.isEmpty(goodsnameEt.getText().toString())
+                || TextUtils.isEmpty(yunfeiEt.getText().toString())
+                || TextUtils.isEmpty(pricebfEt.getText().toString())
+                || TextUtils.isEmpty(priceEt.getText().toString())
+                || TextUtils.isEmpty(goods_descriptionEt.getText().toString())) {
+            showToast("请完善信息",ToastDuration.LONG);
+            return;
+        }
 
         final Goods good = new Goods.Builder()
                 .name(goodsnameEt.getText().toString())

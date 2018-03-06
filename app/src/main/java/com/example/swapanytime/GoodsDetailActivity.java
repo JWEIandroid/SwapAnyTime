@@ -107,7 +107,7 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
         LogUtils.d("weijie", "请求商品id" + goods.getId());
         getComment(goods.getId());
-        checkForked(goods.getId(), goods.getUser().getId());
+        checkForked(goods.getId(), userid);
     }
 
     @Override
@@ -401,13 +401,13 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
             case R.id.ic_fork:
 
                 if (isFork) {
-                    ControlLike(goods.getId(), goods.getUser().getId(), 0);
+                    ControlLike(goods.getId(),userid, 0);
                 } else {
-                    ControlLike(goods.getId(), goods.getUser().getId(), 1);
+                    ControlLike(goods.getId(), userid, 1);
                 }
                 break;
             case R.id.btn_contract_shopper:
-                RequestMessage(userid,shopperid);
+                RequestMessage(userid, shopperid);
                 break;
 
         }
@@ -437,8 +437,8 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
                         }
 
                         Intent intent = new Intent(GoodsDetailActivity.this, MsgBoardActivity.class);
-                        intent.putExtra("receiverid",userid);
-                        intent.putExtra("userid",receiverid);
+                        intent.putExtra("receiverid", userid);
+                        intent.putExtra("userid", receiverid);
                         intent.putParcelableArrayListExtra("messageboard", (ArrayList<? extends Parcelable>) messageBoards.getData());
                         startActivity(intent);
 

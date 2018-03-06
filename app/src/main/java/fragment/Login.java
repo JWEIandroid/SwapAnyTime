@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.swapanytime.LoginActivity;
 import com.example.swapanytime.MainActivity;
 import com.example.swapanytime.R;
 
@@ -33,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 
 import api.UserAPI;
+import base.MyApplication;
 import base.baseFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -256,8 +258,6 @@ public class Login extends baseFragment {
         psdConfirmEt.addTextChangedListener(reset_watcher);
 
 
-
-
     }
 
 
@@ -363,10 +363,11 @@ public class Login extends baseFragment {
                             List<String> config = new ArrayList<String>();
                             config.add(user.getToken());
                             config.add(user.getId() + "");
-                            WriteUserConfig(config);
-                            WriteUserData(user);
+                            WriteUserConfig(config, user);
+//                            WriteUserData(user);
 
                             showToast(userHttpDefault.getMessage(), ToastDuration.SHORT);
+                            MyApplication.getInstance().finishActivity(getActivity());
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             intent.putExtra("islogin", true);
                             startActivity(intent);
@@ -390,20 +391,54 @@ public class Login extends baseFragment {
 
     }
 
+    private SharedPreferences.Editor editor = null;
+    private SharedPreferences sharedPreferences = null;
 
-    private void WriteUserConfig(List<String> list) {
+    private void WriteUserConfig(List<String> list, User user) {
 
         if (list.size() == 0 || list == null) {
             LogUtils.d(getTag(), "存储本地数据失败--数据出错");
         } else {
-            SharedPreferences sharedPreferences = getContext().getSharedPreferences("base64", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+            if (sharedPreferences == null) {
+                sharedPreferences = getContext().getSharedPreferences("base64", MODE_PRIVATE);
+            }
+            if (editor == null) {
+                editor = sharedPreferences.edit();
+            }
             editor.putString("token", list.get(0));
             editor.putString("userid", list.get(1));
-            editor.commit();
+//            editor.commit();
         }
 
 
+        if ((user == null) || (user.getId() <= 0)) {
+            showSnackBar("写入本地用户数据出错", ToastDuration.SHORT);
+            LogUtils.d("weijie","写入本地用户数据失败");
+
+            if (sharedPreferences == null) {
+                sharedPreferences = getContext().getSharedPreferences("base64", MODE_PRIVATE);
+            }
+            if (editor == null) {
+                editor = sharedPreferences.edit();
+            }
+            editor.putString("username", "");
+            editor.putString("headimg", "file/download/?filename=normal.png&type=0");
+        } else {
+            LogUtils.d("weijie","写入本地用户数据成功");
+            if (sharedPreferences == null) {
+                sharedPreferences = getContext().getSharedPreferences("base64", MODE_PRIVATE);
+            }
+            if (editor == null) {
+                editor = sharedPreferences.edit();
+            }
+            editor.putString("username", user.getName());
+            editor.putString("headimg", user.getHeadimg());
+            editor.putString("adress", user.getAdress());
+            editor.putString("tel", user.getTel());
+            editor.commit();
+
+
+        }
     }
 
     /**
@@ -416,13 +451,17 @@ public class Login extends baseFragment {
         if ((user == null) || (user.getId() <= 0)) {
             showSnackBar("写入本地用户数据出错", ToastDuration.SHORT);
             SharedPreferences sharedPreferences = getContext().getSharedPreferences("base64", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+            if (editor == null) {
+                editor = sharedPreferences.edit();
+            }
             editor.putString("username", "");
             editor.putString("headimg", "file/download/?filename=normal.png&type=0");
             return false;
         } else {
             SharedPreferences sharedPreferences = getContext().getSharedPreferences("base64", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+            if (editor == null) {
+                editor = sharedPreferences.edit();
+            }
             editor.putString("username", user.getName());
             editor.putString("headimg", user.getHeadimg());
             editor.putString("adress", user.getAdress());
@@ -472,8 +511,6 @@ public class Login extends baseFragment {
                 });
 
     }
-
-
 
 
 }

@@ -46,7 +46,7 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".LoginActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTask" />
         <activity
             android:name=".GoodsDetailActivity"
             android:launchMode="singleTask" />

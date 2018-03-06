@@ -128,10 +128,10 @@ public class MyApplication extends Application {
     //从本地数据读取的token id headimg;
     private static String token_read = null;
     private static int userid_read = 0;
-    private static String user_name_read = null; //已经登录的用户的名字
-    private static String user_adress_read = null; //已经登录的用户的地址
-    private static String user_tel_read = null; //已经登录的用户的电话
-    private static String user_headimg_read = null; //已经登录的用户的头像地址
+    private String user_name_read = null; //已经登录的用户的名字
+    private String user_adress_read = null; //已经登录的用户的地址
+    private String user_tel_read = null; //已经登录的用户的电话
+    private String user_headimg_read = null; //已经登录的用户的头像地址
     private int userid_login = -1;     //已经登录的用户ID
 
 
@@ -158,8 +158,8 @@ public class MyApplication extends Application {
         }
         result.put("username", user_name_read);
         result.put("headimg", user_headimg_read);
-        result.put("adress", user_headimg_read);
-        result.put("tel", user_headimg_read);
+        result.put("adress", user_adress_read);
+        result.put("tel", user_tel_read);
         return result;
 
     }
@@ -209,12 +209,22 @@ public class MyApplication extends Application {
         } else {
             //token过期
             userid_login = -1;
+            user_name = null;
+            user_headimg = null;
+            user_adress = null;
+            user_tel = null;
             return false;
         }
 
     }
 
-    //检查token是否过期
+
+    /**
+     * 检查token是否过期
+     *
+     * @param token
+     * @return
+     */
     private boolean checktoken(String token) {
 
         long now = System.currentTimeMillis();
