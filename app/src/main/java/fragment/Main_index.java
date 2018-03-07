@@ -304,6 +304,8 @@ public class Main_index extends baseFragment {
                 public void onItemClick(View view, int position) {
                     Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
                     intent.putExtra("goodsmsg", good_list.get(position));
+                    intent.putExtra("shopper", good_list.get(position).getUser());
+
                     startActivity(intent);
                 }
             });

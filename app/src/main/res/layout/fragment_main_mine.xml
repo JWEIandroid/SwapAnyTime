@@ -184,6 +184,31 @@
                 />
 
             <TextView
+                android:id="@+id/txt_change_account"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="切换账号"
+                android:textSize="18sp"
+                />
+
+
+            <TextView
+                android:id="@+id/txt_resetpsd"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="修改密码"
+                android:textSize="18sp"
+                />
+
+            <TextView
                 android:id="@+id/txt_persondata"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -194,23 +219,6 @@
                 android:text="个人资料修改"
                 android:textSize="18sp"
                 />
-
-
-
-
-            <TextView
-                android:id="@+id/txt_change_account"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="切换账号"
-                android:textSize="18sp"
-
-                />
-
 
             <TextView
                 android:id="@+id/txt_exit"

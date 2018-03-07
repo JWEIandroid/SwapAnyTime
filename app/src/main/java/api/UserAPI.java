@@ -11,6 +11,8 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -45,10 +47,10 @@ public interface UserAPI {
 
     //重置密码
     @POST("user/resetpsd")
-    Observable<HttpDefault> resetPassword(
+    Observable<HttpDefault<User>> resetPassword(
             @Query("id") int id,
-            @Query("newpsd") String newpsd,
-            @Query("oldpsd") String oldpsd
+            @Query("oldpsd") String oldpsd,
+            @Query("newpsd") String newpsd
     );
 
     //设置用户头像
@@ -62,14 +64,19 @@ public interface UserAPI {
     //用户id查询用户信息
     @POST("user/QueryUser")
     Observable<HttpDefault<User>> queryUser(
-            @Query("userid")int userid
+            @Query("userid") int userid
     );
 
-
-
-
-
-
+    //更新用户个人信息
+    @FormUrlEncoded
+    @POST("user/updateuser")
+    Observable<HttpDefault<User>> updateuser(
+            @Query("id") int userid,
+            @Field("name") String name,
+            @Field("description") String description,
+            @Query("tel") String tel,
+            @Field("sex") String sex
+    );
 
 
 }

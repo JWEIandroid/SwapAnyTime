@@ -73,6 +73,11 @@ public class MsgBoardActivity extends baseActivity {
         userid = intent.getIntExtra("receiverid", -1);
         messageBoardList = intent.getParcelableArrayListExtra("messageboard");
 
+        if (intent!=null){
+            user = intent.getParcelableExtra("user");
+            receiver = intent.getParcelableExtra("receiver");
+        }// TODO: 2018/3/7 处理空指针问题
+
         if (messageBoardList.size() > 0) {
             user = messageBoardList.get(0).getUser();
             receiver = messageBoardList.get(0).getReceiver();
@@ -82,23 +87,6 @@ public class MsgBoardActivity extends baseActivity {
             //模拟数据
             msgdata = new ArrayList<>();
             messageBoardList = new ArrayList<>();
-//            for (int i = 0; i < 2; i++) {
-//                if (i % 2 == 0) {
-//                    Msg msg = new Msg.Builder().type(0)
-//                            .content("我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思\n" +
-//                                    "我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思\n" +
-//                                    "我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思我没有别的意思" + i)
-//                            .isLeft(1)
-//                            .build();
-//                    msgdata.add(msg);
-//                } else {
-//                    Msg msg = new Msg.Builder().type(0)
-//                            .content("傻逼你好啊你好啊你好啊你啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊" + i)
-//                            .isLeft(0)
-//                            .build();
-//                    msgdata.add(msg);
-//                }
-//            }
         }
 
     }
@@ -156,7 +144,7 @@ public class MsgBoardActivity extends baseActivity {
     private void sendMsg(String content) {
 
 
-        if (messageBoardList != null && messageBoardList.size() >= 1) {
+        if (messageBoardList != null && messageBoardList.size() >= 0) {
 
             MessageBoard messageboard = new MessageBoard.Builder()
                     .content(content)
@@ -171,7 +159,7 @@ public class MsgBoardActivity extends baseActivity {
             messageBoardList.add(messageboard);
             msgBoardApapter.notifyItemInserted(positionstart);
             reportMsg(1, null, messageboard);
-        } else if (commentList != null && commentList.size() >= 1) {
+        } else if (commentList != null && commentList.size() >= 0) {
 
             Comment commment = new Comment.Builder()
                     .content(msgEt.getText().toString())

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/txt_old_psd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="旧密码" />
+
+    <EditText
+        android:id="@+id/et_old_psd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@id/txt_old_psd" />
+
+    <TextView
+        android:id="@+id/txt_new_psd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/txt_old_psd"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:text="新密码" />
+
+    <EditText
+        android:id="@+id/et_new_psd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@id/txt_new_psd"
+        android:layout_below="@id/et_old_psd"
+        />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_commit_psd"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_enabled_shape"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:text="提交" />
+</LinearLayout>

@@ -30,6 +30,7 @@ import entiry.Goods;
 import entiry.HttpDefault;
 import entiry.MessageBoard;
 import entiry.User;
+import fragment.Login;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -84,6 +85,9 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     private static List<MessageBoard> messageBoards = null;
 
 
+    private User shopper = null; //可用于发送的商家信息
+    private User user = null; //可用于发送的当前用户信息
+
     @Override
     public void initData() {
 
@@ -103,9 +107,16 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
                 shopperid = goods.getUser().getId();
             }
+            shopper = getIntent().getParcelableExtra("shopper");
+            user = new User.Builder()
+                    .id(MyApplication.getInstance().getLoginUserid(GoodsDetailActivity.this))
+                    .name(MyApplication.getInstance().getLoginedUserData(GoodsDetailActivity.this).get("username"))
+                    .headimg(MyApplication.getInstance().getLoginedUserData(GoodsDetailActivity.this).get("headimg"))
+                    .build();
         }
 
         LogUtils.d("weijie", "请求商品id" + goods.getId());
+
         getComment(goods.getId());
         checkForked(goods.getId(), userid);
     }
@@ -129,7 +140,6 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
         btnBuy.setOnClickListener(this);
         ic_fork.setOnClickListener(this);
         btn_contract_shopper.setOnClickListener(this);
-
 
     }
 
@@ -401,12 +411,19 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
             case R.id.ic_fork:
 
                 if (isFork) {
-                    ControlLike(goods.getId(),userid, 0);
+                    ControlLike(goods.getId(), userid, 0);
                 } else {
                     ControlLike(goods.getId(), userid, 1);
                 }
                 break;
             case R.id.btn_contract_shopper:
+
+                //检查登录状态
+                if (!MyApplication.getInstance().checkIsLogin(null, GoodsDetailActivity.this)) {
+                    goActivity(LoginActivity.class);
+                    showToast("登录超时", ToastDuration.SHORT);
+                }
+
                 RequestMessage(userid, shopperid);
                 break;
 
@@ -439,6 +456,8 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
                         Intent intent = new Intent(GoodsDetailActivity.this, MsgBoardActivity.class);
                         intent.putExtra("receiverid", userid);
                         intent.putExtra("userid", receiverid);
+                        intent.putExtra("receiver", user);
+                        intent.putExtra("user", shopper);
                         intent.putParcelableArrayListExtra("messageboard", (ArrayList<? extends Parcelable>) messageBoards.getData());
                         startActivity(intent);
 

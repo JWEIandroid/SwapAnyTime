@@ -27,18 +27,6 @@
         layout="@layout/view_login2register_area" />
 
 
-    <TextView
-        android:id="@+id/text_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="返回"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-
 
 </RelativeLayout>
 </FrameLayout>

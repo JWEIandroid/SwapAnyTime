@@ -94,22 +94,8 @@ public class Login extends baseFragment {
     TextView text2login;
     @Bind(R.id.child_regarea)
     LinearLayout childRegarea;
-    @Bind(R.id.oldpsd_et)
-    AppCompatEditText oldpsdEt;
-    @Bind(R.id.newpsd_et)
-    AppCompatEditText newpsdEt;
-    @Bind(R.id.psd_confirm_et)
-    AppCompatEditText psdConfirmEt;
-    @Bind(R.id.btn_resetpsd)
-    TextView btnResetpsd;
-    @Bind(R.id.child_resetpsdarea)
-    LinearLayout childResetpsdarea;
     @Bind(R.id.login_relativelayout)
     RelativeLayout loginRelativelayout;
-    @Bind(R.id.text_resetpsd)
-    TextView text_resetpsd;
-    @Bind(R.id.text_back)
-    TextView text_back;
 
     @Nullable
     @Override
@@ -207,41 +193,7 @@ public class Login extends baseFragment {
             }
         };
 
-        TextWatcher reset_watcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                String oldpsd = oldpsdEt.getText().toString();
-                String newpsd = newpsdEt.getText().toString();
-                String confirmpsd = psdConfirmEt.getText().toString();
-
-                if (TextUtils.isEmpty(oldpsd) ||
-                        TextUtils.isEmpty(newpsd) ||
-                        TextUtils.isEmpty(confirmpsd) ||
-                        oldpsd.length() < 6 ||
-                        newpsd.length() < 6 ||
-                        confirmpsd.length() < 6
-                        ) {
-                    Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_unenabled_shape);
-                    btnResetpsd.setBackground(drawable);
-                    btnResetpsd.setEnabled(false);
-                } else {
-                    Drawable drawable = getContext().getResources().getDrawable(R.drawable.btn_enabled_shape);
-                    btnResetpsd.setBackground(drawable);
-                    btnResetpsd.setEnabled(true);
-                }
-            }
-        };
 
         //登录--监听
         accountEt.addTextChangedListener(login_watcher);
@@ -252,10 +204,7 @@ public class Login extends baseFragment {
         codeEt.addTextChangedListener(reg_watcher);
         psdRegEt.addTextChangedListener(reg_watcher);
 
-        //重设密码-监听
-        oldpsdEt.addTextChangedListener(reset_watcher);
-        newpsdEt.addTextChangedListener(reset_watcher);
-        psdConfirmEt.addTextChangedListener(reset_watcher);
+
 
 
     }
@@ -279,10 +228,9 @@ public class Login extends baseFragment {
     }
 
     @OnClick({R.id.login_iv, R.id.account_et, R.id.psd_et, R.id.btn_login,
-            R.id.text_2reg, R.id.child_loginarea, R.id.phone_et, R.id.text_resetpsd,
-            R.id.code_et, R.id.psd_reg_et, R.id.btn_reg, R.id.text_2login, R.id.text_back,
-            R.id.child_regarea, R.id.oldpsd_et, R.id.newpsd_et,
-            R.id.psd_confirm_et, R.id.btn_resetpsd, R.id.child_resetpsdarea})
+            R.id.text_2reg, R.id.child_loginarea, R.id.phone_et,
+            R.id.code_et, R.id.psd_reg_et, R.id.btn_reg, R.id.text_2login,
+            R.id.child_regarea})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -308,11 +256,8 @@ public class Login extends baseFragment {
                 break;
 
             case R.id.text_2login:
-            case R.id.text_back:
                 childLoginarea.setVisibility(View.VISIBLE);
                 childRegarea.setVisibility(View.GONE);
-                childResetpsdarea.setVisibility(View.GONE);
-
                 break;
             case R.id.text_2reg:
 
@@ -326,14 +271,7 @@ public class Login extends baseFragment {
 
                 childRegarea.setVisibility(View.VISIBLE);
                 childLoginarea.setVisibility(View.GONE);
-                childResetpsdarea.setVisibility(View.GONE);
                 break;
-            case R.id.text_resetpsd:
-                childLoginarea.setVisibility(View.GONE);
-                childRegarea.setVisibility(View.GONE);
-                childResetpsdarea.setVisibility(View.VISIBLE);
-                break;
-
         }
     }
 

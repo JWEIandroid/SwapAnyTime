@@ -10,6 +10,8 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -64,7 +66,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class Main_mine extends baseFragment implements ActionSheet.ActionSheetListener {
 
 
-    private static final long LOGIN_TIMEOUT = 30;
+    private static final long LOGIN_TIMEOUT = 30;   //token超时时间
 
 
     private static MGalleryFinalUtils instance = null;
@@ -101,6 +103,11 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     TextView txtExit;
     @Bind(R.id.txt_persondata)
     TextView txt_persondata;
+    @Bind(R.id.txt_resetpsd)
+    TextView txt_resetpsd;
+
+
+    private User user_read = null;   //用户信息
 
     //登陆状态
     private boolean islogin = false;
@@ -132,7 +139,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
     private BAR_STATUS bar_status;
 
-    @OnClick({R.id.ic_forward, R.id.mine_head, R.id.mine_name, R.id.mine_desc, R.id.mine_titlebar,
+    @OnClick({R.id.ic_forward, R.id.mine_head, R.id.mine_name, R.id.mine_desc, R.id.mine_titlebar,R.id.txt_resetpsd,
             R.id.txt_persondata, R.id.title_name, R.id.collapsingToolbarLayout, R.id.app_bar, R.id.txt_publish_buyreord,
             R.id.txt_sale_record, R.id.txt_buy_record, R.id.txt_shoucang, R.id.txt_mine_pay, R.id.txt_change_account, R.id.txt_exit})
     public void onViewClicked(View view) {
@@ -155,7 +162,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
             case R.id.app_bar:
                 break;
             case R.id.txt_persondata:
-                showPersonDataDialog();
+                showPersonDataDialog(user_read);
                 break;
             case R.id.txt_publish_buyreord:
                 Intent intent = new Intent(getContext(), Record_Activity.class);
@@ -195,6 +202,10 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
             case R.id.txt_exit:
                 MyApplication.getInstance().exit();
                 break;
+            case R.id.txt_resetpsd:
+                showResetPsdDialog();
+                break;
+
         }
     }
 
@@ -280,10 +291,26 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     public void onStart() {
         super.onStart();
         if (checkIsLogin()) {
-            readLocaldata(token_read, userid_read);
+            readLocaldata(token_read, userid_read, getdatalistener);
         }
     }
 
+    getDataListener getdatalistener = new getDataListener() {
+        @Override
+        public void getData(Object obj) {
+            user_read = (User) obj;
+        }
+
+        @Override
+        public void updateui(Object obj) {
+
+        }
+    };
+
+
+    /**
+     * 展示菜单
+     */
     private void showActionsheet() {
 
         ActionSheet.createBuilder(getActivity(), getActivity().getSupportFragmentManager())
@@ -353,6 +380,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         }
     }
 
+
     //初始化GalleryFinal动作前的配置
     private DisplayImageOptions initGalleryfinalActionConfig() {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -421,7 +449,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
 
     //根据token,id请求客户信息
-    private User readLocaldata(String token, final int userid) {
+    private User readLocaldata(String token, final int userid, final getDataListener listener) {
         if (token != null & userid != 0) {
             Observable<HttpDefault<User>> observable = SwapNetUtils.createAPI(UserAPI.class).getUserdata(token, userid);
             observable.subscribeOn(Schedulers.io())
@@ -449,12 +477,13 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                                 mineName.setText(user_data.getName());
                                 titleName.setText(user_data.getName());
                                 if (user_data.getDescription() == null) {
-                                    mineDesc.setText("咩都无....");
+                                    mineDesc.setText("咩都无/**/....");
                                 } else {
                                     mineDesc.setText(user_data.getDescription());
                                 }
                             }
                             WriteUserData(user_data);
+                            listener.getData(userHttpDefault.getData());
                         }
 
                         @Override
@@ -546,21 +575,165 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     /**
      * 弹出修改个人信息窗口
      */
-    private void showPersonDataDialog() {
+    Dialog dialog = null;
 
-        Dialog dialog = DialogUtil.showBottomDialog(R.layout.view_personaldata,
+    private void showPersonDataDialog(final User data) {
+
+        dialog = DialogUtil.showBottomDialog(R.layout.view_personaldata,
                 R.style.ActionButtomDialogStyle,
                 getContext(),
                 new DialogUtil.IDialogInitListener() {
                     @Override
                     public void initDialogView(View view) {
+                        final EditText name = (EditText) view.findViewById(R.id.et_person_name);
+                        final EditText desc = (EditText) view.findViewById(R.id.et_person_desc);
+                        final EditText phone = (EditText) view.findViewById(R.id.et_person_phone);
+                        final EditText sex = (EditText) view.findViewById(R.id.et_person_sex);
+                        Button btn_commit = (Button) view.findViewById(R.id.btn_commit_personaldata);
+                        if (data != null) {
+                            name.setText(data.getName());
+                            desc.setText(data.getDescription());
+                            phone.setText(data.getTel());
+                            sex.setText(data.getSex());
+                        }
+
+                        btn_commit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                data.setName(name.getText().toString());
+                                data.setDescription(desc.getText().toString());
+                                data.setTel(phone.getText().toString());
+                                data.setSex(sex.getText().toString());
+                                UpdateUserDataByBottmSheetDialog(data);
+                            }
+                        });
+
 
                     }
                 });
         dialog.show();
+    }
 
+
+    /**
+     * 展示重设密码弹窗
+     */
+    private void showResetPsdDialog() {
+
+
+        dialog = DialogUtil.showBottomDialog(R.layout.view_reset_psd,
+                R.style.ActionButtomDialogStyle,
+                getContext(),
+                new DialogUtil.IDialogInitListener() {
+                    @Override
+                    public void initDialogView(View view) {
+                        final EditText old_psd = (EditText) view.findViewById(R.id.et_old_psd);
+                        final EditText new_psd = (EditText) view.findViewById(R.id.et_new_psd);
+                        Button btn_commit = (Button) view.findViewById(R.id.btn_commit_psd);
+
+
+                        btn_commit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ResetPsd(MyApplication.getInstance().getLoginUserid(getContext()),
+                                        old_psd.getText().toString(),
+                                        new_psd.getText().toString());
+                            }
+                        });
+
+
+                    }
+                });
+        dialog.show();
+    }
+
+
+    /**
+     * 重设密码
+     *
+     * @param s
+     * @param s1
+     */
+    private void ResetPsd(int id, String s, String s1) {
+
+        Observable<HttpDefault<User>> observable = SwapNetUtils.createAPI(UserAPI.class).resetPassword(id, s, s1);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<User>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<User> userHttpDefault) {
+                        showSnackBar(userHttpDefault.getMessage(),ToastDuration.SHORT);
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                           showSnackBar(e.getMessage(),ToastDuration.SHORT);
+                           dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
+    /**
+     * 修改个人信息后更新界面
+     *
+     * @param data
+     */
+    public void UpdateUserDataByBottmSheetDialog(final User data) {
+
+        Observable<HttpDefault<User>> observable = SwapNetUtils.createAPI(UserAPI.class).updateuser(
+                data.getId(),
+                data.getName(),
+                data.getDescription(),
+                data.getTel(),
+                data.getSex());
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HttpDefault<User>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull HttpDefault<User> userHttpDefault) {
+
+                        if (userHttpDefault.getData().getTel() != null) {
+                            mineName.setText(data.getName());
+                            mineDesc.setText(data.getDescription());
+                            showSnackBar("更新成功", ToastDuration.SHORT);
+                            dialog.dismiss();
+                        } else {
+                            showSnackBar(userHttpDefault.getMessage(), ToastDuration.SHORT);
+                            dialog.dismiss();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        showSnackBar("服务器出问题了: Cause By" + e.getMessage(), ToastDuration.SHORT);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -574,4 +747,12 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
+
+    private interface getDataListener {
+        void getData(Object obj);
+
+        void updateui(Object obj);
+    }
+
 }
