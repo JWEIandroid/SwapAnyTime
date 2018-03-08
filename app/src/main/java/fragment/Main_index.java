@@ -116,11 +116,6 @@ public class Main_index extends baseFragment {
         }
     });
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        smartRefreshLayout.autoRefresh(1000);
-    }
 
     @Override
     protected int getContentView() {
@@ -177,7 +172,7 @@ public class Main_index extends baseFragment {
      * @param pagenum
      * @param type     类型 1：刷新  2：加载更多
      */
-    private void getGoodsmessage(final FragmentListener listener, int pagenum, final int type) {
+    private void getGoodsmessage(final FragmentListener listener, final int pagenum, final int type) {
 
         Observable<HttpDefault<List<Goods>>> observable = SwapNetUtils.createAPI(GoodsAPI.class).QueryGoods(pagenum);
         observable.subscribeOn(Schedulers.io())
@@ -192,6 +187,11 @@ public class Main_index extends baseFragment {
                     public void onNext(@NonNull HttpDefault<List<Goods>> goodsHttpDefault) {
                         good_list = goodsHttpDefault.getData();
                         if (type == 1) {
+
+                            if (good_list == null || good_list.size() <=0){
+                                getGoodsmessage(listener, pagenum, type);
+                            }
+
                             listener.updateUI(good_list);
                         } else if (type == 2) {
                             listener.appenddata(good_list);

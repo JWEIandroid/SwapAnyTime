@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -105,6 +106,8 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     TextView txt_persondata;
     @Bind(R.id.txt_resetpsd)
     TextView txt_resetpsd;
+    @Bind(R.id.uploading_area)
+    FrameLayout uploading_area;
 
 
     private User user_read = null;   //用户信息
@@ -345,6 +348,8 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                         ImageLoader.getInstance().displayImage("file:/" + photoInfo.getPhotoPath(), mineHead, options);
 
                         file_result = new File(photoInfo.getPhotoPath());
+                        uploading_area.setVisibility(View.VISIBLE);
+                        uploadFile(userid_read, file_result, "file");
                     }
 
                     @Override
@@ -506,6 +511,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
     private boolean uploadFile(int userid, File file, String paramsname) {
 
         if (!file.exists()) {
+            uploading_area.setVisibility(View.GONE);
             return false;
         }
         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
@@ -529,11 +535,17 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
                     public void onNext(@NonNull HttpDefault<String> stringHttpDefault) {
 
                         LogUtils.d(getmTag(), "upload status" + stringHttpDefault.getMessage());
+                        uploading_area.setVisibility(View.GONE);
+                        showToast("上传完成",ToastDuration.SHORT);
+
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         LogUtils.d(getmTag(), "upload error:" + e.getMessage());
+                        uploading_area.setVisibility(View.GONE);
+                        showToast("上传失败",ToastDuration.SHORT);
+
                     }
 
                     @Override
@@ -711,6 +723,7 @@ public class Main_mine extends baseFragment implements ActionSheet.ActionSheetLi
 
                         if (userHttpDefault.getData().getTel() != null) {
                             mineName.setText(data.getName());
+                            titleName.setText(data.getName());
                             mineDesc.setText(data.getDescription());
                             showSnackBar("更新成功", ToastDuration.SHORT);
                             dialog.dismiss();

@@ -74,11 +74,11 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
     private List<String> img_data;
     private List<String> rv_data;
     private GoodsDetail_imgAdapter goodsDetail_imgAdapter;
-    private Goods goods;
+    private static Goods goods;
 
     private static final long LOGIN_TIMEOUT = 30;  //登录超时时间
     private int userid_read = 0;   //读取配置文件的用户id
-    private List<Comment> comments_data = new ArrayList<>(); //评论表
+    private static List<Comment> comments_data = new ArrayList<>(); //评论表
 
     private static int userid = -1;
     private static int shopperid = -1;
@@ -90,9 +90,46 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
     @Override
     public void initData() {
+        rv_data = new ArrayList<>();
+//        rv_data.add("");
+//        goods = new Goods.Builder().build();
+//
+//        userid = MyApplication.getInstance().getLoginUserid(GoodsDetailActivity.this);
+//
+//        if (getIntent() != null) {
+//            goods = (Goods) getIntent().getParcelableExtra("goodsmsg");
+//            if (goods != null) {
+//                goodsdetailName.setText(goods.getName());
+//                goodsdetailPriceBf.setText("￥ " + goods.getPrice_before());
+//                goodsdetailPriceAt.setText("￥ " + goods.getPrice_sale());
+//                goodsdetailAdress.setText(goods.getUser().getAdress());
+//                img_data = goods.getImgurl();
+//
+//                shopperid = goods.getUser().getId();
+//            }
+//            shopper = getIntent().getParcelableExtra("shopper");
+//            user = new User.Builder()
+//                    .id(MyApplication.getInstance().getLoginUserid(GoodsDetailActivity.this))
+//                    .name(MyApplication.getInstance().getLoginedUserData(GoodsDetailActivity.this).get("username"))
+//                    .headimg(MyApplication.getInstance().getLoginedUserData(GoodsDetailActivity.this).get("headimg"))
+//                    .build();
+//        }
+//
+//        LogUtils.d("weijie", "请求商品id" + goods.getId());
+//
+//        getComment(goods.getId());
+//        checkForked(goods.getId(), userid);
+//
+//        MyApplication.getInstance().addActivity(GoodsDetailActivity.this);
+//
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         rv_data = new ArrayList<>();
         rv_data.add("");
+        goods = new Goods.Builder().build();
 
         userid = MyApplication.getInstance().getLoginUserid(GoodsDetailActivity.this);
 
@@ -119,6 +156,8 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
         getComment(goods.getId());
         checkForked(goods.getId(), userid);
+
+        MyApplication.getInstance().addActivity(GoodsDetailActivity.this);
     }
 
     @Override
@@ -477,4 +516,10 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MyApplication.getInstance().finishActivity(GoodsDetailActivity.this);
+    }
 }

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -110,6 +111,8 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
     AppCompatEditText goodsnameEt;
     @Bind(R.id.login_progressbar)
     ProgressBar login_progressbar;
+    @Bind(R.id.publishing_area)
+    FrameLayout publishing_area;
 
 
     private List<String> data_left;
@@ -223,10 +226,11 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                 showBottomDialog();
                 break;
             case R.id.btn_publish:
-                showProgressbar(1);
+                publishing_area.setVisibility(View.VISIBLE);
+//                showProgressbar(1);
                 PostGoods();
-                showProgressbar(0);
-                goActivity(MainActivity.class);
+//                showProgressbar(0);
+//                goActivity(MainActivity.class);
                 break;
         }
     }
@@ -243,6 +247,7 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                 || TextUtils.isEmpty(priceEt.getText().toString())
                 || TextUtils.isEmpty(goods_descriptionEt.getText().toString())) {
             showToast("请完善信息",ToastDuration.LONG);
+            publishing_area.setVisibility(View.GONE);
             return;
         }
 
@@ -293,6 +298,8 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                     @Override
                     public void onError(@NonNull Throwable e) {
                         LogUtils.d("weijie", "postgoods error" + e.getMessage());
+                        publishing_area.setVisibility(View.GONE);
+                        showToast("发布商品出错",ToastDuration.SHORT);
                     }
 
                     @Override
@@ -493,6 +500,9 @@ public class PublishGoodsActivity extends baseActivity implements ActionSheet.Ac
                         }
                     });
         }
+        publishing_area.setVisibility(View.GONE);
+        showToast("发布成功",ToastDuration.SHORT);
+        goActivity(MainActivity.class);
 
     }
 

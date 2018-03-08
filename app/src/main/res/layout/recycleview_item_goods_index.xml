@@ -18,7 +18,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="5dp"
             android:background="@color/white"
-            android:src="@mipmap/weijie" />
+            android:src="@mipmap/coolman" />
 
         <TextView
             android:id="@+id/name"
