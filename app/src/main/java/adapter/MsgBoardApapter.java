@@ -101,7 +101,7 @@ public class MsgBoardApapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .into(((LeftUserHolder) holder).leftHead);
                 ((LeftUserHolder) holder).content_lf.setText(commentList.get(position).getContent());
             } else if (messageBoardList != null) {
-                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getUser().getHeadimg())
+                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getReceiver().getHeadimg())
                         .asBitmap()
                         .centerCrop()
                         .into(((LeftUserHolder) holder).leftHead);
@@ -123,7 +123,7 @@ public class MsgBoardApapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .into(((RightUserHolder) holder).rightHead);
                 ((RightUserHolder) holder).content_rh.setText(commentList.get(position).getContent());
             } else if (messageBoardList != null) {
-                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getReceiver().getHeadimg())
+                Glide.with(context).load(SwapNetUtils.getBaseURL() + messageBoardList.get(position).getUser().getHeadimg())
                         .asBitmap()
                         .centerCrop()
                         .into(((RightUserHolder) holder).rightHead);

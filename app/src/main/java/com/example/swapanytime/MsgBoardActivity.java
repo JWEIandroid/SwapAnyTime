@@ -69,13 +69,13 @@ public class MsgBoardActivity extends baseActivity {
     public void initData() {
 
         intent = getIntent();
-        receiverid = intent.getIntExtra("userid", -1);
-        userid = intent.getIntExtra("receiverid", -1);
+        receiverid = intent.getIntExtra("receiverid", -1);
+        userid = intent.getIntExtra("userid", -1);
         messageBoardList = intent.getParcelableArrayListExtra("messageboard");
 
         if (intent!=null){
             user = intent.getParcelableExtra("user");
-            receiver = intent.getParcelableExtra("receiver");
+            receiver = intent.getParcelableExtra("shopper");
         }// TODO: 2018/3/7 处理空指针问题
 
         if (messageBoardList.size() > 0) {

@@ -484,7 +484,13 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
                     @Override
                     public void onNext(@NonNull HttpDefault<List<MessageBoard>> messageBoards) {
 
-                        for (MessageBoard messageBoard : messageBoards.getData()) {
+                        List<MessageBoard> result = messageBoards.getData();
+
+                        if (result==null || result.size()<0){
+                            result = new ArrayList<MessageBoard>();
+                        }
+
+                        for (MessageBoard messageBoard : result) {
                             if (messageBoard.getUserid() == userid) {
                                 messageBoard.setIsLeft(1);
                             } else {
@@ -493,11 +499,11 @@ public class GoodsDetailActivity extends baseActivity implements View.OnClickLis
                         }
 
                         Intent intent = new Intent(GoodsDetailActivity.this, MsgBoardActivity.class);
-                        intent.putExtra("receiverid", userid);
-                        intent.putExtra("userid", receiverid);
-                        intent.putExtra("receiver", user);
+                        intent.putExtra("receiverid", receiverid);
+                        intent.putExtra("userid", userid);
                         intent.putExtra("user", shopper);
-                        intent.putParcelableArrayListExtra("messageboard", (ArrayList<? extends Parcelable>) messageBoards.getData());
+                        intent.putExtra("shopper", user);
+                        intent.putParcelableArrayListExtra("messageboard", (ArrayList<? extends Parcelable>) result);
                         startActivity(intent);
 
 

@@ -74,7 +74,7 @@ public class ShowLinkManMessasgeActivity extends baseActivity {
                 if (userid_login == -1) {
                     return;
                 }
-                RequestMessage(user_data.get(position).getId(),userid_login);
+                RequestMessage(userid_login,user_data.get(position).getId());
             }
         });
         rvShowlinkman.setAdapter(showLinkManAdapter);
@@ -104,9 +104,9 @@ public class ShowLinkManMessasgeActivity extends baseActivity {
 
                         for (MessageBoard messageBoard : messageBoards.getData()) {
                             if (messageBoard.getUserid() == userid) {
-                                messageBoard.setIsLeft(0);
-                            } else {
                                 messageBoard.setIsLeft(1);
+                            } else {
+                                messageBoard.setIsLeft(0);
                             }
                         }
 

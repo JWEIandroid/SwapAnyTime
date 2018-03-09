@@ -39,7 +39,7 @@ public class SwapNetUtils {
 
     //    private static final String IP = "172.168.5.72";
     private static String ip_config = "sdcard/Pictures/Swap_config.txt";
-    private static String IP = "";
+    private static String IP = "26.152";
     private static String BASEURL = "";
     private static OkHttpClient mOkHttpClient;
     private static Cache cache;

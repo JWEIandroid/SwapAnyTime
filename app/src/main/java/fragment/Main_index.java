@@ -159,7 +159,7 @@ public class Main_index extends baseFragment {
                 message1.obj = message;
                 handler.sendMessage(message1);
             }
-        },this.getContext());
+        }, this.getContext());
 
 
     }
@@ -188,10 +188,10 @@ public class Main_index extends baseFragment {
                         good_list = goodsHttpDefault.getData();
                         if (type == 1) {
 
-                            if (good_list == null || good_list.size() <=0){
-                                getGoodsmessage(listener, pagenum, type);
-                            }
-
+//                            if (good_list == null || good_list.size() <=0){
+//                                getGoodsmessage(listener, pagenum, type);
+//                            }
+//                            getGoodsmessage(listener, pagenum, type);
                             listener.updateUI(good_list);
                         } else if (type == 2) {
                             listener.appenddata(good_list);
@@ -292,6 +292,11 @@ public class Main_index extends baseFragment {
         //返回刷新的list
         @Override
         public void updateUI(final List<?> list) {
+
+            if (list == null || list.size() <= 0) {
+                smartRefreshLayout.autoRefresh(1000);
+                showToast("刷新Listener list is null",ToastDuration.SHORT);
+            }
 
             good_list = (List<Goods>) list;
             savedata_list = good_list;
